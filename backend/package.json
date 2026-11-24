@@ -1,0 +1,48 @@
+{
+  "name": "udyamflow-backend",
+  "version": "1.0.0",
+  "description": "Backend API Server for UdyamFlow ERP",
+  "main": "dist/index.js",
+  "scripts": {
+    "dev": "tsx watch src/index.ts",
+    "build": "tsc",
+    "start": "node dist/index.js",
+    "db:generate": "prisma generate",
+    "db:push": "prisma db push",
+    "db:migrate": "prisma migrate dev",
+    "db:seed": "tsx prisma/seed.ts",
+    "test": "tsx test/benchmark.test.ts"
+  },
+  "dependencies": {
+    "@electric-sql/pglite": "^0.6.0",
+    "@electric-sql/pglite-sync": "^0.7.0",
+    "@electric-sql/pglite-tools": "^0.5.0",
+    "@prisma/adapter-pg": "^7.10.1",
+    "@prisma/client": "^5.22.0",
+    "@types/pg": "^8.23.1",
+    "bcrypt": "^5.1.1",
+    "cors": "^2.8.5",
+    "csv-stringify": "^6.5.2",
+    "decimal.js": "^10.4.3",
+    "dotenv": "^16.4.7",
+    "exceljs": "^4.4.0",
+    "express": "^4.21.2",
+    "jsonwebtoken": "^9.0.2",
+    "pdfmake": "^0.2.18",
+    "pg": "^8.23.1",
+    "pg-mem": "^3.0.14",
+    "pglite-prisma-adapter": "^0.7.2",
+    "zod": "^3.24.1"
+  },
+  "devDependencies": {
+    "@types/bcrypt": "^5.0.2",
+    "@types/cors": "^2.8.17",
+    "@types/express": "^4.17.21",
+    "@types/jsonwebtoken": "^9.0.7",
+    "@types/node": "^22.10.1",
+    "@types/pdfmake": "^0.2.11",
+    "prisma": "^5.22.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.2"
+  }
+}

@@ -1,0 +1,714 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"tertiary":"#00544c","surface-container-low":"#eff4ff","surface":"#f8f9ff","error-container":"#ffdad6","inverse-surface":"#213145","surface-tint":"#1f54d3","primary-fixed-dim":"#b5c4ff","outline":"#747686","inverse-primary":"#b5c4ff","on-error-container":"#93000a","on-error":"#ffffff","surface-container":"#e5eeff","surface-variant":"#d3e4fe","on-primary-fixed":"#00164d","tertiary-fixed":"#89f5e7","on-primary":"#ffffff","outline-variant":"#c3c5d7","secondary":"#545e79","on-primary-container":"#d5dcff","primary":"#003fb3","on-tertiary-fixed-variant":"#005049","background":"#f8f9ff","surface-container-high":"#dce9ff","on-secondary":"#ffffff","on-tertiary-fixed":"#00201d","surface-bright":"#f8f9ff","on-tertiary-container":"#84f0e2","tertiary-fixed-dim":"#6bd8cb","secondary-fixed-dim":"#bbc6e6","surface-container-highest":"#d3e4fe","on-surface":"#0b1c30","on-secondary-fixed":"#101b33","on-surface-variant":"#434654","on-secondary-fixed-variant":"#3c4661","inverse-on-surface":"#eaf1ff","error":"#ba1a1a","secondary-fixed":"#d9e2ff","surface-dim":"#cbdbf5","tertiary-container":"#006e65","primary-fixed":"#dce1ff","on-primary-fixed-variant":"#003cad","on-tertiary":"#ffffff","secondary-container":"#d2dcfd","on-background":"#0b1c30","primary-container":"#2457d6","on-secondary-container":"#56607c","surface-container-lowest":"#ffffff"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"margin":"1.5rem","margin-mobile":"1rem","space-lg":"1rem","space-md":"0.75rem","gutter":"1rem","space-xl":"1.5rem","space-xs":"0.25rem","gutter-compact":"0.75rem","space-sm":"0.5rem"},"fontFamily":{"headline-md":["Inter"],"table-header":["Inter"],"body-strong":["Inter"],"headline-sm":["Inter"],"metric-display":["Inter"],"headline-lg":["Inter"],"label-micro":["Inter"],"body-default":["Inter"],"label-default":["Inter"],"table-data":["Inter"],"body-lg":["Inter"]},"fontSize":{"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"table-header":["11px",{"lineHeight":"16px","letterSpacing":"0.04em","fontWeight":"600"}],"body-strong":["13px",{"lineHeight":"18px","fontWeight":"600"}],"headline-sm":["16px",{"lineHeight":"24px","letterSpacing":"-0.005em","fontWeight":"600"}],"metric-display":["32px",{"lineHeight":"38px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"600"}],"label-micro":["10px",{"lineHeight":"14px","letterSpacing":"0.03em","fontWeight":"600"}],"body-default":["13px",{"lineHeight":"18px","fontWeight":"400"}],"label-default":["12px",{"lineHeight":"16px","fontWeight":"500"}],"table-data":["12px",{"lineHeight":"16px","fontWeight":"400"}],"body-lg":["15px",{"lineHeight":"22px","fontWeight":"400"}]}}}}</script></head><body class="bg-background font-body-default text-body-default text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-inverse-surface text-inverse-on-surface z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.08)]"><div class="flex flex-col flex-1 min-h-0"><div class="p-space-lg bg-inverse-surface border-b border-secondary/20 flex flex-col gap-space-xs"><div class="flex items-center gap-space-sm"><img alt="TRIMA ERP Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrB1FBjkAX025S-WW2HjauMSJgLzj9NMs1uXVxE6ns-N3m1uFxqGIxhAMMVxKUL9zS_D5AapNGtbPs3H1Wo4nw2xFIzp-0zmkPF895HwXux5_-L6n9qcRmK4UldVmOYOIHIgAp3FLLXHWRVgwCRepRecDdK8DCQqebWdlkNOxhwk52UBwgL-kSrO4P7CesZYDnhsM9T69iXONIdVvFC8e2xFONfYOSodzFmd4nlHvc-Y"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-surface font-bold tracking-tight">TRIMA ERP</span><span class="font-label-micro text-label-micro text-primary-fixed-dim uppercase tracking-wider">Manufacturing & Audit</span></div></div><div class="mt-space-xs px-space-xs py-0.5 rounded bg-surface/10 text-surface/80 flex flex-col"><span class="font-label-micro text-label-micro font-medium text-surface">Trichy Food Plant Unit-01</span><span class="font-label-micro text-label-micro text-outline-variant font-mono text-[9px]">GSTIN: 33AAACT1234F1Z5</span></div></div><nav class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-space-md" data-active-classes="bg-primary-container text-on-primary font-body-strong"><div class="space-y-space-xs"><p class="px-space-sm font-label-micro text-label-micro font-semibold uppercase tracking-wider text-outline-variant">CORE</p><a aria-current="page" class="flex items-center gap-space-sm px-space-sm py-1.5 rounded transition-colors bg-primary-container text-on-primary font-body-strong" data-path="overview" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="font-body-default text-body-default">Overview / Dashboard</span></a><a class="flex items-center justify-between px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="alerts-action-center" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">warning</span><span class="font-body-default text-body-default">Alerts & Action Center</span></div><span class="px-1.5 py-0.5 rounded-full bg-error text-on-error font-label-micro text-label-micro">4</span></a></div><div class="space-y-space-xs"><p class="px-space-sm font-label-micro text-label-micro font-semibold uppercase tracking-wider text-outline-variant">OPERATIONS</p><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="production-runs" href="#"><span class="material-symbols-outlined text-[18px]">precision_manufacturing</span><span class="font-body-default text-body-default">Production Runs</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="bom-recipes" href="#"><span class="material-symbols-outlined text-[18px]">receipt_long</span><span class="font-body-default text-body-default">BOM & Recipes</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="materials-inventory" href="#"><span class="material-symbols-outlined text-[18px]">inventory_2</span><span class="font-body-default text-body-default">Materials & Inventory</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="stock-movement" href="#"><span class="material-symbols-outlined text-[18px]">sync_alt</span><span class="font-body-default text-body-default">Stock Movement</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="quality-audit-trail" href="#"><span class="material-symbols-outlined text-[18px]">verified</span><span class="font-body-default text-body-default">Quality & Audit Trail</span></a></div><div class="space-y-space-xs"><p class="px-space-sm font-label-micro text-label-micro font-semibold uppercase tracking-wider text-outline-variant">SUPPLY CHAIN</p><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="purchases-grn" href="#"><span class="material-symbols-outlined text-[18px]">shopping_cart</span><span class="font-body-default text-body-default">Purchases & GRN</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="suppliers-directory" href="#"><span class="material-symbols-outlined text-[18px]">contacts</span><span class="font-body-default text-body-default">Suppliers Directory</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="dispatch-gate-pass" href="#"><span class="material-symbols-outlined text-[18px]">local_shipping</span><span class="font-body-default text-body-default">Dispatch & Gate Pass</span></a></div><div class="space-y-space-xs"><p class="px-space-sm font-label-micro text-label-micro font-semibold uppercase tracking-wider text-outline-variant">COMMERCIAL & SALES</p><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="sales-orders" href="#"><span class="material-symbols-outlined text-[18px]">point_of_sale</span><span class="font-body-default text-body-default">Sales & Orders</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="customers" href="#"><span class="material-symbols-outlined text-[18px]">store</span><span class="font-body-default text-body-default">Retail & Wholesale Customers</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="gst-invoices-eway" href="#"><span class="material-symbols-outlined text-[18px]">description</span><span class="font-body-default text-body-default">GST Invoices & E-Way</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="payments-receivables" href="#"><span class="material-symbols-outlined text-[18px]">account_balance_wallet</span><span class="font-body-default text-body-default">Payments & Receivables</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="costing-margins" href="#"><span class="material-symbols-outlined text-[18px]">query_stats</span><span class="font-body-default text-body-default">Costing & Margins</span></a></div><div class="space-y-space-xs"><p class="px-space-sm font-label-micro text-label-micro font-semibold uppercase tracking-wider text-outline-variant">ENTERPRISE</p><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="reports-analytics" href="#"><span class="material-symbols-outlined text-[18px]">bar_chart</span><span class="font-body-default text-body-default">Reports & Analytics</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="user-management" href="#"><span class="material-symbols-outlined text-[18px]">group</span><span class="font-body-default text-body-default">User Management</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="plant-settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span class="font-body-default text-body-default">Plant Settings</span></a></div></nav></div><div class="p-space-sm bg-inverse-surface border-t border-secondary/20 flex flex-col gap-space-xs"><div class="flex items-center justify-between px-space-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-tertiary-fixed"></span><span class="font-label-micro text-label-micro text-surface-container-high">MES & Audit: ONLINE</span></div><span class="font-label-micro text-label-micro text-tertiary-fixed font-mono">24ms</span></div><div class="px-space-xs py-1 rounded bg-surface/5 flex items-center justify-between text-outline-variant"><span class="font-label-micro text-label-micro">Supervisor: Shift A</span><span class="font-label-micro text-label-micro font-medium text-surface">R. Sundar</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl border-b border-surface-container"><div class="flex items-center gap-space-lg flex-1"><div class="flex items-center gap-space-xs font-label-default text-label-default text-secondary"><span class="hover:text-primary transition-colors cursor-pointer">TRIMA Operations</span><span class="text-outline-variant">/</span><span class="hover:text-primary transition-colors cursor-pointer">Trichy Plant 1</span><span class="text-outline-variant">/</span><span class="text-on-surface font-body-strong text-body-strong">Overview</span></div><div class="h-4 w-px bg-surface-container"></div><button class="flex items-center gap-space-xs px-2 py-1 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-label-default text-label-default transition-colors"><span class="material-symbols-outlined text-[16px] text-primary">factory</span><span>Trichy Food Processing Cluster A</span><span class="material-symbols-outlined text-[16px] text-secondary">expand_more</span></button></div><div class="w-96 mx-space-md"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-2.5 text-[18px] text-outline">search</span><input class="w-full h-8 pl-8 pr-14 text-body-default font-body-default bg-surface rounded border border-outline-variant/60 focus:outline-none focus:border-primary-container text-on-surface placeholder:text-outline" placeholder="Search orders, materials, batch #, GSTIN..." type="text"/><span class="absolute right-2 px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-micro text-label-micro font-mono border border-outline-variant/40">⌘K</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-1.5 px-2 py-1 rounded-full bg-surface-container-low border border-surface-container"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span></span><span class="font-label-micro text-label-micro font-medium text-tertiary">Shift A • Production Active</span></div><div class="text-right flex flex-col font-label-micro text-label-micro text-secondary"><span class="font-medium text-on-surface">14 Oct 2024</span><span>IST 11:42 AM</span></div><button class="flex items-center gap-1 h-8 px-space-sm rounded bg-primary-container hover:bg-primary text-on-primary font-body-strong text-body-strong transition-colors"><span class="material-symbols-outlined text-[16px]">add</span><span>Quick Action</span></button><button class="relative p-1.5 rounded hover:bg-surface-container text-secondary hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-error ring-2 ring-surface-container-lowest"></span></button><button class="p-1.5 rounded hover:bg-surface-container text-secondary hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">help_outline</span></button><div class="h-4 w-px bg-surface-container"></div><div class="flex items-center gap-space-sm pl-space-xs cursor-pointer group"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgVoBVd5yQtmE-5QqvJZnrKec3QhK_7VsH7CHBK5a4aPlNo_QMR09n8sqMykcTMXi9P_aAOJ5vzC3IF5wb8BiHVtZkn5KB6ty5MJigqIZvNbGbEsMg_bTxtEwDfbyR5am4TSOUHRjxAYcKzk2Sqog7LuwN0k5GhbKbY1JcqEGDTxBSG_VRqClZlM28_SNIqGu-r5mVKqGbC7zMJynCKjdVsi9-WsmevXz2P8lDLWOa"/><div class="flex flex-col text-left"><span class="font-body-strong text-body-strong text-on-surface group-hover:text-primary transition-colors leading-tight">R. Sundararajan</span><span class="font-label-micro text-label-micro text-secondary leading-tight">Plant Operations Director</span></div><span class="material-symbols-outlined text-[16px] text-secondary group-hover:text-on-surface transition-colors">keyboard_arrow_down</span></div></div></header><main class="relative pt-14 bg-surface w-full px-margin"><div class="flex flex-col w-full pb-space-xl">
+<!-- Operational Welcome & Master Controls Strip -->
+<div class="flex flex-col lg:flex-row lg:items-center lg:justify-between py-space-md gap-space-md mb-space-xs">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface font-semibold tracking-tight">Welcome back, Sundararajan</span>
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed font-label-micro text-label-micro uppercase tracking-wider font-semibold">Plant Director</span>
+</div>
+<p class="font-body-default text-body-default text-secondary mt-0.5">Here's what's happening across your manufacturing operations, batch yields, and dispatches today.</p>
+</div>
+<!-- Executive Telemetry Action Controls -->
+<div class="flex flex-wrap items-center gap-space-sm">
+<div class="relative inline-flex items-center">
+<span class="material-symbols-outlined absolute left-2.5 text-[16px] text-primary">domain</span>
+<select class="h-8 pl-8 pr-7 bg-surface-container-lowest text-on-surface font-label-default text-label-default rounded shadow-sm focus:outline-none appearance-none cursor-pointer">
+<option>Trichy Plant 1 - Confectionery & Savories Unit</option>
+<option>Trichy Plant 2 - Extruded Snacks & Fryer Line</option>
+<option>Central Cold Storage & Raw Silos (Viralimalai)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 text-[14px] text-secondary pointer-events-none">expand_more</span>
+</div>
+<div class="relative inline-flex items-center">
+<span class="material-symbols-outlined absolute left-2.5 text-[16px] text-secondary">calendar_today</span>
+<select class="h-8 pl-8 pr-7 bg-surface-container-lowest text-on-surface font-label-default text-label-default rounded shadow-sm focus:outline-none appearance-none cursor-pointer">
+<option>Today: 14 Oct 2024 (Shift A + B)</option>
+<option>Yesterday: 13 Oct 2024 (Complete)</option>
+<option>Current Financial Week (W42)</option>
+<option>Month to Date (Oct 2024)</option>
+</select>
+<span class="material-symbols-outlined absolute right-2 text-[14px] text-secondary pointer-events-none">expand_more</span>
+</div>
+<button class="flex items-center gap-1.5 h-8 px-space-sm bg-surface-container-lowest hover:bg-surface-container-low text-on-surface font-body-strong text-body-strong rounded shadow-sm transition-all active:scale-95" id="btn-export-audit">
+<span class="material-symbols-outlined text-[16px] text-error">picture_as_pdf</span>
+<span>Export Audit Report</span>
+</button>
+<button class="flex items-center gap-1.5 h-8 px-space-sm bg-surface-container-high hover:bg-surface-variant text-on-surface font-body-strong text-body-strong rounded shadow-sm transition-all active:scale-95 group" id="btn-refresh-telemetry">
+<span class="material-symbols-outlined text-[16px] text-secondary group-hover:rotate-180 transition-transform duration-500">sync</span>
+<span>Refresh Telemetry</span>
+</button>
+</div>
+</div>
+<!-- 6 Premium Enterprise KPI Cards (6-Column Bento Grid) -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-6 gap-space-sm mb-space-lg">
+<!-- KPI 1: Sales -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro uppercase text-secondary font-semibold tracking-wider">Total Sales (Today)</span>
+<span class="material-symbols-outlined text-[18px] text-primary">payments</span>
+</div>
+<div class="my-space-xs">
+<div class="font-metric-display text-metric-display text-on-surface">₹2,45,000</div>
+<div class="flex items-center gap-1 mt-1">
+<span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-micro text-label-micro font-bold">
+<span class="material-symbols-outlined text-[12px]">trending_up</span>+14.2%
+          </span>
+<span class="font-label-micro text-label-micro text-secondary">vs yesterday</span>
+</div>
+</div>
+<div class="flex flex-col pt-1 bg-surface-container-low/50 -mx-space-md -mb-space-md px-space-md py-1.5 mt-space-xs">
+<div class="flex justify-between items-center font-label-micro text-label-micro">
+<span class="text-secondary">Target ₹2.80L</span>
+<span class="font-semibold text-primary">87.5% achieved</span>
+</div>
+<div class="w-full h-1 bg-surface-container-highest rounded-full mt-1 overflow-hidden">
+<div class="h-full bg-primary rounded-full" style="width: 87.5%"></div>
+</div>
+</div>
+</div>
+<!-- KPI 2: Pending Orders -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro uppercase text-secondary font-semibold tracking-wider">Pending Orders</span>
+<span class="material-symbols-outlined text-[18px] text-secondary">shopping_bag</span>
+</div>
+<div class="my-space-xs">
+<div class="font-metric-display text-metric-display text-on-surface">18 Orders</div>
+<div class="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 rounded bg-secondary-container text-on-secondary-fixed font-label-micro text-label-micro font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary-container"></span>
+<span>6 Approval • 12 In Line</span>
+</div>
+</div>
+<div class="pt-1 mt-space-xs flex justify-between items-center">
+<span class="font-label-micro text-label-micro text-secondary font-mono">Cut-off: 02:00 PM</span>
+<a class="font-label-micro text-label-micro text-primary font-semibold hover:underline flex items-center gap-0.5" href="#">
+          Review Orders <span class="material-symbols-outlined text-[12px]">arrow_forward</span>
+</a>
+</div>
+</div>
+<!-- KPI 3: Production Output -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro uppercase text-secondary font-semibold tracking-wider">Output (Packets)</span>
+<span class="material-symbols-outlined text-[18px] text-tertiary">inventory</span>
+</div>
+<div class="my-space-xs">
+<div class="font-metric-display text-metric-display text-on-surface">1,250 <span class="text-headline-sm font-normal text-secondary">pkts</span></div>
+<div class="flex items-center gap-1 mt-1 font-label-micro text-label-micro text-secondary">
+<span>Target: 1,500 pkts</span>
+<span class="font-semibold text-tertiary">(83.3%)</span>
+</div>
+</div>
+<div class="pt-1 mt-space-xs flex items-center gap-1 px-1.5 py-1 rounded bg-surface-container-low text-tertiary font-label-micro text-label-micro font-mono">
+<span class="material-symbols-outlined text-[13px]">cyclone</span>
+<span class="truncate">Batch #TK-2024-884 Active</span>
+</div>
+</div>
+<!-- KPI 4: Stock Health -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro uppercase text-secondary font-semibold tracking-wider">Stock Health</span>
+<span class="material-symbols-outlined text-[18px] text-outline">warehouse</span>
+</div>
+<div class="my-space-xs">
+<div class="font-metric-display text-metric-display text-on-surface">78% <span class="text-headline-sm font-normal text-secondary">Index</span></div>
+<div class="inline-flex items-center gap-1 mt-1 px-1.5 py-0.5 rounded bg-error-container text-on-error-container font-label-micro text-label-micro font-semibold">
+<span class="material-symbols-outlined text-[12px]">warning</span>
+<span>4 critical reorders</span>
+</div>
+</div>
+<div class="pt-1 mt-space-xs flex justify-between items-center text-secondary font-label-micro text-label-micro">
+<span>Inbound Dock:</span>
+<span class="font-semibold text-on-surface">3 GRNs scheduled today</span>
+</div>
+</div>
+<!-- KPI 5: Outstanding Receivables -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro uppercase text-secondary font-semibold tracking-wider">Overdue Dues</span>
+<span class="material-symbols-outlined text-[18px] text-error">receipt_long</span>
+</div>
+<div class="my-space-xs">
+<div class="font-metric-display text-metric-display text-error">₹38,500</div>
+<div class="flex items-center gap-1 mt-1 font-label-micro text-label-micro text-error font-medium">
+<span class="material-symbols-outlined text-[12px]">schedule</span>
+<span>3 accounts > 30 days</span>
+</div>
+</div>
+<div class="pt-1 mt-space-xs flex justify-between items-center text-secondary font-label-micro text-label-micro">
+<span>Total Ledger:</span>
+<span class="font-semibold text-on-surface">₹1,94,200</span>
+</div>
+</div>
+<!-- KPI 6: Yield & OEE -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro uppercase text-secondary font-semibold tracking-wider">Yield & OEE</span>
+<span class="material-symbols-outlined text-[18px] text-primary-container">speed</span>
+</div>
+<div class="my-space-xs">
+<div class="font-metric-display text-metric-display text-primary">94.2%</div>
+<div class="flex items-center gap-1 mt-1">
+<span class="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-micro text-label-micro font-bold">
+            +1.8% vs spec
+          </span>
+<span class="font-label-micro text-label-micro text-secondary font-mono">BOM Validated</span>
+</div>
+</div>
+<div class="pt-1 mt-space-xs flex justify-between items-center text-secondary font-label-micro text-label-micro">
+<span>Scrap/Waste:</span>
+<span class="font-semibold text-tertiary">1.4% (< 2.0% tol)</span>
+</div>
+</div>
+</div>
+<!-- Master Split Grid: 70% Analytics & Production Engines / 30% Critical Real-Time Controls -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-space-lg">
+<!-- LEFT MAIN COLUMN (8 of 12 Cols = ~67-70%) -->
+<div class="lg:col-span-8 flex flex-col gap-space-lg">
+<!-- Section 1: Monthly Sales Revenue & Production Output Dual Correlation Engine -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col">
+<div class="flex flex-col sm:flex-row sm:items-center sm:justify-between pb-space-sm gap-space-sm">
+<div>
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Monthly Sales Revenue & Production Correlation</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-micro text-label-micro font-semibold uppercase">Live Telemetry</span>
+</div>
+<p class="font-label-default text-label-default text-secondary">Hourly packet throughput cross-referenced against realized wholesale billings.</p>
+</div>
+<!-- Switchable Tabs -->
+<div class="inline-flex p-0.5 rounded bg-surface-container-low">
+<button class="px-3 py-1 rounded bg-surface-container-lowest text-primary font-body-strong text-body-strong shadow-xs transition-colors">Revenue & Volume</button>
+<button class="px-3 py-1 rounded text-secondary hover:text-on-surface font-body-default text-body-default transition-colors">Shift Output Matrix</button>
+</div>
+</div>
+<!-- Legend and Quick Metrics Bar -->
+<div class="flex flex-wrap items-center justify-between py-space-xs px-space-sm bg-surface-container-low/70 rounded mb-space-md gap-space-sm">
+<div class="flex items-center gap-space-md">
+<div class="flex items-center gap-1.5 font-label-micro text-label-micro text-secondary">
+<span class="w-3 h-3 rounded bg-primary"></span>
+<span class="font-medium text-on-surface">Gross Revenue (₹ Lakhs)</span>
+</div>
+<div class="flex items-center gap-1.5 font-label-micro text-label-micro text-secondary">
+<span class="w-3 h-3 rounded bg-tertiary opacity-80"></span>
+<span class="font-medium text-on-surface">Production Volume (k Pkts)</span>
+</div>
+</div>
+<div class="flex items-center gap-space-md font-label-micro text-label-micro text-secondary">
+<span>Avg Realization: <strong class="text-on-surface font-mono">₹18,450/hr</strong></span>
+<span class="text-outline-variant">|</span>
+<span>Cost of Production: <strong class="text-on-surface font-mono">62.4%</strong></span>
+<span class="text-outline-variant">|</span>
+<span>Gross Margin: <strong class="text-tertiary font-mono font-bold">37.6%</strong></span>
+</div>
+</div>
+<!-- SVG Dual Axis Visual Chart (Under 2KB, semantic Tailwind styling) -->
+<div class="w-full h-64 relative">
+<svg class="w-full h-full" fill="none" preserveaspectratio="none" viewbox="0 0 760 220">
+<defs>
+<lineargradient id="revenueGradient" x1="0" x2="0" y1="0" y2="1">
+<stop offset="0%" stop-color="#2457d6" stop-opacity="0.25"></stop>
+<stop offset="100%" stop-color="#2457d6" stop-opacity="0.0"></stop>
+</lineargradient>
+</defs>
+<!-- Grid Lines -->
+<line stroke="#eff4ff" stroke-width="1" x1="40" x2="740" y1="20" y2="20"></line>
+<line stroke="#eff4ff" stroke-width="1" x1="40" x2="740" y1="65" y2="65"></line>
+<line stroke="#eff4ff" stroke-width="1" x1="40" x2="740" y1="110" y2="110"></line>
+<line stroke="#eff4ff" stroke-width="1" x1="40" x2="740" y1="155" y2="155"></line>
+<line stroke="#dce9ff" stroke-width="1" x1="40" x2="740" y1="195" y2="195"></line>
+<!-- Production Volume Bars (Murukku, Mixture, Mysore Pak, Spicy Sev batches) -->
+<!-- Week 1: Murukku -->
+<rect class="fill-tertiary" height="125" opacity="0.85" rx="2" width="22" x="75" y="70"></rect>
+<rect class="fill-surface-variant" height="105" rx="2" width="22" x="100" y="90"></rect>
+<!-- Week 2: Mixture -->
+<rect class="fill-tertiary" height="140" opacity="0.85" rx="2" width="22" x="195" y="55"></rect>
+<rect class="fill-surface-variant" height="115" rx="2" width="22" x="220" y="80"></rect>
+<!-- Week 3: Mysore Pak -->
+<rect class="fill-tertiary" height="110" opacity="0.85" rx="2" width="22" x="315" y="85"></rect>
+<rect class="fill-surface-variant" height="90" rx="2" width="22" x="340" y="105"></rect>
+<!-- Week 4: Spicy Sev -->
+<rect class="fill-tertiary" height="150" opacity="0.85" rx="2" width="22" x="435" y="45"></rect>
+<rect class="fill-surface-variant" height="135" rx="2" width="22" x="460" y="60"></rect>
+<!-- Week 5: Festival Mix -->
+<rect class="fill-tertiary" height="160" opacity="0.85" rx="2" width="22" x="555" y="35"></rect>
+<rect class="fill-surface-variant" height="145" rx="2" width="22" x="580" y="50"></rect>
+<!-- Week 6: Current Projected -->
+<rect class="fill-tertiary" height="135" opacity="0.65" rx="2" stroke-dasharray="2 2" width="22" x="675" y="60"></rect>
+<rect class="fill-surface-variant" height="120" opacity="0.6" rx="2" width="22" x="700" y="75"></rect>
+<!-- Revenue Line Gradient Area -->
+<path d="M 86 130 Q 206 90, 326 115 T 446 50 T 566 40 T 686 65 L 686 195 L 86 195 Z" fill="url(#revenueGradient)"></path>
+<!-- Revenue Smooth Spline Line -->
+<path class="stroke-primary" d="M 86 130 Q 206 90, 326 115 T 446 50 T 566 40 T 686 65" fill="none" stroke-linecap="round" stroke-width="3"></path>
+<!-- Spline Nodes with Pulse Rings -->
+<circle class="fill-surface-container-lowest stroke-primary" cx="86" cy="130" r="4" stroke-width="2"></circle>
+<circle class="fill-surface-container-lowest stroke-primary" cx="206" cy="98" r="4" stroke-width="2"></circle>
+<circle class="fill-surface-container-lowest stroke-primary" cx="326" cy="115" r="4" stroke-width="2"></circle>
+<circle class="fill-surface-container-lowest stroke-primary" cx="446" cy="50" r="4" stroke-width="2"></circle>
+<circle class="fill-primary stroke-surface-container-lowest" cx="566" cy="40" r="5" stroke-width="2"></circle>
+<circle class="fill-surface-container-lowest stroke-primary" cx="686" cy="65" r="4" stroke-width="2"></circle>
+<!-- Chart Scale Labels Left (Revenue in ₹ Lakhs) -->
+<text class="fill-secondary font-mono text-[9px]" x="5" y="24">₹3.5L</text>
+<text class="fill-secondary font-mono text-[9px]" x="5" y="69">₹2.8L</text>
+<text class="fill-secondary font-mono text-[9px]" x="5" y="114">₹2.0L</text>
+<text class="fill-secondary font-mono text-[9px]" x="5" y="159">₹1.2L</text>
+<text class="fill-secondary font-mono text-[9px]" x="5" y="198">₹0.0</text>
+<!-- Chart Scale Labels Bottom (Time Batches) -->
+<text class="fill-secondary font-label-micro text-label-micro" x="80" y="212">01-05 Oct (W40)</text>
+<text class="fill-secondary font-label-micro text-label-micro" x="200" y="212">06-10 Oct (W41)</text>
+<text class="fill-secondary font-label-micro text-label-micro" x="320" y="212">11-15 Oct (W42)</text>
+<text class="fill-secondary font-label-micro text-label-micro" x="440" y="212">16-20 Oct (Proj)</text>
+<text class="fill-secondary font-label-micro text-label-micro" x="560" y="212">Diwali Push Peak</text>
+<text class="fill-secondary font-label-micro text-label-micro" x="675" y="212">Shift B Forecast</text>
+</svg>
+</div>
+<div class="flex items-center justify-between pt-space-xs text-secondary font-label-micro text-label-micro">
+<span>*Data aggregated from 4 Extruder Lines & Packaging Multihead Weighers</span>
+<span class="font-mono text-tertiary">Real-time sync rate: 100% (No packet drop)</span>
+</div>
+</div>
+<!-- Section 2: Two Interactive Analytics Panels Side-by-Side -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-space-lg">
+<!-- Left Panel: Product-Wise Sales Donut Chart -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Product Share</span>
+<span class="font-label-micro text-label-micro text-secondary">Volume Breakdown by SKU</span>
+</div>
+<button class="p-1 rounded hover:bg-surface-container text-secondary">
+<span class="material-symbols-outlined text-[18px]">more_vert</span>
+</button>
+</div>
+<!-- SVG Donut Chart with Center Metric -->
+<div class="flex items-center justify-center my-space-xs relative">
+<svg class="w-44 h-44 -rotate-90" viewbox="0 0 160 160">
+<circle class="stroke-surface-container" cx="80" cy="80" fill="none" r="58" stroke-width="18"></circle>
+<!-- Special Madras Mixture (38% -> 138.4 / 364.4) -->
+<circle class="stroke-primary" cx="80" cy="80" fill="none" r="58" stroke-dasharray="138.4 364.4" stroke-dashoffset="0" stroke-width="18"></circle>
+<!-- Trichy Butter Murukku (27% -> 98.4 / 364.4) -->
+<circle class="stroke-tertiary" cx="80" cy="80" fill="none" r="58" stroke-dasharray="98.4 364.4" stroke-dashoffset="-138.4" stroke-width="18"></circle>
+<!-- Ribbon Pakoda 200g (19% -> 69.2 / 364.4) -->
+<circle class="stroke-secondary-container" cx="80" cy="80" fill="none" r="58" stroke-dasharray="69.2 364.4" stroke-dashoffset="-236.8" stroke-width="18"></circle>
+<!-- Ghee Mysore Pak (16% -> 58.3 / 364.4) -->
+<circle class="stroke-inverse-surface" cx="80" cy="80" fill="none" r="58" stroke-dasharray="58.3 364.4" stroke-dashoffset="-306" stroke-width="18"></circle>
+</svg>
+<div class="absolute flex flex-col items-center justify-center text-center pointer-events-none">
+<span class="font-headline-md text-headline-md text-on-surface font-bold leading-none">42.8k</span>
+<span class="font-label-micro text-label-micro text-secondary uppercase tracking-tight mt-0.5">Total Units</span>
+</div>
+</div>
+<!-- Custom Legend with Percentage and Color Identifiers -->
+<div class="space-y-1.5 pt-space-xs">
+<div class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded bg-primary"></span>
+<span class="font-body-default text-body-default text-on-surface font-medium">Special Madras Mixture</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-body-strong text-body-strong text-on-surface">38%</span>
+<span class="font-label-micro text-label-micro text-secondary">16.2k pkts</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded bg-tertiary"></span>
+<span class="font-body-default text-body-default text-on-surface font-medium">Trichy Butter Murukku</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-body-strong text-body-strong text-on-surface">27%</span>
+<span class="font-label-micro text-label-micro text-secondary">11.5k pkts</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded bg-secondary-container"></span>
+<span class="font-body-default text-body-default text-on-surface font-medium">Ribbon Pakoda 200g</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-body-strong text-body-strong text-on-surface">19%</span>
+<span class="font-label-micro text-label-micro text-secondary">8.1k pkts</span>
+</div>
+</div>
+<div class="flex items-center justify-between p-1 rounded hover:bg-surface-container-low transition-colors">
+<div class="flex items-center gap-2">
+<span class="w-2.5 h-2.5 rounded bg-inverse-surface"></span>
+<span class="font-body-default text-body-default text-on-surface font-medium">Ghee Mysore Pak</span>
+</div>
+<div class="flex items-center gap-2">
+<span class="font-mono text-body-strong text-body-strong text-on-surface">16%</span>
+<span class="font-label-micro text-label-micro text-secondary">6.8k pkts</span>
+</div>
+</div>
+</div>
+</div>
+<!-- Right Panel: Inventory Stock Health Matrix & Reorder Status -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between mb-space-sm">
+<div class="flex flex-col">
+<span class="font-headline-sm text-headline-sm text-on-surface">Silo & Raw Material Health</span>
+<span class="font-label-micro text-label-micro text-secondary">BOM Depletion Velocity</span>
+</div>
+<a class="font-label-micro text-label-micro text-primary font-semibold hover:underline" href="#">View Silos</a>
+</div>
+<div class="space-y-space-md my-auto">
+<!-- Flour & Grain Mix -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-body-default font-body-default">
+<span class="font-medium text-on-surface">Flour & Grain Mix (Besan/Rice)</span>
+<span class="font-mono font-semibold text-tertiary">92% Optimal</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 92%"></div>
+</div>
+<span class="font-label-micro text-label-micro text-secondary">Stock: 4,800 kg • Safe for 12 shifts</span>
+</div>
+<!-- Refined Palm Oil & Ghee -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-body-default font-body-default">
+<span class="font-medium text-on-surface">Refined Oil & Pure Cow Ghee</span>
+<span class="font-mono font-semibold text-primary">38% Reorder Triggered</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 38%"></div>
+</div>
+<span class="font-label-micro text-label-micro text-secondary">Stock: 820 L • Inbound 2,000 L today</span>
+</div>
+<!-- Packaging Laminates -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-body-default font-body-default">
+<span class="font-medium text-on-surface">Packaging Laminates (Film rolls)</span>
+<span class="font-mono font-semibold text-error">15% Critical In Transit</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 15%"></div>
+</div>
+<span class="font-label-micro text-label-micro text-error font-medium">180 kg remaining • PO #PO-882 arriving at 4 PM</span>
+</div>
+<!-- Spices & Seasoning -->
+<div class="flex flex-col gap-1">
+<div class="flex justify-between items-center text-body-default font-body-default">
+<span class="font-medium text-on-surface">Spices & Seasoning Formulations</span>
+<span class="font-mono font-semibold text-tertiary">84% Good</span>
+</div>
+<div class="w-full h-2 bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-tertiary rounded-full" style="width: 84%"></div>
+</div>
+<span class="font-label-micro text-label-micro text-secondary">Stock: 340 kg • Certified Batch</span>
+</div>
+</div>
+<div class="mt-space-md pt-2 bg-surface-container-low rounded p-2 flex items-center justify-between text-secondary font-label-micro text-label-micro">
+<div class="flex items-center gap-1.5">
+<span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
+<span>All 4 storage silos pass FSSAI moisture test</span>
+</div>
+<span class="font-mono text-on-surface font-semibold">< 10% RH</span>
+</div>
+</div>
+</div>
+<!-- Section 3: Recent Activity & Audit Trail (High Density Table/List) -->
+<div class="bg-surface-container-lowest p-space-lg rounded shadow-sm flex flex-col">
+<div class="flex items-center justify-between pb-space-sm mb-space-xs">
+<div class="flex items-center gap-2">
+<span class="font-headline-sm text-headline-sm text-on-surface">Plant Audit & Operational Ledger</span>
+<span class="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-micro text-label-micro font-bold">Auto-Logged</span>
+</div>
+<div class="flex items-center gap-space-sm">
+<button class="font-label-micro text-label-micro text-primary font-semibold hover:underline flex items-center gap-1">
+<span>View Full Ledger (247 entries)</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</button>
+</div>
+</div>
+<!-- Ledger Entries Table -->
+<div class="overflow-x-auto">
+<table class="w-full text-left">
+<thead>
+<tr class="bg-surface-container-low text-secondary font-table-header text-table-header uppercase">
+<th class="py-2 px-3 rounded-l">Time</th>
+<th class="py-2 px-3">Event Type</th>
+<th class="py-2 px-3">Transaction / Batch Reference</th>
+<th class="py-2 px-3">Details & Commercials</th>
+<th class="py-2 px-3 rounded-r text-right">Audit Status</th>
+</tr>
+</thead>
+<tbody class="divide-y divide-surface-container-high font-table-data text-table-data">
+<!-- Row 1 -->
+<tr class="hover:bg-surface-container-low/70 transition-colors">
+<td class="py-2.5 px-3 font-mono font-medium text-secondary">11:28 AM</td>
+<td class="py-2.5 px-3">
+<span class="px-2 py-0.5 rounded-full bg-secondary-container text-on-secondary-fixed font-label-micro text-label-micro font-semibold">Sales Order</span>
+</td>
+<td class="py-2.5 px-3 font-mono font-semibold text-primary">#SO-9821</td>
+<td class="py-2.5 px-3">
+<span class="text-on-surface font-medium">Sri Krishna Sweets Trichy</span>
+<span class="text-secondary ml-1">(450 pkts • ₹42,500)</span>
+</td>
+<td class="py-2.5 px-3 text-right">
+<span class="inline-flex items-center gap-1 text-tertiary font-label-micro text-label-micro font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+                    Approved by Sales Exec
+                  </span>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="hover:bg-surface-container-low/70 transition-colors">
+<td class="py-2.5 px-3 font-mono font-medium text-secondary">10:45 AM</td>
+<td class="py-2.5 px-3">
+<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-micro text-label-micro font-semibold">Production Yield</span>
+</td>
+<td class="py-2.5 px-3 font-mono font-semibold text-tertiary">#PR-4402</td>
+<td class="py-2.5 px-3">
+<span class="text-on-surface font-medium">Batch #TK-883 Butter Murukku</span>
+<span class="text-secondary ml-1">(1,250 pkts @ 96.1% yield)</span>
+</td>
+<td class="py-2.5 px-3 text-right">
+<span class="inline-flex items-center gap-1 text-tertiary font-label-micro text-label-micro font-semibold">
+<span class="material-symbols-outlined text-[13px]">verified</span>
+                    QC Passed (Anbarasan)
+                  </span>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="hover:bg-surface-container-low/70 transition-colors">
+<td class="py-2.5 px-3 font-mono font-medium text-secondary">09:30 AM</td>
+<td class="py-2.5 px-3">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-micro text-label-micro font-semibold">GST Invoice</span>
+</td>
+<td class="py-2.5 px-3 font-mono font-semibold text-on-surface">#INV-2024-1182</td>
+<td class="py-2.5 px-3">
+<span class="text-on-surface font-medium">Annamalai Retailers Wholesale</span>
+<span class="text-secondary ml-1 font-mono">(CGST ₹2,160, SGST ₹2,160)</span>
+</td>
+<td class="py-2.5 px-3 text-right">
+<span class="inline-flex items-center gap-1 text-primary font-label-micro text-label-micro font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-primary"></span>
+                    E-Way Bill Synced
+                  </span>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="hover:bg-surface-container-low/70 transition-colors">
+<td class="py-2.5 px-3 font-mono font-medium text-secondary">08:50 AM</td>
+<td class="py-2.5 px-3">
+<span class="px-2 py-0.5 rounded-full bg-tertiary-fixed text-on-tertiary-fixed font-label-micro text-label-micro font-semibold">NEFT Inward</span>
+</td>
+<td class="py-2.5 px-3 font-mono font-semibold text-on-surface">TXN-0899120</td>
+<td class="py-2.5 px-3">
+<span class="text-on-surface font-medium">Velan Mart Pudukkottai</span>
+<span class="text-secondary ml-1">(Direct Bank Credit ₹24,000)</span>
+</td>
+<td class="py-2.5 px-3 text-right">
+<span class="inline-flex items-center gap-1 text-tertiary font-label-micro text-label-micro font-semibold">
+<span class="material-symbols-outlined text-[13px]">check_circle</span>
+                    Ledger Reconciled
+                  </span>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="hover:bg-surface-container-low/70 transition-colors">
+<td class="py-2.5 px-3 font-mono font-medium text-secondary">07:15 AM</td>
+<td class="py-2.5 px-3">
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-on-surface-variant font-label-micro text-label-micro font-semibold">Inbound GRN</span>
+</td>
+<td class="py-2.5 px-3 font-mono font-semibold text-on-surface">#GRN-309</td>
+<td class="py-2.5 px-3">
+<span class="text-on-surface font-medium">50 Bags Besan Flour</span>
+<span class="text-secondary ml-1">(Vetrivel Agro Mills)</span>
+</td>
+<td class="py-2.5 px-3 text-right">
+<span class="inline-flex items-center gap-1 text-secondary font-label-micro text-label-micro font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+                    Dock Weighed & Stored
+                  </span>
+</td>
+</tr>
+</tbody>
+</table>
+</div>
+</div>
+</div>
+<!-- RIGHT COLUMN: 30% CRITICAL ALERTS & REAL-TIME ACTION CENTER -->
+<div class="lg:col-span-4 flex flex-col gap-space-md">
+<!-- Action Center Panel Header -->
+<div class="bg-surface-container-lowest p-space-md rounded shadow-sm flex items-center justify-between">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-[20px] text-error">priority_high</span>
+<span class="font-headline-sm text-headline-sm text-on-surface">Operational Alerts</span>
+</div>
+<span class="px-2 py-0.5 rounded-full bg-error text-on-error font-label-micro text-label-micro font-bold">5 Urgent</span>
+</div>
+<!-- Alert 1: Low Raw Material Stock (Red Callout) -->
+<div class="bg-surface-container-lowest rounded shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+<div class="p-space-md bg-error-container/20 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-error text-on-error font-label-micro text-label-micro font-semibold uppercase">
+<span class="material-symbols-outlined text-[12px]">inventory_2</span> Material Stockout Risk
+            </span>
+<span class="font-label-micro text-label-micro text-error font-mono font-bold">ETA 18 hrs</span>
+</div>
+<h4 class="font-body-strong text-body-strong text-on-surface mt-1">Packaging Film Roll (200g Mixture)</h4>
+<p class="font-label-default text-label-default text-secondary">
+            Current balance is <strong class="text-error font-mono">180 kg</strong>, falling below reorder threshold (300 kg). Depletion projected before tomorrow's Shift A.
+          </p>
+<div class="mt-space-xs pt-1 flex items-center justify-between">
+<span class="font-label-micro text-label-micro text-secondary font-mono">Supplier: Balaji Polymers</span>
+<button class="h-7 px-space-sm bg-error hover:bg-error/90 text-on-error font-body-strong text-body-strong rounded transition-colors shadow-xs active:scale-95 text-[12px]">
+              Create PO Instantly
+            </button>
+</div>
+</div>
+</div>
+<!-- Alert 2: Production Variance Warning (Amber Callout) -->
+<div class="bg-surface-container-lowest rounded shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+<div class="p-space-md bg-secondary-container/30 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-on-secondary-container text-on-primary font-label-micro text-label-micro font-semibold uppercase">
+<span class="material-symbols-outlined text-[12px]">thermostat</span> Recipe Variance
+            </span>
+<span class="font-label-micro text-label-micro text-on-secondary-container font-mono font-bold">+3.2% Dev</span>
+</div>
+<h4 class="font-body-strong text-body-strong text-on-surface mt-1">Batch #TK-882: Ghee Mixture</h4>
+<p class="font-label-default text-label-default text-secondary">
+            Continuous oil absorption variance detected at <strong class="text-on-secondary-container font-mono">+3.2%</strong> above master standard recipe. Fryer temperature drift suspected.
+          </p>
+<div class="mt-space-xs pt-1 flex items-center justify-between">
+<span class="font-label-micro text-label-micro text-secondary font-mono">Line: Fryer Unit 2</span>
+<button class="h-7 px-space-sm bg-surface-container-lowest hover:bg-surface-container text-on-surface font-body-strong text-body-strong rounded transition-colors shadow-xs text-[12px]">
+              Inspect Fryer Unit 2
+            </button>
+</div>
+</div>
+</div>
+<!-- Alert 3: Pending Order Approvals (Credit Limit Override) -->
+<div class="bg-surface-container-lowest rounded shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+<div class="p-space-md bg-surface-container-low flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-primary-container text-on-primary font-label-micro text-label-micro font-semibold uppercase">
+<span class="material-symbols-outlined text-[12px]">credit_card</span> Credit Approval
+            </span>
+<span class="font-label-micro text-label-micro font-mono text-primary font-bold">₹85,000 Order</span>
+</div>
+<h4 class="font-body-strong text-body-strong text-on-surface mt-1">Kalyani Hypermarket Trichy</h4>
+<p class="font-label-default text-label-default text-secondary">
+            Credit limit override requested for Order #SO-9824. Account has 1 active open bill (₹24,500 within terms).
+          </p>
+<div class="mt-space-xs pt-1 flex items-center justify-end gap-space-xs">
+<button class="h-7 px-space-sm bg-surface-container hover:bg-surface-container-high text-on-surface font-body-strong text-body-strong rounded transition-colors text-[12px]">
+              Reject
+            </button>
+<button class="h-7 px-space-sm bg-primary-container hover:bg-primary text-on-primary font-body-strong text-body-strong rounded transition-colors shadow-xs text-[12px]">
+              Approve Credit Limit
+            </button>
+</div>
+</div>
+</div>
+<!-- Alert 4: Dispatch Gate Pass Ready -->
+<div class="bg-surface-container-lowest rounded shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+<div class="p-space-md bg-tertiary-fixed/20 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-tertiary text-on-tertiary font-label-micro text-label-micro font-semibold uppercase">
+<span class="material-symbols-outlined text-[12px]">local_shipping</span> Dock Loading Complete
+            </span>
+<span class="font-label-micro text-label-micro font-mono text-tertiary font-bold">Madurai Route</span>
+</div>
+<h4 class="font-body-strong text-body-strong text-on-surface mt-1">Vehicle TN-45-AZ-8819 Ready</h4>
+<p class="font-label-default text-label-default text-secondary">
+            Consignment packed with 600 pkts. E-Way Bill <span class="font-mono text-on-surface font-medium">#341992019</span> authenticated with GSTN portal.
+          </p>
+<div class="mt-space-xs pt-1 flex items-center justify-between">
+<span class="font-label-micro text-label-micro text-secondary font-mono">Driver: P. Saravanan</span>
+<button class="h-7 px-space-sm bg-tertiary hover:bg-tertiary-container text-on-tertiary font-body-strong text-body-strong rounded transition-colors shadow-xs text-[12px]">
+              Issue Gate Pass
+            </button>
+</div>
+</div>
+</div>
+<!-- Alert 5: Outstanding Overdue Payment -->
+<div class="bg-surface-container-lowest rounded shadow-sm overflow-hidden flex flex-col hover:shadow-md transition-shadow">
+<div class="p-space-md bg-surface-container-high/40 flex flex-col gap-1.5">
+<div class="flex items-center justify-between">
+<span class="inline-flex items-center gap-1 px-1.5 py-0.5 rounded bg-secondary text-on-secondary font-label-micro text-label-micro font-semibold uppercase">
+<span class="material-symbols-outlined text-[12px]">alarm</span> 14 Days Overdue
+            </span>
+<span class="font-label-micro text-label-micro font-mono text-error font-bold">₹18,200</span>
+</div>
+<h4 class="font-body-strong text-body-strong text-on-surface mt-1">Meenakshi Stores Dindigul</h4>
+<p class="font-label-default text-label-default text-secondary">
+            Invoice #INV-2024-1049 overdue past 30-day payment cycle. Goods received confirmed.
+          </p>
+<div class="mt-space-xs pt-1 flex items-center justify-end">
+<button class="h-7 px-space-sm bg-surface-container-lowest hover:bg-surface-container text-tertiary font-body-strong text-body-strong rounded transition-colors shadow-xs text-[12px] flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px]">send</span>
+<span>Send WhatsApp Notice</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Quick Manufacturing Diagnostic Tile -->
+<div class="bg-inverse-surface text-inverse-on-surface p-space-md rounded shadow-md flex items-center justify-between">
+<div class="flex items-center gap-space-sm">
+<div class="w-8 h-8 rounded bg-tertiary-fixed text-on-tertiary-fixed flex items-center justify-center font-headline-sm">
+<span class="material-symbols-outlined text-[20px]">bolt</span>
+</div>
+<div class="flex flex-col">
+<span class="font-body-strong text-body-strong text-surface">Line Energy Monitor</span>
+<span class="font-label-micro text-label-micro text-primary-fixed-dim">Unit 1: 42.4 kWh • In Eco-Band</span>
+</div>
+</div>
+<span class="font-mono text-label-micro text-label-micro px-2 py-0.5 rounded bg-surface/10 text-tertiary-fixed">Optimum</span>
+</div>
+</div>
+</div>
+<!-- Operational Toast / Feedback Notification Strip -->
+<div class="fixed bottom-6 right-6 bg-inverse-surface text-inverse-on-surface px-space-md py- space-sm rounded-lg shadow-xl flex items-center gap-space-sm transition-all duration-300 transform translate-y-24 opacity-0 pointer-events-none z-50" id="toast-telemetry">
+<span class="material-symbols-outlined text-[18px] text-tertiary-fixed">sync</span>
+<span class="font-body-default text-body-default">Telemetry refreshed: All 6 lines synced with plant MES.</span>
+<button class="text-surface/60 hover:text-surface ml-2" onclick="dismissToast()">
+<span class="material-symbols-outlined text-[16px]">close</span>
+</button>
+</div>
+</div>
+<script>
+  // Dynamic interaction handles for TRIMA Executive Telemetry
+  const refreshBtn = document.getElementById('btn-refresh-telemetry');
+  const toast = document.getElementById('toast-telemetry');
+
+  function showToast(message) {
+    if (toast) {
+      if (message) {
+        toast.querySelector('span:nth-child(2)').textContent = message;
+      }
+      toast.classList.remove('translate-y-24', 'opacity-0', 'pointer-events-none');
+      setTimeout(() => {
+        dismissToast();
+      }, 4000);
+    }
+  }
+
+  function dismissToast() {
+    if (toast) {
+      toast.classList.add('translate-y-24', 'opacity-0', 'pointer-events-none');
+    }
+  }
+
+  if (refreshBtn) {
+    refreshBtn.addEventListener('click', () => {
+      refreshBtn.classList.add('opacity-75');
+      setTimeout(() => {
+        refreshBtn.classList.remove('opacity-75');
+        showToast('MES & Scale telemetry refreshed. All 4,800 kg silo weights verified.');
+      }, 600);
+    });
+  }
+
+  const exportBtn = document.getElementById('btn-export-audit');
+  if (exportBtn) {
+    exportBtn.addEventListener('click', () => {
+      showToast('Generating official FSSAI & GST Compliance Audit Dossier (PDF)...');
+    });
+  }
+</script></main></div></body></html>

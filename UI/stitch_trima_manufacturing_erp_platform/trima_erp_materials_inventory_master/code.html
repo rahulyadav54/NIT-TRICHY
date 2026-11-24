@@ -1,0 +1,874 @@
+<!DOCTYPE html>
+
+<html lang="en"><head><meta charset="utf-8"/><meta content="width=device-width, initial-scale=1.0" name="viewport"/><meta content="web_dashboard" name="shell-type"/><link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:wght,FILL@100..700,0..1&display=swap" rel="stylesheet"/>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet"/><style>@layer base{html,body{margin:0;padding:0;}body{overscroll-behavior:none;}main>:first-child{margin-top:0!important;}main>:last-child{margin-bottom:0!important;}}::-webkit-scrollbar{display:none;}</style><script src="https://cdn.tailwindcss.com"></script><script id="tailwind-config">tailwind.config={darkMode:"class",theme:{extend:{"colors":{"tertiary":"#00544c","surface-container-low":"#eff4ff","surface":"#f8f9ff","error-container":"#ffdad6","inverse-surface":"#213145","surface-tint":"#1f54d3","primary-fixed-dim":"#b5c4ff","outline":"#747686","inverse-primary":"#b5c4ff","on-error-container":"#93000a","on-error":"#ffffff","surface-container":"#e5eeff","surface-variant":"#d3e4fe","on-primary-fixed":"#00164d","tertiary-fixed":"#89f5e7","on-primary":"#ffffff","outline-variant":"#c3c5d7","secondary":"#545e79","on-primary-container":"#d5dcff","primary":"#003fb3","on-tertiary-fixed-variant":"#005049","background":"#f8f9ff","surface-container-high":"#dce9ff","on-secondary":"#ffffff","on-tertiary-fixed":"#00201d","surface-bright":"#f8f9ff","on-tertiary-container":"#84f0e2","tertiary-fixed-dim":"#6bd8cb","secondary-fixed-dim":"#bbc6e6","surface-container-highest":"#d3e4fe","on-surface":"#0b1c30","on-secondary-fixed":"#101b33","on-surface-variant":"#434654","on-secondary-fixed-variant":"#3c4661","inverse-on-surface":"#eaf1ff","error":"#ba1a1a","secondary-fixed":"#d9e2ff","surface-dim":"#cbdbf5","tertiary-container":"#006e65","primary-fixed":"#dce1ff","on-primary-fixed-variant":"#003cad","on-tertiary":"#ffffff","secondary-container":"#d2dcfd","on-background":"#0b1c30","primary-container":"#2457d6","on-secondary-container":"#56607c","surface-container-lowest":"#ffffff"},"borderRadius":{"DEFAULT":"0.125rem","lg":"0.25rem","xl":"0.5rem","full":"0.75rem"},"spacing":{"margin":"1.5rem","margin-mobile":"1rem","space-lg":"1rem","space-md":"0.75rem","gutter":"1rem","space-xl":"1.5rem","space-xs":"0.25rem","gutter-compact":"0.75rem","space-sm":"0.5rem"},"fontFamily":{"headline-md":["Inter"],"table-header":["Inter"],"body-strong":["Inter"],"headline-sm":["Inter"],"metric-display":["Inter"],"headline-lg":["Inter"],"label-micro":["Inter"],"body-default":["Inter"],"label-default":["Inter"],"table-data":["Inter"],"body-lg":["Inter"]},"fontSize":{"headline-md":["20px",{"lineHeight":"28px","letterSpacing":"-0.01em","fontWeight":"600"}],"table-header":["11px",{"lineHeight":"16px","letterSpacing":"0.04em","fontWeight":"600"}],"body-strong":["13px",{"lineHeight":"18px","fontWeight":"600"}],"headline-sm":["16px",{"lineHeight":"24px","letterSpacing":"-0.005em","fontWeight":"600"}],"metric-display":["32px",{"lineHeight":"38px","letterSpacing":"-0.02em","fontWeight":"700"}],"headline-lg":["24px",{"lineHeight":"32px","letterSpacing":"-0.015em","fontWeight":"600"}],"label-micro":["10px",{"lineHeight":"14px","letterSpacing":"0.03em","fontWeight":"600"}],"body-default":["13px",{"lineHeight":"18px","fontWeight":"400"}],"label-default":["12px",{"lineHeight":"16px","fontWeight":"500"}],"table-data":["12px",{"lineHeight":"16px","fontWeight":"400"}],"body-lg":["15px",{"lineHeight":"22px","fontWeight":"400"}]}}}}</script></head><body class="bg-background font-body-default text-body-default text-on-surface antialiased"><aside class="fixed left-0 top-0 h-full w-64 bg-inverse-surface text-inverse-on-surface z-50 flex flex-col justify-between shadow-[0_1px_8px_rgba(0,0,0,0.08)]"><div class="flex flex-col flex-1 min-h-0"><div class="p-space-lg bg-inverse-surface border-b border-secondary/20 flex flex-col gap-space-xs"><div class="flex items-center gap-space-sm"><img alt="TRIMA ERP Logo" class="h-8 w-auto object-contain" src="https://lh3.googleusercontent.com/aida/ALJJyrB1FBjkAX025S-WW2HjauMSJgLzj9NMs1uXVxE6ns-N3m1uFxqGIxhAMMVxKUL9zS_D5AapNGtbPs3H1Wo4nw2xFIzp-0zmkPF895HwXux5_-L6n9qcRmK4UldVmOYOIHIgAp3FLLXHWRVgwCRepRecDdK8DCQqebWdlkNOxhwk52UBwgL-kSrO4P7CesZYDnhsM9T69iXONIdVvFC8e2xFONfYOSodzFmd4nlHvc-Y"/><div class="flex flex-col"><span class="font-headline-sm text-headline-sm text-surface font-bold tracking-tight">TRIMA ERP</span><span class="font-label-micro text-label-micro text-primary-fixed-dim uppercase tracking-wider">Manufacturing & Audit</span></div></div><div class="mt-space-xs px-space-xs py-0.5 rounded bg-surface/10 text-surface/80 flex flex-col"><span class="font-label-micro text-label-micro font-medium text-surface">Trichy Food Plant Unit-01</span><span class="font-label-micro text-label-micro text-outline-variant font-mono text-[9px]">GSTIN: 33AAACT1234F1Z5</span></div></div><nav class="flex-1 overflow-y-auto px-space-sm py-space-md space-y-space-md" data-active-classes="bg-primary-container text-on-primary font-body-strong"><div class="space-y-space-xs"><p class="px-space-sm font-label-micro text-label-micro font-semibold uppercase tracking-wider text-outline-variant">CORE</p><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="overview" href="#"><span class="material-symbols-outlined text-[18px]">dashboard</span><span class="font-body-default text-body-default">Overview / Dashboard</span></a><a class="flex items-center justify-between px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="alerts-action-center" href="#"><div class="flex items-center gap-space-sm"><span class="material-symbols-outlined text-[18px]">warning</span><span class="font-body-default text-body-default">Alerts & Action Center</span></div><span class="px-1.5 py-0.5 rounded-full bg-error text-on-error font-label-micro text-label-micro">4</span></a></div><div class="space-y-space-xs"><p class="px-space-sm font-label-micro text-label-micro font-semibold uppercase tracking-wider text-outline-variant">OPERATIONS</p><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="production-runs" href="#"><span class="material-symbols-outlined text-[18px]">precision_manufacturing</span><span class="font-body-default text-body-default">Production Runs</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="bom-recipes" href="#"><span class="material-symbols-outlined text-[18px]">receipt_long</span><span class="font-body-default text-body-default">BOM & Recipes</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="materials-inventory" href="#"><span class="material-symbols-outlined text-[18px]">inventory_2</span><span class="font-body-default text-body-default">Materials & Inventory</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="stock-movement" href="#"><span class="material-symbols-outlined text-[18px]">sync_alt</span><span class="font-body-default text-body-default">Stock Movement</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="quality-audit-trail" href="#"><span class="material-symbols-outlined text-[18px]">verified</span><span class="font-body-default text-body-default">Quality & Audit Trail</span></a></div><div class="space-y-space-xs"><p class="px-space-sm font-label-micro text-label-micro font-semibold uppercase tracking-wider text-outline-variant">SUPPLY CHAIN</p><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="purchases-grn" href="#"><span class="material-symbols-outlined text-[18px]">shopping_cart</span><span class="font-body-default text-body-default">Purchases & GRN</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="suppliers-directory" href="#"><span class="material-symbols-outlined text-[18px]">contacts</span><span class="font-body-default text-body-default">Suppliers Directory</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="dispatch-gate-pass" href="#"><span class="material-symbols-outlined text-[18px]">local_shipping</span><span class="font-body-default text-body-default">Dispatch & Gate Pass</span></a></div><div class="space-y-space-xs"><p class="px-space-sm font-label-micro text-label-micro font-semibold uppercase tracking-wider text-outline-variant">COMMERCIAL & SALES</p><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="sales-orders" href="#"><span class="material-symbols-outlined text-[18px]">point_of_sale</span><span class="font-body-default text-body-default">Sales & Orders</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="customers" href="#"><span class="material-symbols-outlined text-[18px]">store</span><span class="font-body-default text-body-default">Retail & Wholesale Customers</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="gst-invoices-eway" href="#"><span class="material-symbols-outlined text-[18px]">description</span><span class="font-body-default text-body-default">GST Invoices & E-Way</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="payments-receivables" href="#"><span class="material-symbols-outlined text-[18px]">account_balance_wallet</span><span class="font-body-default text-body-default">Payments & Receivables</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="costing-margins" href="#"><span class="material-symbols-outlined text-[18px]">query_stats</span><span class="font-body-default text-body-default">Costing & Margins</span></a></div><div class="space-y-space-xs"><p class="px-space-sm font-label-micro text-label-micro font-semibold uppercase tracking-wider text-outline-variant">ENTERPRISE</p><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="reports-analytics" href="#"><span class="material-symbols-outlined text-[18px]">bar_chart</span><span class="font-body-default text-body-default">Reports & Analytics</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="user-management" href="#"><span class="material-symbols-outlined text-[18px]">group</span><span class="font-body-default text-body-default">User Management</span></a><a class="flex items-center gap-space-sm px-space-sm py-1.5 rounded text-surface/80 hover:bg-surface/10 hover:text-surface transition-colors" data-path="plant-settings" href="#"><span class="material-symbols-outlined text-[18px]">settings</span><span class="font-body-default text-body-default">Plant Settings</span></a></div></nav></div><div class="p-space-sm bg-inverse-surface border-t border-secondary/20 flex flex-col gap-space-xs"><div class="flex items-center justify-between px-space-xs"><div class="flex items-center gap-1.5"><span class="w-2 h-2 rounded-full bg-tertiary-fixed"></span><span class="font-label-micro text-label-micro text-surface-container-high">MES & Audit: ONLINE</span></div><span class="font-label-micro text-label-micro text-tertiary-fixed font-mono">24ms</span></div><div class="px-space-xs py-1 rounded bg-surface/5 flex items-center justify-between text-outline-variant"><span class="font-label-micro text-label-micro">Supervisor: Shift A</span><span class="font-label-micro text-label-micro font-medium text-surface">R. Sundar</span></div></div></aside><div class="pl-64"><header class="fixed top-0 left-64 right-0 h-14 bg-surface-container-lowest/90 backdrop-blur-md shadow-[0_1px_8px_rgba(0,0,0,0.04)] z-40 flex items-center justify-between px-space-xl border-b border-surface-container"><div class="flex items-center gap-space-lg flex-1"><div class="flex items-center gap-space-xs font-label-default text-label-default text-secondary"><span class="hover:text-primary transition-colors cursor-pointer">TRIMA Operations</span><span class="text-outline-variant">/</span><span class="hover:text-primary transition-colors cursor-pointer">Trichy Plant 1</span><span class="text-outline-variant">/</span><span class="text-on-surface font-body-strong text-body-strong">Overview</span></div><div class="h-4 w-px bg-surface-container"></div><button class="flex items-center gap-space-xs px-2 py-1 rounded bg-surface-container-low hover:bg-surface-container text-on-surface font-label-default text-label-default transition-colors"><span class="material-symbols-outlined text-[16px] text-primary">factory</span><span>Trichy Food Processing Cluster A</span><span class="material-symbols-outlined text-[16px] text-secondary">expand_more</span></button></div><div class="w-96 mx-space-md"><div class="relative flex items-center"><span class="material-symbols-outlined absolute left-2.5 text-[18px] text-outline">search</span><input class="w-full h-8 pl-8 pr-14 text-body-default font-body-default bg-surface rounded border border-outline-variant/60 focus:outline-none focus:border-primary-container text-on-surface placeholder:text-outline" placeholder="Search orders, materials, batch #, GSTIN..." type="text"/><span class="absolute right-2 px-1.5 py-0.5 rounded bg-surface-container-high text-on-surface-variant font-label-micro text-label-micro font-mono border border-outline-variant/40">⌘K</span></div></div><div class="flex items-center gap-space-md"><div class="flex items-center gap-1.5 px-2 py-1 rounded-full bg-surface-container-low border border-surface-container"><span class="relative flex h-2 w-2"><span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-tertiary opacity-75"></span><span class="relative inline-flex rounded-full h-2 w-2 bg-tertiary"></span></span><span class="font-label-micro text-label-micro font-medium text-tertiary">Shift A • Production Active</span></div><div class="text-right flex flex-col font-label-micro text-label-micro text-secondary"><span class="font-medium text-on-surface">14 Oct 2024</span><span>IST 11:42 AM</span></div><button class="flex items-center gap-1 h-8 px-space-sm rounded bg-primary-container hover:bg-primary text-on-primary font-body-strong text-body-strong transition-colors"><span class="material-symbols-outlined text-[16px]">add</span><span>Quick Action</span></button><button class="relative p-1.5 rounded hover:bg-surface-container text-secondary hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">notifications</span><span class="absolute top-1 right-1 w-2 h-2 rounded-full bg-error ring-2 ring-surface-container-lowest"></span></button><button class="p-1.5 rounded hover:bg-surface-container text-secondary hover:text-on-surface transition-colors"><span class="material-symbols-outlined text-[20px]">help_outline</span></button><div class="h-4 w-px bg-surface-container"></div><div class="flex items-center gap-space-sm pl-space-xs cursor-pointer group"><img alt="Profile" class="w-8 h-8 rounded-full object-cover ring-1 ring-surface-container" src="https://lh3.googleusercontent.com/aida-public/AB6AXuAgVoBVd5yQtmE-5QqvJZnrKec3QhK_7VsH7CHBK5a4aPlNo_QMR09n8sqMykcTMXi9P_aAOJ5vzC3IF5wb8BiHVtZkn5KB6ty5MJigqIZvNbGbEsMg_bTxtEwDfbyR5am4TSOUHRjxAYcKzk2Sqog7LuwN0k5GhbKbY1JcqEGDTxBSG_VRqClZlM28_SNIqGu-r5mVKqGbC7zMJynCKjdVsi9-WsmevXz2P8lDLWOa"/><div class="flex flex-col text-left"><span class="font-body-strong text-body-strong text-on-surface group-hover:text-primary transition-colors leading-tight">R. Sundararajan</span><span class="font-label-micro text-label-micro text-secondary leading-tight">Plant Operations Director</span></div><span class="material-symbols-outlined text-[16px] text-secondary group-hover:text-on-surface transition-colors">keyboard_arrow_down</span></div></div></header><main class="relative pt-14 bg-surface w-full px-margin"><div class="flex flex-col w-full">
+<!-- Top Command & Action Bar -->
+<div class="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md py-space-md bg-surface">
+<div class="flex flex-col">
+<div class="flex items-center gap-space-xs">
+<span class="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">Materials & Inventory</span>
+<span class="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-micro text-label-micro uppercase tracking-wider font-semibold">Live Stream Sync</span>
+</div>
+<p class="font-body-default text-body-default text-secondary mt-0.5 max-w-3xl">
+        Monitor raw materials, packaging supplies, batch yields, and stock movements across storage silos and cold rooms.
+      </p>
+</div>
+<!-- Quick Actions Group -->
+<div class="flex flex-wrap items-center gap-space-xs">
+<button class="flex items-center gap-1.5 h-8 px-space-md rounded bg-surface-container-lowest hover:bg-surface-container text-on-surface font-body-strong text-body-strong shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[16px] text-secondary">file_download</span>
+<span>Export Valuation</span>
+</button>
+<button class="flex items-center gap-1.5 h-8 px-space-md rounded bg-surface-container-lowest hover:bg-surface-container text-on-surface font-body-strong text-body-strong shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[16px] text-secondary">upload_file</span>
+<span>Bulk Import CSV</span>
+</button>
+<button class="flex items-center gap-1.5 h-8 px-space-md rounded bg-surface-container-lowest hover:bg-surface-container text-on-surface font-body-strong text-body-strong shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[16px] text-primary">fact_check</span>
+<span>Stock Audit / Count Sheet</span>
+</button>
+<button class="flex items-center gap-1.5 h-8 px-space-md rounded bg-primary-container hover:bg-primary text-on-primary font-body-strong text-body-strong shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[16px]">add_circle</span>
+<span>+ Add Material</span>
+</button>
+</div>
+</div>
+<!-- Precision KPI Metric Cards -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-space-lg">
+<!-- KPI 1 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro uppercase font-semibold text-secondary tracking-wider">Total Materials</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container flex items-center justify-center text-primary">
+<span class="material-symbols-outlined text-[18px]">inventory</span>
+</div>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-metric-display text-metric-display text-on-surface font-bold tracking-tight">148</span>
+<span class="font-headline-sm text-headline-sm text-secondary font-medium">Items</span>
+</div>
+<div class="flex items-center gap-1.5 mt-0.5">
+<span class="font-body-strong text-body-strong text-tertiary">Valuation: ₹14,82,450</span>
+</div>
+</div>
+<div class="flex items-center gap-1.5 pt-space-xs font-label-micro text-label-micro text-secondary">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>Active across 4 storage zones</span>
+</div>
+</div>
+<!-- KPI 2 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro uppercase font-semibold text-secondary tracking-wider">Raw Materials</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container-high flex items-center justify-center text-primary-container">
+<span class="material-symbols-outlined text-[18px]">grain</span>
+</div>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-metric-display text-metric-display text-on-surface font-bold tracking-tight">86</span>
+<span class="font-headline-sm text-headline-sm text-secondary font-medium">Items</span>
+</div>
+<p class="font-body-default text-body-default text-on-surface-variant truncate">Flours, Oils, Ghee, Spices, Pulses</p>
+</div>
+<div class="flex items-center gap-1.5 pt-space-xs font-label-micro text-label-micro text-tertiary font-medium">
+<span class="material-symbols-outlined text-[14px]">south</span>
+<span>+2,400 kg inbound today</span>
+</div>
+</div>
+<!-- KPI 3 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro uppercase font-semibold text-secondary tracking-wider">Packaging Materials</span>
+<div class="w-8 h-8 rounded-lg bg-surface-container-low flex items-center justify-center text-secondary">
+<span class="material-symbols-outlined text-[18px]">inventory_2</span>
+</div>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-metric-display text-metric-display text-on-surface font-bold tracking-tight">42</span>
+<span class="font-headline-sm text-headline-sm text-secondary font-medium">Items</span>
+</div>
+<p class="font-body-default text-body-default text-on-surface-variant truncate">Laminated pouches, Cartons, BOPP</p>
+</div>
+<div class="flex items-center gap-1.5 pt-space-xs font-label-micro text-label-micro text-error font-medium">
+<span class="material-symbols-outlined text-[14px]">warning</span>
+<span>3 low stock alerts active</span>
+</div>
+</div>
+<!-- KPI 4 -->
+<div class="p-space-lg rounded-xl bg-surface-container-lowest shadow-sm flex flex-col justify-between relative overflow-hidden group">
+<div class="flex items-center justify-between">
+<span class="font-label-micro text-label-micro uppercase font-semibold text-error tracking-wider">Low Stock Items</span>
+<span class="px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-micro text-label-micro font-bold">Urgent Action</span>
+</div>
+<div class="my-space-xs">
+<div class="flex items-baseline gap-space-xs">
+<span class="font-metric-display text-metric-display text-error font-bold tracking-tight">12</span>
+<span class="font-headline-sm text-headline-sm text-error font-medium">SKUs</span>
+</div>
+<p class="font-body-default text-body-default text-on-surface-variant">5 POs pending vendor dispatch</p>
+</div>
+<div class="flex items-center gap-1.5 pt-space-xs font-label-micro text-label-micro text-secondary">
+<span class="material-symbols-outlined text-[14px] text-tertiary">local_shipping</span>
+<span>Next arrival ETA: 4:30 PM IST</span>
+</div>
+</div>
+</div>
+<!-- Material Category Tabs -->
+<div class="flex items-center justify-between bg-surface-container-lowest rounded-t-xl px-space-md shadow-sm">
+<div class="flex items-center gap-space-lg overflow-x-auto">
+<button class="flex items-center gap-2 py-space-md text-primary font-body-strong text-body-strong relative">
+<span>All Materials</span>
+<span class="px-1.5 py-0.5 rounded-full bg-primary-fixed text-on-primary-fixed font-label-micro text-label-micro font-semibold">148</span>
+<span class="absolute bottom-0 left-0 right-0 h-0.5 bg-primary-container"></span>
+</button>
+<button class="flex items-center gap-2 py-space-md text-secondary hover:text-on-surface font-body-default text-body-default transition-colors">
+<span>Raw Materials</span>
+<span class="px-1.5 py-0.5 rounded-full bg-surface-container text-secondary font-label-micro text-label-micro font-semibold">86</span>
+</button>
+<button class="flex items-center gap-2 py-space-md text-secondary hover:text-on-surface font-body-default text-body-default transition-colors">
+<span>Packaging</span>
+<span class="px-1.5 py-0.5 rounded-full bg-surface-container text-secondary font-label-micro text-label-micro font-semibold">42</span>
+</button>
+<button class="flex items-center gap-2 py-space-md text-error hover:text-on-surface font-body-default text-body-default transition-colors">
+<span>Low Stock</span>
+<span class="px-1.5 py-0.5 rounded-full bg-error text-on-error font-label-micro text-label-micro font-bold">12</span>
+</button>
+<button class="flex items-center gap-2 py-space-md text-secondary hover:text-on-surface font-body-default text-body-default transition-colors">
+<span>Expired / Quarantine</span>
+<span class="px-1.5 py-0.5 rounded-full bg-surface-container-high text-outline font-label-micro text-label-micro font-semibold">4</span>
+</button>
+</div>
+<div class="hidden lg:flex items-center gap-space-xs text-secondary font-label-micro text-label-micro">
+<span class="material-symbols-outlined text-[16px] text-tertiary">check_circle</span>
+<span>Tally Prime Integration: Synced 8m ago</span>
+</div>
+</div>
+<!-- Filter & Search Control Toolbar -->
+<div class="flex flex-col lg:flex-row items-stretch lg:items-center justify-between gap-space-sm p-space-md bg-surface-container-low shadow-sm">
+<!-- Left Filters -->
+<div class="flex flex-wrap items-center gap-space-xs flex-1">
+<div class="relative min-w-[280px] flex-1 max-w-md">
+<span class="material-symbols-outlined absolute left-2.5 top-2 text-[18px] text-outline">search</span>
+<input class="w-full h-8 pl-8 pr-3 text-body-default font-body-default bg-surface-container-lowest rounded shadow-sm focus:outline-none focus:ring-1 focus:ring-primary-container text-on-surface placeholder:text-outline" placeholder="Search material by name, code (e.g. RM-FL-001), HSN..." type="text"/>
+</div>
+<div class="relative">
+<select class="h-8 pl-2.5 pr-7 bg-surface-container-lowest text-on-surface font-label-default text-label-default rounded shadow-sm appearance-none focus:outline-none focus:ring-1 focus:ring-primary-container cursor-pointer">
+<option>All Categories</option>
+<option>Raw Flours & Starches</option>
+<option>Vegetable Oils & Ghee</option>
+<option>Spices & Seasonings</option>
+<option>Packaging Film & Boxes</option>
+</select>
+<span class="material-symbols-outlined absolute right-1.5 top-2 text-[16px] text-secondary pointer-events-none">arrow_drop_down</span>
+</div>
+<div class="relative">
+<select class="h-8 pl-2.5 pr-7 bg-surface-container-lowest text-on-surface font-label-default text-label-default rounded shadow-sm appearance-none focus:outline-none focus:ring-1 focus:ring-primary-container cursor-pointer">
+<option>All Statuses</option>
+<option>In Stock</option>
+<option>Low Stock</option>
+<option>Reorder Triggered</option>
+<option>Out of Stock</option>
+</select>
+<span class="material-symbols-outlined absolute right-1.5 top-2 text-[16px] text-secondary pointer-events-none">arrow_drop_down</span>
+</div>
+<div class="relative">
+<select class="h-8 pl-2.5 pr-7 bg-surface-container-lowest text-on-surface font-label-default text-label-default rounded shadow-sm appearance-none focus:outline-none focus:ring-1 focus:ring-primary-container cursor-pointer">
+<option>All Warehouses</option>
+<option>Raw Silo Cluster A</option>
+<option>Cold Room 1 (Spices/Dairy)</option>
+<option>Cold Room 2 (Fats & Ghee)</option>
+<option>Packaging Annex Bay</option>
+</select>
+<span class="material-symbols-outlined absolute right-1.5 top-2 text-[16px] text-secondary pointer-events-none">arrow_drop_down</span>
+</div>
+<button class="h-8 px-2.5 rounded bg-surface-container-lowest hover:bg-surface-container text-secondary hover:text-on-surface font-label-default text-label-default flex items-center gap-1 shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[16px]">swap_vert</span>
+<span>Stock: Low to High</span>
+</button>
+</div>
+<!-- Right Controls -->
+<div class="flex items-center gap-space-xs self-end lg:self-center">
+<div class="flex items-center bg-surface-container-lowest rounded p-0.5 shadow-sm">
+<button class="p-1 rounded bg-surface-container-high text-primary flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">table_rows</span>
+</button>
+<button class="p-1 rounded text-secondary hover:text-on-surface flex items-center justify-center">
+<span class="material-symbols-outlined text-[18px]">grid_view</span>
+</button>
+</div>
+<button class="h-8 px-2 rounded bg-surface-container-lowest hover:bg-surface-container text-secondary hover:text-on-surface font-label-default text-label-default flex items-center gap-1 shadow-sm transition-colors">
+<span class="material-symbols-outlined text-[16px]">view_column</span>
+<span class="hidden md:inline">Columns</span>
+</button>
+<button class="h-8 w-8 rounded bg-surface-container-lowest hover:bg-surface-container text-secondary hover:text-on-surface flex items-center justify-center shadow-sm transition-colors" title="Density Switcher">
+<span class="material-symbols-outlined text-[18px]">density_small</span>
+</button>
+</div>
+</div>
+<!-- Professional Enterprise Material Data Table -->
+<div class="overflow-x-auto bg-surface-container-lowest shadow-sm rounded-b-xl mb-space-lg">
+<table class="w-full text-left border-collapse">
+<thead>
+<tr class="h-9 bg-surface-container-low text-secondary font-table-header text-table-header uppercase tracking-wider select-none">
+<th class="w-10 px-space-sm text-center">
+<input class="rounded bg-surface-container-lowest text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</th>
+<th class="px-space-sm py-1 font-semibold">Material Code</th>
+<th class="px-space-sm py-1 font-semibold">Name & Specification</th>
+<th class="px-space-sm py-1 font-semibold">Category</th>
+<th class="px-space-sm py-1 font-semibold">Storage & HSN</th>
+<th class="px-space-sm py-1 font-semibold">Available Stock / Capacity</th>
+<th class="px-space-sm py-1 font-semibold text-right">Purchase Rate</th>
+<th class="px-space-sm py-1 font-semibold">Reorder Lvl / Lead</th>
+<th class="px-space-sm py-1 font-semibold">Stock Status</th>
+<th class="w-24 px-space-sm py-1 text-center font-semibold">Actions</th>
+</tr>
+</thead>
+<tbody class="font-table-data text-table-data text-on-surface divide-y-0">
+<!-- Row 1 -->
+<tr class="h-10 hover:bg-surface-container-low transition-colors group">
+<td class="px-space-sm text-center">
+<input class="rounded bg-surface-container-lowest text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-sm">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px] font-semibold text-primary">RM-FL-001</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col min-w-0">
+<span class="font-body-strong text-body-strong text-on-surface truncate">Grade-A Gram Flour (Besan)</span>
+<span class="font-label-micro text-label-micro text-secondary truncate">Standard mesh 80 • Supplier: Vetrivel Agro</span>
+</div>
+</td>
+<td class="px-space-sm">
+<span class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-micro text-label-micro font-semibold uppercase">Raw Material</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Silo A-03</span>
+<span class="font-label-micro text-label-micro text-outline font-mono">HSN 1106</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col gap-1 w-36">
+<div class="flex justify-between items-baseline font-mono font-medium text-on-surface">
+<span>1,450 kg</span>
+<span class="text-label-micro text-secondary">48%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 48%"></div>
+</div>
+</div>
+</td>
+<td class="px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-mono font-semibold text-on-surface">₹74.50 / kg</span>
+<span class="font-label-micro text-label-micro text-secondary">Avg: ₹72.80</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-mono text-on-surface">800 kg</span>
+<span class="font-label-micro text-label-micro text-secondary">3 Days Lead</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container text-tertiary font-label-micro text-label-micro font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>In Stock</span>
+</div>
+</td>
+<td class="px-space-sm text-center">
+<div class="flex items-center justify-center gap-1 text-secondary">
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Edit Material">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="View Stock Ledger">
+<span class="material-symbols-outlined text-[16px]">receipt_long</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Generate PO">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 2 -->
+<tr class="h-10 bg-surface-container-lowest/50 hover:bg-surface-container-low transition-colors group">
+<td class="px-space-sm text-center">
+<input class="rounded bg-surface-container-lowest text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-sm">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px] font-semibold text-primary">RM-OIL-012</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col min-w-0">
+<span class="font-body-strong text-body-strong text-on-surface truncate">Refined Sunflower Oil (Agmark)</span>
+<span class="font-label-micro text-label-micro text-secondary truncate">Triple filtered • Supplier: Gemini Edibles</span>
+</div>
+</td>
+<td class="px-space-sm">
+<span class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-micro text-label-micro font-semibold uppercase">Raw Material</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Tank B-01</span>
+<span class="font-label-micro text-label-micro text-outline font-mono">HSN 1512</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col gap-1 w-36">
+<div class="flex justify-between items-baseline font-mono font-medium text-error">
+<span>340 L</span>
+<span class="text-label-micro text-error font-semibold">22%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 22%"></div>
+</div>
+</div>
+</td>
+<td class="px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-mono font-semibold text-on-surface">₹118.00 / L</span>
+<span class="font-label-micro text-label-micro text-secondary">Avg: ₹116.40</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-mono text-error font-medium">500 L</span>
+<span class="font-label-micro text-label-micro text-secondary">2 Days Lead</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-micro text-label-micro font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Low Stock</span>
+</div>
+</td>
+<td class="px-space-sm text-center">
+<div class="flex items-center justify-center gap-1 text-secondary">
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Edit Material">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="View Stock Ledger">
+<span class="material-symbols-outlined text-[16px]">receipt_long</span>
+</button>
+<button class="p-1 rounded bg-secondary-fixed text-on-secondary-fixed hover:bg-secondary hover:text-on-secondary transition-colors" title="Urgent Reorder">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 3 -->
+<tr class="h-10 hover:bg-surface-container-low transition-colors group">
+<td class="px-space-sm text-center">
+<input class="rounded bg-surface-container-lowest text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-sm">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px] font-semibold text-primary">PK-LAM-004</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col min-w-0">
+<span class="font-body-strong text-body-strong text-on-surface truncate">Printed Metallized Pouch 200g (Murukku)</span>
+<span class="font-label-micro text-label-micro text-secondary truncate">Nitrogen-flush grade • Sivakasi Flexo Pack</span>
+</div>
+</td>
+<td class="px-space-sm">
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-micro text-label-micro font-semibold uppercase">Packaging</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Packaging Bay 2</span>
+<span class="font-label-micro text-label-micro text-outline font-mono">HSN 3923</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col gap-1 w-36">
+<div class="flex justify-between items-baseline font-mono font-medium text-error">
+<span>2,800 pcs</span>
+<span class="text-label-micro text-error font-bold">14%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-error rounded-full" style="width: 14%"></div>
+</div>
+</div>
+</td>
+<td class="px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-mono font-semibold text-on-surface">₹1.85 / pc</span>
+<span class="font-label-micro text-label-micro text-secondary">MOQ: 25k</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-mono text-error font-semibold">10,000 pcs</span>
+<span class="font-label-micro text-label-micro text-secondary">7 Days Lead</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-error-container text-on-error-container font-label-micro text-label-micro font-bold">
+<span class="w-1.5 h-1.5 rounded-full bg-error animate-pulse"></span>
+<span>Critical / Reorder</span>
+</div>
+</td>
+<td class="px-space-sm text-center">
+<div class="flex items-center justify-center gap-1 text-secondary">
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Edit Material">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="View Stock Ledger">
+<span class="material-symbols-outlined text-[16px]">receipt_long</span>
+</button>
+<button class="p-1 rounded bg-error text-on-error hover:bg-error/90 transition-colors shadow-sm" title="Trigger Instant PO">
+<span class="material-symbols-outlined text-[16px]">notification_important</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 4 -->
+<tr class="h-10 bg-surface-container-lowest/50 hover:bg-surface-container-low transition-colors group">
+<td class="px-space-sm text-center">
+<input class="rounded bg-surface-container-lowest text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-sm">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px] font-semibold text-primary">RM-SPC-008</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col min-w-0">
+<span class="font-body-strong text-body-strong text-on-surface truncate">Guntur Red Chilli Powder (Extra Hot)</span>
+<span class="font-label-micro text-label-micro text-secondary truncate">SHU 45,000 • Madurai Spices Corp</span>
+</div>
+</td>
+<td class="px-space-sm">
+<span class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-micro text-label-micro font-semibold uppercase">Raw Material</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Cold Room 1</span>
+<span class="font-label-micro text-label-micro text-outline font-mono">HSN 0904</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col gap-1 w-36">
+<div class="flex justify-between items-baseline font-mono font-medium text-on-surface">
+<span>520 kg</span>
+<span class="text-label-micro text-secondary">65%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 65%"></div>
+</div>
+</div>
+</td>
+<td class="px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-mono font-semibold text-on-surface">₹245.00 / kg</span>
+<span class="font-label-micro text-label-micro text-secondary">Avg: ₹240.00</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-mono text-on-surface">200 kg</span>
+<span class="font-label-micro text-label-micro text-secondary">4 Days Lead</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container text-tertiary font-label-micro text-label-micro font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>In Stock</span>
+</div>
+</td>
+<td class="px-space-sm text-center">
+<div class="flex items-center justify-center gap-1 text-secondary">
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Edit Material">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="View Stock Ledger">
+<span class="material-symbols-outlined text-[16px]">receipt_long</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Generate PO">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 5 -->
+<tr class="h-10 hover:bg-surface-container-low transition-colors group">
+<td class="px-space-sm text-center">
+<input class="rounded bg-surface-container-lowest text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-sm">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px] font-semibold text-primary">RM-FAT-003</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col min-w-0">
+<span class="font-body-strong text-body-strong text-on-surface truncate">Pure Dairy Ghee (Nandini/Aavin Grade)</span>
+<span class="font-label-micro text-label-micro text-secondary truncate">Moisture < 0.3% • Trichy District Dairy Fed</span>
+</div>
+</td>
+<td class="px-space-sm">
+<span class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-micro text-label-micro font-semibold uppercase">Raw Material</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Cold Room 2</span>
+<span class="font-label-micro text-label-micro text-outline font-mono">HSN 0405</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col gap-1 w-36">
+<div class="flex justify-between items-baseline font-mono font-medium text-secondary">
+<span>180 kg</span>
+<span class="text-label-micro text-secondary font-semibold">28%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-secondary rounded-full" style="width: 28%"></div>
+</div>
+</div>
+</td>
+<td class="px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-mono font-semibold text-on-surface">₹580.00 / kg</span>
+<span class="font-label-micro text-label-micro text-secondary">Avg: ₹575.50</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-mono text-error font-medium">150 kg</span>
+<span class="font-label-micro text-label-micro text-secondary">1 Day Lead</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-secondary-fixed text-on-secondary-fixed font-label-micro text-label-micro font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-secondary"></span>
+<span>Low Stock</span>
+</div>
+</td>
+<td class="px-space-sm text-center">
+<div class="flex items-center justify-center gap-1 text-secondary">
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Edit Material">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="View Stock Ledger">
+<span class="material-symbols-outlined text-[16px]">receipt_long</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Generate PO">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 6 -->
+<tr class="h-10 bg-surface-container-lowest/50 hover:bg-surface-container-low transition-colors group">
+<td class="px-space-sm text-center">
+<input class="rounded bg-surface-container-lowest text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-sm">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px] font-semibold text-primary">PK-BOX-022</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col min-w-0">
+<span class="font-body-strong text-body-strong text-on-surface truncate">5-Ply Master Corrugated Carton (50 Pkt)</span>
+<span class="font-label-micro text-label-micro text-secondary truncate">Burst test 14kg/cm² • Jayam Packaging</span>
+</div>
+</td>
+<td class="px-space-sm">
+<span class="px-2 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-micro text-label-micro font-semibold uppercase">Packaging</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Packaging Bay 1</span>
+<span class="font-label-micro text-label-micro text-outline font-mono">HSN 4819</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col gap-1 w-36">
+<div class="flex justify-between items-baseline font-mono font-medium text-on-surface">
+<span>450 boxes</span>
+<span class="text-label-micro text-secondary">75%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 75%"></div>
+</div>
+</div>
+</td>
+<td class="px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-mono font-semibold text-on-surface">₹38.00 / box</span>
+<span class="font-label-micro text-label-micro text-secondary">MOQ: 500</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-mono text-on-surface">200 boxes</span>
+<span class="font-label-micro text-label-micro text-secondary">2 Days Lead</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container text-tertiary font-label-micro text-label-micro font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>In Stock</span>
+</div>
+</td>
+<td class="px-space-sm text-center">
+<div class="flex items-center justify-center gap-1 text-secondary">
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Edit Material">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="View Stock Ledger">
+<span class="material-symbols-outlined text-[16px]">receipt_long</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Generate PO">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+</button>
+</div>
+</td>
+</tr>
+<!-- Row 7 -->
+<tr class="h-10 hover:bg-surface-container-low transition-colors group">
+<td class="px-space-sm text-center">
+<input class="rounded bg-surface-container-lowest text-primary-container focus:ring-0 cursor-pointer" type="checkbox"/>
+</td>
+<td class="px-space-sm">
+<span class="px-1.5 py-0.5 rounded bg-surface-container font-mono text-[11px] font-semibold text-primary">RM-ING-019</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col min-w-0">
+<span class="font-body-strong text-body-strong text-on-surface truncate">Roasted Split Gram (Pottukadala)</span>
+<span class="font-label-micro text-label-micro text-secondary truncate">Grade-1 Cleaned • Salem Pulse Traders</span>
+</div>
+</td>
+<td class="px-space-sm">
+<span class="px-2 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-micro text-label-micro font-semibold uppercase">Raw Material</span>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-medium text-on-surface">Silo A-01</span>
+<span class="font-label-micro text-label-micro text-outline font-mono">HSN 0713</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col gap-1 w-36">
+<div class="flex justify-between items-baseline font-mono font-medium text-on-surface">
+<span>920 kg</span>
+<span class="text-label-micro text-secondary">58%</span>
+</div>
+<div class="h-1.5 w-full bg-surface-container rounded-full overflow-hidden">
+<div class="h-full bg-primary-container rounded-full" style="width: 58%"></div>
+</div>
+</div>
+</td>
+<td class="px-space-sm text-right">
+<div class="flex flex-col items-end">
+<span class="font-mono font-semibold text-on-surface">₹88.00 / kg</span>
+<span class="font-label-micro text-label-micro text-secondary">Avg: ₹86.50</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="flex flex-col">
+<span class="font-mono text-on-surface">400 kg</span>
+<span class="font-label-micro text-label-micro text-secondary">3 Days Lead</span>
+</div>
+</td>
+<td class="px-space-sm">
+<div class="inline-flex items-center gap-1.5 px-2 py-0.5 rounded-full bg-surface-container text-tertiary font-label-micro text-label-micro font-semibold">
+<span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+<span>In Stock</span>
+</div>
+</td>
+<td class="px-space-sm text-center">
+<div class="flex items-center justify-center gap-1 text-secondary">
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Edit Material">
+<span class="material-symbols-outlined text-[16px]">edit</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="View Stock Ledger">
+<span class="material-symbols-outlined text-[16px]">receipt_long</span>
+</button>
+<button class="p-1 rounded hover:bg-surface-container hover:text-primary transition-colors" title="Generate PO">
+<span class="material-symbols-outlined text-[16px]">add_shopping_cart</span>
+</button>
+</div>
+</td>
+</tr>
+</tbody>
+</table>
+<!-- Table Footer & Pagination -->
+<div class="h-11 px-space-md bg-surface-container-low flex items-center justify-between font-label-default text-label-default text-secondary">
+<div class="flex items-center gap-space-md">
+<span>Showing <strong class="text-on-surface font-semibold">1-7</strong> of <strong class="text-on-surface font-semibold">148</strong> materials</span>
+<div class="flex items-center gap-1.5">
+<span class="text-outline">Rows per page:</span>
+<select class="h-7 px-1.5 bg-surface-container-lowest text-on-surface rounded text-label-micro font-semibold shadow-sm focus:outline-none">
+<option>10</option>
+<option>25</option>
+<option>50</option>
+</select>
+</div>
+</div>
+<div class="flex items-center gap-space-xs">
+<span class="mr-space-xs">Page 1 of 15</span>
+<button class="w-7 h-7 rounded bg-surface-container-lowest text-outline hover:text-on-surface flex items-center justify-center disabled:opacity-40 shadow-sm" disabled="">
+<span class="material-symbols-outlined text-[16px]">chevron_left</span>
+</button>
+<button class="w-7 h-7 rounded bg-primary-container text-on-primary font-semibold flex items-center justify-center shadow-sm">1</button>
+<button class="w-7 h-7 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">2</button>
+<button class="w-7 h-7 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">3</button>
+<span class="px-1 text-outline">...</span>
+<button class="w-7 h-7 rounded bg-surface-container-lowest text-on-surface hover:bg-surface-container flex items-center justify-center shadow-sm">15</button>
+<button class="w-7 h-7 rounded bg-surface-container-lowest text-secondary hover:text-on-surface flex items-center justify-center shadow-sm">
+<span class="material-symbols-outlined text-[16px]">chevron_right</span>
+</button>
+</div>
+</div>
+</div>
+<!-- Bottom Section: Stock Movement & Warehouse Logistics Stream -->
+<div class="grid grid-cols-1 lg:grid-cols-12 gap-gutter mb-space-lg">
+<!-- Panel 1: Recent Stock Movements & Audited Transactions -->
+<div class="lg:col-span-7 bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-primary text-[20px]">sync_alt</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Recent Audited Stock Movements</span>
+</div>
+<a class="font-label-default text-label-default text-primary hover:underline flex items-center gap-0.5" href="#">
+<span>View Complete Audit Log</span>
+<span class="material-symbols-outlined text-[14px]">arrow_forward</span>
+</a>
+</div>
+<!-- Timeline Items -->
+<div class="flex flex-col gap-space-sm">
+<!-- Item 1: RECEIPT -->
+<div class="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="px-1.5 py-0.5 rounded bg-surface-container text-tertiary font-label-micro text-label-micro font-bold uppercase mt-0.5 whitespace-nowrap">
+            RECEIPT
+          </div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-body-strong text-body-strong text-on-surface truncate">GRN-2024-811: +5,000 kg Gram Flour (Besan)</span>
+<span class="font-mono text-label-micro text-secondary">10:48 AM</span>
+</div>
+<p class="font-label-default text-label-default text-secondary mt-0.5">
+              Vendor: <span class="text-on-surface font-medium">Vetrivel Agro Mills</span> • Silo A-03 • Moisture 9.2% (Passed QC by R. Sundar)
+            </p>
+</div>
+</div>
+<!-- Item 2: PRODUCTION ISSUE -->
+<div class="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="px-1.5 py-0.5 rounded bg-primary-fixed text-on-primary-fixed font-label-micro text-label-micro font-bold uppercase mt-0.5 whitespace-nowrap">
+            ISSUE
+          </div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-body-strong text-body-strong text-on-surface truncate">Issue Slip #IS-409: -180 kg Sunflower Oil</span>
+<span class="font-mono text-label-micro text-secondary">09:15 AM</span>
+</div>
+<p class="font-label-default text-label-default text-secondary mt-0.5">
+              Dispatched to Batch #TK-884 (Murukku Frying Line 1) • Tank B-01 Meter #4
+            </p>
+</div>
+</div>
+<!-- Item 3: ADJUSTMENT -->
+<div class="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="px-1.5 py-0.5 rounded bg-secondary-fixed text-on-secondary-fixed font-label-micro text-label-micro font-bold uppercase mt-0.5 whitespace-nowrap">
+            ADJUSTMENT
+          </div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-body-strong text-body-strong text-on-surface truncate">Stock Count Reconciliation: -4.5 kg Spices</span>
+<span class="font-mono text-label-micro text-secondary">08:30 AM</span>
+</div>
+<p class="font-label-default text-label-default text-secondary mt-0.5">
+              Red Chilli Powder spillage variance during blender transfer • Approved by Plant Supervisor
+            </p>
+</div>
+</div>
+<!-- Item 4: RETURN -->
+<div class="flex items-start gap-space-sm p-space-sm rounded bg-surface-container-low hover:bg-surface-container transition-colors">
+<div class="px-1.5 py-0.5 rounded bg-error-container text-on-error-container font-label-micro text-label-micro font-bold uppercase mt-0.5 whitespace-nowrap">
+            RETURN
+          </div>
+<div class="flex-1 min-w-0">
+<div class="flex items-center justify-between">
+<span class="font-body-strong text-body-strong text-on-surface truncate">Rejected Batch: -200 Pouches (Murukku 200g)</span>
+<span class="font-mono text-label-micro text-secondary">Yesterday</span>
+</div>
+<p class="font-label-default text-label-default text-secondary mt-0.5">
+              Returned to Sivakasi Flexo Pack due to misaligned barcode printing • Debit note pending
+            </p>
+</div>
+</div>
+</div>
+</div>
+<!-- Panel 2: Rapid Reorder & Supplier Allocation Widget -->
+<div class="lg:col-span-5 bg-surface-container-lowest rounded-xl p-space-lg shadow-sm flex flex-col justify-between">
+<div>
+<div class="flex items-center justify-between pb-space-sm mb-space-sm">
+<div class="flex items-center gap-2">
+<span class="material-symbols-outlined text-error text-[20px]">notification_important</span>
+<span class="font-headline-sm text-headline-sm text-on-surface font-semibold">Rapid Reorder Allocations</span>
+</div>
+<span class="px-2 py-0.5 rounded bg-error-container text-on-error-container font-label-micro text-label-micro font-bold">3 Urgent SKUs</span>
+</div>
+<p class="font-body-default text-body-default text-secondary mb-space-sm">
+          Auto-evaluated replenishment requests calculated based on current shift consumption rate.
+        </p>
+<!-- Reorder Cards -->
+<div class="flex flex-col gap-space-sm">
+<!-- Item A -->
+<div class="p-space-sm rounded bg-surface-container-low flex items-center justify-between gap-space-sm">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-mono text-[11px] font-bold text-error">PK-LAM-004</span>
+<span class="font-body-strong text-body-strong text-on-surface truncate">Metallized Pouch 200g</span>
+</div>
+<span class="font-label-micro text-label-micro text-secondary truncate">
+                Deficit: 7,200 pcs • Supplier: Sivakasi Flexo
+              </span>
+</div>
+<button class="h-7 px-3 rounded bg-primary-container hover:bg-primary text-on-primary font-body-strong text-body-strong text-xs shrink-0 shadow-sm transition-colors">
+              Generate PO
+            </button>
+</div>
+<!-- Item B -->
+<div class="p-space-sm rounded bg-surface-container-low flex items-center justify-between gap-space-sm">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-mono text-[11px] font-bold text-secondary">RM-OIL-012</span>
+<span class="font-body-strong text-body-strong text-on-surface truncate">Sunflower Oil (Agmark)</span>
+</div>
+<span class="font-label-micro text-label-micro text-secondary truncate">
+                Deficit: 160 L • Supplier: Gemini Edibles
+              </span>
+</div>
+<button class="h-7 px-3 rounded bg-primary-container hover:bg-primary text-on-primary font-body-strong text-body-strong text-xs shrink-0 shadow-sm transition-colors">
+              Generate PO
+            </button>
+</div>
+<!-- Item C -->
+<div class="p-space-sm rounded bg-surface-container-low flex items-center justify-between gap-space-sm">
+<div class="flex flex-col min-w-0">
+<div class="flex items-center gap-1.5">
+<span class="font-mono text-[11px] font-bold text-secondary">RM-FAT-003</span>
+<span class="font-body-strong text-body-strong text-on-surface truncate">Pure Dairy Ghee 15kg</span>
+</div>
+<span class="font-label-micro text-label-micro text-secondary truncate">
+                Deficit: 30 kg • Supplier: Trichy Dairy Fed
+              </span>
+</div>
+<button class="h-7 px-3 rounded bg-primary-container hover:bg-primary text-on-primary font-body-strong text-body-strong text-xs shrink-0 shadow-sm transition-colors">
+              Generate PO
+            </button>
+</div>
+</div>
+</div>
+<div class="mt-space-md pt-space-xs flex items-center justify-between text-secondary font-label-micro text-label-micro">
+<span class="flex items-center gap-1">
+<span class="material-symbols-outlined text-[14px] text-tertiary">check</span>
+<span>Lead-time forecast active</span>
+</span>
+<button class="text-primary hover:underline font-medium">Batch Reorder All (3 Items)</button>
+</div>
+</div>
+</div>
+</div></main></div></body></html>

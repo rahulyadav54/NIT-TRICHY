@@ -1,0 +1,31 @@
+{
+  "name": "udyamflow-erp-root",
+  "version": "1.0.0",
+  "description": "UdyamFlow ERP - From Order to Audit. Everything Connected.",
+  "private": true,
+  "workspaces": [
+    "backend",
+    "frontend"
+  ],
+  "scripts": {
+    "dev:backend": "npm --prefix backend run dev",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "build:backend": "npm --prefix backend run build",
+    "build:frontend": "npm --prefix frontend run build",
+    "build": "npm run build:backend && npm run build:frontend",
+    "db:migrate": "npm --prefix backend run db:migrate",
+    "db:seed": "npm --prefix backend run db:seed",
+    "test:backend": "npm --prefix backend run test"
+  },
+  "keywords": [
+    "erp",
+    "manufacturing",
+    "audit",
+    "inventory",
+    "gst",
+    "trima"
+  ],
+  "author": "NIT Tiruchirappalli Winter Internship",
+  "license": "ISC"
+}
+
