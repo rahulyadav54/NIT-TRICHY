@@ -17,6 +17,7 @@ const createDispatchSchema = z.object({
 
 // POST Create Dispatch (Atomically deducts finished goods inventory, updates order status, prevents duplicate dispatch)
 dispatchRouter.post('/', roleGuard([Role.ADMIN, Role.OWNER]), async (req: AuthenticatedRequest, res: Response) => {
+  try {
   const parsed = createDispatchSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ success: false, errors: parsed.error.errors });
@@ -94,6 +95,12 @@ dispatchRouter.post('/', roleGuard([Role.ADMIN, Role.OWNER]), async (req: Authen
       invoiceNumber: invoice.invoiceNumber,
     },
   });
+  } catch (err: any) {
+    return res.status(400).json({
+      success: false,
+      message: err?.message || 'Dispatch failed',
+    });
+  }
 });
 
 // GET all dispatches

@@ -60,6 +60,7 @@ productionRouter.get('/', async (req: AuthenticatedRequest, res: Response) => {
 
 // POST Record a Production Run (Deducts Raw & Packaging stock, Increases Finished Goods, Calculates Variances)
 productionRouter.post('/', roleGuard([Role.ADMIN, Role.OWNER, Role.PRODUCTION_SUPERVISOR]), async (req: AuthenticatedRequest, res: Response) => {
+  try {
   const parsed = createProductionRunSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ success: false, errors: parsed.error.errors });
@@ -301,5 +302,11 @@ productionRouter.post('/', roleGuard([Role.ADMIN, Role.OWNER, Role.PRODUCTION_SU
       costPerPacket: costPerPacket.toNumber(),
     },
   });
+  } catch (err: any) {
+    return res.status(400).json({
+      success: false,
+      message: err?.message || 'Production run failed',
+    });
+  }
 });
 
