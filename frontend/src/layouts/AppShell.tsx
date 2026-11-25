@@ -88,7 +88,25 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
   const [currentTime, setCurrentTime] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [profileOpen, setProfileOpen] = useState(false);
+  const [welcomeBanner, setWelcomeBanner] = useState<{ name: string; role: string } | null>(() => {
+    try {
+      const raw = sessionStorage.getItem('trima_welcome_user');
+      if (raw) {
+        sessionStorage.removeItem('trima_welcome_user');
+        return JSON.parse(raw);
+      }
+    } catch {
+      // Ignore storage errors
+    }
+    return null;
+  });
   const profileRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!welcomeBanner) return;
+    const timer = setTimeout(() => setWelcomeBanner(null), 5000);
+    return () => clearTimeout(timer);
+  }, [welcomeBanner]);
 
   useEffect(() => {
     const updateTime = () => {
@@ -376,6 +394,30 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
 
         {/* ─── PAGE CONTENT ─── */}
         <main className="flex-1 p-4 lg:p-6 min-h-0 w-full max-w-[1600px] mx-auto">
+          {welcomeBanner && (
+            <div className="mb-4 px-4 py-3 rounded-xl bg-gradient-to-r from-[#101B33] via-[#1B3A7A] to-[#2457D6] text-white shadow-md border border-blue-400/30 flex items-center justify-between gap-3">
+              <div className="flex items-center gap-3 min-w-0">
+                <div className="w-8 h-8 rounded-lg bg-cyan-400/20 border border-cyan-300/30 flex items-center justify-center flex-shrink-0">
+                  <CheckCircle size={17} className="text-cyan-300" />
+                </div>
+                <div className="min-w-0">
+                  <div className="text-sm font-bold truncate">
+                    Welcome back, {welcomeBanner.name}!
+                  </div>
+                  <div className="text-xs text-blue-100/90 truncate">
+                    Signed in as {welcomeBanner.role} • TRIMA ERP Trichy Plant 1 is live and ready.
+                  </div>
+                </div>
+              </div>
+              <button
+                onClick={() => setWelcomeBanner(null)}
+                aria-label="Dismiss welcome message"
+                className="p-1 rounded-lg hover:bg-white/10 text-blue-100 hover:text-white transition-colors flex-shrink-0"
+              >
+                <X size={16} />
+              </button>
+            </div>
+          )}
           {children}
         </main>
       </div>

@@ -71,6 +71,10 @@ export function LoginPage() {
         body: JSON.stringify({ email, password }),
       });
       if (res.success) {
+        sessionStorage.setItem(
+          'trima_welcome_user',
+          JSON.stringify({ name: res.user.name, role: res.user.role })
+        );
         login(res.token, res.user);
       }
     } catch (err: any) {
