@@ -167,6 +167,11 @@ npx tsx test/benchmark.test.ts   # 26/26 Master E2E Benchmark assertions
 
 ---
 
+### Known Gaps & Stretch Goals
+- **Offline Mobile Order Capture:** Stretch goal (orders require active network connectivity; no IndexedDB offline sync queue yet).
+- **Admin Configuration Screens:** `User Management` and `Plant Settings` sidebar items currently route to `ReportsView` rather than dedicated CRUD forms.
+- **Stretch Exports:** Tally XML export, e-Invoice/e-Way Bill IRN JSON mock, FEFO batch-expiry tracking, and Tamil UI translation are not yet implemented.
+
 ### Documented Assumptions
 - **Inventory Valuation:** Weighted-Average Cost (`(Opening Value + Purchase Receipts Value) / (Opening Qty + Received Qty)`).
 - **Damaged Packaging in Costing:** Damaged pouches (`6` in benchmark) are deducted from stock and included in batch packaging cost, divided by **actual good packets** (`188`) rather than expected output (`200`).
