@@ -355,9 +355,9 @@ invoiceRouter.get('/:id/pdf', async (req: AuthenticatedRequest, res: Response) =
               { text: 'Description & Pack Size', bold: true, color: '#FFFFFF', fillColor: '#101B33', margin: [6, 7, 6, 7] },
               { text: 'HSN', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'center', margin: [6, 7, 6, 7] },
               { text: 'Qty', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'right', margin: [6, 7, 6, 7] },
-              { text: 'Rate (₹)', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'right', margin: [6, 7, 6, 7] },
-              { text: 'Taxable (₹)', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'right', margin: [6, 7, 6, 7] },
-              { text: 'Total (₹)', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'right', margin: [6, 7, 6, 7] },
+              { text: 'Rate (Rs.)', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'right', margin: [6, 7, 6, 7] },
+              { text: 'Taxable (Rs.)', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'right', margin: [6, 7, 6, 7] },
+              { text: 'Total (Rs.)', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'right', margin: [6, 7, 6, 7] },
             ],
             ...items.map((it, idx) => {
               const bg = idx % 2 === 1 ? '#F8FAFC' : '#FFFFFF';
@@ -394,12 +394,12 @@ invoiceRouter.get('/:id/pdf', async (req: AuthenticatedRequest, res: Response) =
             table: {
               widths: ['*', 'auto'],
               body: [
-                [{ text: 'Taxable Value', color: '#475569', margin: [8, 5, 6, 5] }, { text: `₹${Number(invoice.taxableAmount).toFixed(2)}`, alignment: 'right', margin: [6, 5, 8, 5] }],
-                [{ text: 'CGST (2.5%)', color: '#475569', margin: [8, 4, 6, 4] }, { text: `₹${Number(invoice.cgstAmount).toFixed(2)}`, alignment: 'right', margin: [6, 4, 8, 4] }],
-                [{ text: 'SGST (2.5%)', color: '#475569', margin: [8, 4, 6, 4] }, { text: `₹${Number(invoice.sgstAmount).toFixed(2)}`, alignment: 'right', margin: [6, 4, 8, 4] }],
-                [{ text: 'IGST (5.0%)', color: '#475569', margin: [8, 4, 6, 4] }, { text: `₹${Number(invoice.igstAmount).toFixed(2)}`, alignment: 'right', margin: [6, 4, 8, 4] }],
-                [{ text: 'GRAND TOTAL', bold: true, color: '#FFFFFF', fillColor: '#2457D6', margin: [8, 7, 6, 7] }, { text: `₹${Number(invoice.grandTotal).toFixed(2)}`, bold: true, fontSize: 11, color: '#FFFFFF', fillColor: '#2457D6', alignment: 'right', margin: [6, 7, 8, 7] }],
-                [{ text: 'Balance Due', bold: true, color: '#172033', fillColor: '#F4F7FB', margin: [8, 5, 6, 5] }, { text: `₹${Number(invoice.balanceDue ?? invoice.grandTotal).toFixed(2)}`, bold: true, color: Number(invoice.balanceDue) > 0 ? '#DC2626' : '#0D9488', fillColor: '#F4F7FB', alignment: 'right', margin: [6, 5, 8, 5] }],
+                [{ text: 'Taxable Value', color: '#475569', margin: [8, 5, 6, 5] }, { text: `Rs. ${Number(invoice.taxableAmount).toFixed(2)}`, alignment: 'right', margin: [6, 5, 8, 5] }],
+                [{ text: 'CGST (2.5%)', color: '#475569', margin: [8, 4, 6, 4] }, { text: `Rs. ${Number(invoice.cgstAmount).toFixed(2)}`, alignment: 'right', margin: [6, 4, 8, 4] }],
+                [{ text: 'SGST (2.5%)', color: '#475569', margin: [8, 4, 6, 4] }, { text: `Rs. ${Number(invoice.sgstAmount).toFixed(2)}`, alignment: 'right', margin: [6, 4, 8, 4] }],
+                [{ text: 'IGST (5.0%)', color: '#475569', margin: [8, 4, 6, 4] }, { text: `Rs. ${Number(invoice.igstAmount).toFixed(2)}`, alignment: 'right', margin: [6, 4, 8, 4] }],
+                [{ text: 'GRAND TOTAL', bold: true, color: '#FFFFFF', fillColor: '#2457D6', margin: [8, 7, 6, 7] }, { text: `Rs. ${Number(invoice.grandTotal).toFixed(2)}`, bold: true, fontSize: 11, color: '#FFFFFF', fillColor: '#2457D6', alignment: 'right', margin: [6, 7, 8, 7] }],
+                [{ text: 'Balance Due', bold: true, color: '#172033', fillColor: '#F4F7FB', margin: [8, 5, 6, 5] }, { text: `Rs. ${Number(invoice.balanceDue ?? invoice.grandTotal).toFixed(2)}`, bold: true, color: Number(invoice.balanceDue) > 0 ? '#DC2626' : '#0D9488', fillColor: '#F4F7FB', alignment: 'right', margin: [6, 5, 8, 5] }],
               ],
             },
             layout: {
