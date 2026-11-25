@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import { ShoppingCart, RefreshCw, Receipt, X } from 'lucide-react';
-import { apiRequest } from '@/services/api';
+import { apiRequest, getAuthToken } from '@/services/api';
 
 export function CommercialView({ subView = 'sales-orders', onNavigate: _onNavigate }: { subView: string; onNavigate?: (path: string) => void }) {
   const [salesOrders, setSalesOrders] = useState<any[]>([]);
@@ -406,6 +406,25 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                           <span className="inline-flex items-center gap-1 text-tertiary font-label-micro text-label-micro font-semibold mr-1">
                             {inv.status || 'ISSUED'}
                           </span>
+                          <button
+                            onClick={async () => {
+                              const tok = getAuthToken();
+                              const res = await fetch(`/api/invoice/${inv.id}/pdf`, {
+                                headers: tok ? { Authorization: `Bearer ${tok}` } : {},
+                              });
+                              if (!res.ok) return alert('PDF download failed');
+                              const blob = await res.blob();
+                              const u = URL.createObjectURL(blob);
+                              const a = document.createElement('a');
+                              a.href = u;
+                              a.download = `${String(inv.invoiceNumber || 'invoice').replace(/\//g, '-')}.pdf`;
+                              a.click();
+                              URL.revokeObjectURL(u);
+                            }}
+                            className="px-2 py-1 rounded bg-gray-100 hover:bg-gray-200 text-[#172033] text-[11px] font-semibold"
+                          >
+                            PDF
+                          </button>
                           <button
                             onClick={() => handleDispatchInvoice(inv.id)}
                             className="px-2 py-1 rounded bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-[11px] font-semibold"

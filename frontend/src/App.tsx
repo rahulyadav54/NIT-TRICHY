@@ -5,6 +5,7 @@ import { AppShell } from '@/layouts/AppShell';
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { ExecutiveDashboard } from '@/pages/dashboards/ExecutiveDashboard';
 import { MaterialsInventoryMaster } from '@/pages/master/MaterialsInventoryMaster';
+import { SupplyChainView } from '@/pages/supply/SupplyChainView';
 import { OperationsView } from '@/pages/operations/OperationsView';
 import { CommercialView } from '@/pages/commercial/CommercialView';
 import { ReportsView } from '@/pages/reports/ReportsView';
@@ -36,10 +37,12 @@ export function App() {
         return <ExecutiveDashboard onNavigate={setCurrentPath} />;
 
       case 'materials-inventory':
+        return <MaterialsInventoryMaster onNavigate={setCurrentPath} />;
+
       case 'purchases-grn':
       case 'suppliers-directory':
       case 'dispatch-gate-pass':
-        return <MaterialsInventoryMaster onNavigate={setCurrentPath} />;
+        return <SupplyChainView subView={currentPath} onNavigate={setCurrentPath} />;
 
       case 'production-runs':
       case 'bom-recipes':

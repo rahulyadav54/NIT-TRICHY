@@ -9,19 +9,19 @@ export function ReportsView({ onNavigate: _onNavigate }: { onNavigate?: (path: s
   const [exporting, setExporting] = useState(false);
 
   const registers = [
-    { id: 'production-run', name: 'Production & Yield Register', category: 'OPERATIONS', desc: 'Batch runs, good output, scrap pouches, and ingredient variances' },
-    { id: 'consumption-variance', name: 'Oil Consumption Variance Register', category: 'OPERATIONS', desc: 'Expected vs actual cooking oil usage with tolerance flags' },
-    { id: 'yield-wastage', name: 'Damaged Pouch & Scrap Register', category: 'OPERATIONS', desc: 'Damaged packaging pouches re-melted/credited in batch cost' },
+    { id: 'production-report', name: 'Production & Yield Register', category: 'OPERATIONS', desc: 'Batch runs, good output, scrap pouches, and ingredient variances' },
+    { id: 'planned-vs-actual-consumption', name: 'Oil & Material Consumption Variance', category: 'OPERATIONS', desc: 'Expected vs actual cooking oil & raw material usage with tolerance flags' },
+    { id: 'yield-wastage', name: 'Damaged Pouch & Scrap Register', category: 'OPERATIONS', desc: 'Damaged packaging pouches and batch wastage analysis' },
     { id: 'stock-ledger', name: 'Stock Movement Ledger (Audit)', category: 'SUPPLY_CHAIN', desc: 'Derived inventory balances from receipts, issues, and dispatches' },
     { id: 'purchase-register', name: 'Raw Material Inward Receipts (GRN)', category: 'SUPPLY_CHAIN', desc: 'Goods receipts with supplier details and weighted average cost' },
-    { id: 'packaging-stock', name: 'Packaging Materials Stock Register', category: 'SUPPLY_CHAIN', desc: 'Laminated film rolls, pouches, and outer corrugated cartons' },
+    { id: 'packaging-summary', name: 'Packaging Materials Stock Register', category: 'SUPPLY_CHAIN', desc: 'Laminated film rolls, pouches, and outer corrugated cartons' },
     { id: 'sales-register', name: 'Sales Register', category: 'COMMERCIAL', desc: 'Wholesale and retail sales orders with snapshot pricing' },
-    { id: 'outstanding-receivables', name: 'Customer Outstanding & Receivables', category: 'COMMERCIAL', desc: 'Aging report of unpaid customer invoices (> 30 days)' },
-    { id: 'gst-outward-summary', name: 'GST Outward Supplies (GSTR-1 Register)', category: 'FINANCE', desc: 'State-wise breakdown: Intra-state CGST+SGST vs Inter-state IGST' },
-    { id: 'raw-material-stock', name: 'Raw Material Stock Summary', category: 'FINANCE', desc: 'Current raw material stock balances and reorder status' },
-    { id: 'product-cost', name: 'Batch Costing & Margin Register', category: 'FINANCE', desc: 'Unit cost per good packet, absorption costing, and gross margins' },
-    { id: 'finished-goods-stock', name: 'Finished Goods Stock Summary', category: 'FINANCE', desc: 'Available finished goods inventory ready for dispatch' },
-    { id: 'payments-collections', name: 'Payments & Collections Report', category: 'AUDIT', desc: 'Customer payment receipts across CASH, NEFT, RTGS, UPI' },
+    { id: 'outstanding-receivables', name: 'Customer Outstanding & Receivables', category: 'COMMERCIAL', desc: 'Aging report of unpaid customer invoices' },
+    { id: 'gst-summary', name: 'GST Outward Supplies (GSTR-1 Register)', category: 'FINANCE', desc: 'State-wise breakdown: Intra-state CGST+SGST vs Inter-state IGST' },
+    { id: 'raw-material-summary', name: 'Raw Material Stock Summary', category: 'FINANCE', desc: 'Current raw material stock balances and reorder status' },
+    { id: 'product-cost-report', name: 'Batch Costing & Margin Register', category: 'FINANCE', desc: 'Unit cost per good packet, absorption costing, and gross margins' },
+    { id: 'finished-goods-summary', name: 'Finished Goods Stock Summary', category: 'FINANCE', desc: 'Available finished goods inventory ready for dispatch' },
+    { id: 'payments-report', name: 'Payments & Collections Report', category: 'AUDIT', desc: 'Customer payment receipts across CASH, NEFT, RTGS, UPI' },
     { id: 'audit-trail', name: 'Immutable User Audit Trail Log', category: 'AUDIT', desc: 'Timestamped user actions, logins, approvals, and stock adjustments' },
   ];
 
@@ -29,11 +29,12 @@ export function ReportsView({ onNavigate: _onNavigate }: { onNavigate?: (path: s
     setExporting(true);
     try {
       const token = getAuthToken();
-      const fmt = format === 'csv' ? 'csv' : 'xlsx';
+      const exportKind = format === 'csv' ? 'csv' : 'excel';
+      const ext = format === 'csv' ? 'csv' : 'xlsx';
       const endpoint =
-        selectedRegister === 'sales-register'
-          ? `/api/reports/export/sales-register?format=${fmt}&startDate=${startDate}&endDate=${endDate}`
-          : `/api/reports/${selectedRegister}`;
+        selectedRegister === 'sales-register' || selectedRegister === 'stock-ledger'
+          ? `/api/reports/export/${exportKind}/${selectedRegister}`
+          : `/api/reports/${selectedRegister}?startDate=${startDate}&endDate=${endDate}`;
 
       const res = await fetch(endpoint, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -46,7 +47,7 @@ export function ReportsView({ onNavigate: _onNavigate }: { onNavigate?: (path: s
       const a = document.createElement('a');
       a.href = url;
       a.download = `${selectedRegister}_${startDate}_to_${endDate}.${
-        selectedRegister === 'sales-register' ? fmt : 'json'
+        selectedRegister === 'sales-register' || selectedRegister === 'stock-ledger' ? ext : 'json'
       }`;
       a.click();
       window.URL.revokeObjectURL(url);

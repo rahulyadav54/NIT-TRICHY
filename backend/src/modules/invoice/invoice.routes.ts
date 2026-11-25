@@ -236,3 +236,136 @@ invoiceRouter.get('/', async (req: AuthenticatedRequest, res: Response) => {
   res.json({ success: true, data: invoices });
 });
 
+// GET Invoice PDF download (generated with pdfmake)
+invoiceRouter.get('/:id/pdf', async (req: AuthenticatedRequest, res: Response) => {
+  const invoice = await queryOne(
+    `SELECT i.*, c.name as "customerName", c.gstin as "customerGstin",
+            c."billingAddress", c.state as "customerState", c."stateCode" as "customerStateCode"
+     FROM "Invoice" i
+     JOIN "Customer" c ON i."customerId" = c.id
+     WHERE i.id = $1`,
+    [req.params.id]
+  );
+
+  if (!invoice) {
+    return res.status(404).json({ success: false, message: 'Invoice not found' });
+  }
+
+  const items = await query(
+    `SELECT ii.*, p.name as "productName", p.code as "productCode", p."packSize"
+     FROM "InvoiceItem" ii
+     JOIN "Product" p ON ii."productId" = p.id
+     WHERE ii."invoiceId" = $1`,
+    [invoice.id]
+  );
+
+  // @ts-expect-error pdfmake/src/printer.js has no bundled .d.ts
+  const PdfPrinterModule: any = await import('pdfmake/src/printer.js').catch(() => null);
+  const PdfPrinter = PdfPrinterModule?.default || PdfPrinterModule;
+  if (!PdfPrinter) {
+    return res.status(500).json({ success: false, message: 'PDF printer unavailable' });
+  }
+
+  const printer = new PdfPrinter({
+    Helvetica: {
+      normal: 'Helvetica',
+      bold: 'Helvetica-Bold',
+      italics: 'Helvetica-Oblique',
+      bolditalics: 'Helvetica-BoldOblique',
+    },
+  });
+
+  const docDefinition: any = {
+    defaultStyle: { font: 'Helvetica', fontSize: 10 },
+    content: [
+      { text: 'TAX INVOICE', style: 'header', alignment: 'center' },
+      { text: config.company.name, bold: true, fontSize: 13, margin: [0, 6, 0, 2] },
+      { text: `GSTIN: ${config.company.gstin} | State: ${config.company.state} (${config.company.stateCode})` },
+      { text: config.company.address, margin: [0, 0, 0, 10] },
+      {
+        columns: [
+          [
+            { text: 'Billed To:', bold: true },
+            { text: invoice.customerName },
+            { text: `GSTIN: ${invoice.customerGstin}` },
+            { text: `Place of Supply: ${invoice.placeOfSupply}` },
+          ],
+          [
+            { text: `Invoice #: ${invoice.invoiceNumber}`, bold: true, alignment: 'right' },
+            { text: `Date: ${new Date(invoice.invoiceDate).toLocaleDateString('en-IN')}`, alignment: 'right' },
+            { text: `Status: ${invoice.status}`, alignment: 'right' },
+          ],
+        ],
+        margin: [0, 0, 0, 12],
+      },
+      {
+        table: {
+          headerRows: 1,
+          widths: ['*', 'auto', 'auto', 'auto', 'auto'],
+          body: [
+            ['Product', 'HSN', 'Qty', 'Rate (₹)', 'Total (₹)'],
+            ...items.map((it) => [
+              `${it.productName} (${it.packSize})`,
+              it.hsnCode,
+              Number(it.quantity).toString(),
+              Number(it.unitPrice).toFixed(2),
+              Number(it.totalAmount).toFixed(2),
+            ]),
+          ],
+        },
+        margin: [0, 0, 0, 12],
+      },
+      { text: `Taxable Amount: ₹${Number(invoice.taxableAmount).toFixed(2)}`, alignment: 'right' },
+      { text: `CGST (2.5%): ₹${Number(invoice.cgstAmount).toFixed(2)}`, alignment: 'right' },
+      { text: `SGST (2.5%): ₹${Number(invoice.sgstAmount).toFixed(2)}`, alignment: 'right' },
+      { text: `IGST (5.0%): ₹${Number(invoice.igstAmount).toFixed(2)}`, alignment: 'right' },
+      { text: `Grand Total: ₹${Number(invoice.grandTotal).toFixed(2)}`, bold: true, fontSize: 12, alignment: 'right', margin: [0, 4, 0, 0] },
+    ],
+    styles: {
+      header: { fontSize: 16, bold: true },
+    },
+  };
+
+  const pdfDoc = printer.createPdfKitDocument(docDefinition);
+  const chunks: Buffer[] = [];
+  pdfDoc.on('data', (chunk: Buffer) => chunks.push(chunk));
+  pdfDoc.on('end', () => {
+    const buffer = Buffer.concat(chunks);
+    res.setHeader('Content-Type', 'application/pdf');
+    res.setHeader('Content-Disposition', `attachment; filename="${invoice.invoiceNumber.replace(/\//g, '-')}.pdf"`);
+    res.send(buffer);
+  });
+  pdfDoc.end();
+});
+
+// POST Cancel Invoice via Credit Note (preserves immutable invoice history)
+invoiceRouter.post('/:id/cancel', roleGuard([Role.ADMIN, Role.OWNER]), async (req: AuthenticatedRequest, res: Response) => {
+  const invoice = await queryOne('SELECT * FROM "Invoice" WHERE id = $1', [req.params.id]);
+  if (!invoice) {
+    return res.status(404).json({ success: false, message: 'Invoice not found' });
+  }
+  if (invoice.status === 'CANCELLED') {
+    return res.status(400).json({ success: false, message: 'Invoice is already cancelled.' });
+  }
+
+  const countRes = await queryOne<{ count: string }>('SELECT count(*) FROM "CreditNote"');
+  const seq = (parseInt(countRes?.count || '0', 10) + 1).toString().padStart(4, '0');
+  const creditNoteNumber = `CN/2026-27/${seq}`;
+  const reason = (req.body?.reason as string) || 'Cancelled via Credit Note';
+
+  await execute(
+    `INSERT INTO "CreditNote" (id, "creditNoteNumber", "invoiceId", reason, amount, "issuedDate", "createdAt")
+     VALUES ($1, $2, $3, $4, $5, NOW(), NOW())`,
+    [randomUUID(), creditNoteNumber, invoice.id, reason, new Decimal(invoice.grandTotal).toFixed(2)]
+  );
+
+  await execute('UPDATE "Invoice" SET status = \'CANCELLED\', "balanceDue" = 0.00, "updatedAt" = NOW() WHERE id = $1', [invoice.id]);
+
+  await execute(
+    'INSERT INTO "AuditLog" (id, "userId", action, "entityName", "entityId", "newValues", timestamp) VALUES ($1, $2, $3, $4, $5, $6, NOW())',
+    [randomUUID(), req.user?.userId, 'CANCEL', 'Invoice', invoice.id, JSON.stringify({ creditNoteNumber, reason })]
+  );
+
+  res.json({ success: true, message: `Invoice cancelled with Credit Note ${creditNoteNumber}`, data: { creditNoteNumber } });
+});
+

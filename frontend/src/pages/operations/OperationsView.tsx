@@ -30,7 +30,7 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
         apiRequest('/production'),
         apiRequest('/bom'),
         apiRequest('/master/products'),
-        apiRequest('/reports/stock-movement'),
+        apiRequest('/reports/stock-ledger'),
       ]);
 
       if (prRes.status === 'fulfilled') setProdRuns(prRes.value.data || []);

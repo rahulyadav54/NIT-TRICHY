@@ -18,44 +18,44 @@ const NAV_ITEMS = [
   {
     section: 'CORE',
     items: [
-      { path: 'overview', label: 'Overview / Dashboard', Icon: LayoutDashboard },
-      { path: 'alerts-action-center', label: 'Alerts & Action Center', Icon: AlertTriangle, badge: '4', badgeColor: 'bg-red-500 text-white' },
+      { path: 'overview', label: 'Overview / Dashboard', Icon: LayoutDashboard, roles: ['OWNER', 'ADMIN', 'PRODUCTION_SUPERVISOR', 'SALESMAN', 'ACCOUNTANT_AUDITOR'] },
+      { path: 'alerts-action-center', label: 'Alerts & Action Center', Icon: AlertTriangle, badge: '4', badgeColor: 'bg-red-500 text-white', roles: ['OWNER', 'ADMIN', 'PRODUCTION_SUPERVISOR'] },
     ],
   },
   {
     section: 'OPERATIONS',
     items: [
-      { path: 'production-runs', label: 'Production Runs', Icon: Factory },
-      { path: 'bom-recipes', label: 'BOM & Recipes', Icon: ClipboardList },
-      { path: 'materials-inventory', label: 'Materials & Inventory', Icon: Package },
-      { path: 'stock-movement', label: 'Stock Movement', Icon: ArrowLeftRight },
-      { path: 'quality-audit-trail', label: 'Quality & Audit Trail', Icon: CheckCircle },
+      { path: 'production-runs', label: 'Production Runs', Icon: Factory, roles: ['OWNER', 'ADMIN', 'PRODUCTION_SUPERVISOR'] },
+      { path: 'bom-recipes', label: 'BOM & Recipes', Icon: ClipboardList, roles: ['OWNER', 'ADMIN', 'PRODUCTION_SUPERVISOR'] },
+      { path: 'materials-inventory', label: 'Materials & Inventory', Icon: Package, roles: ['OWNER', 'ADMIN', 'PRODUCTION_SUPERVISOR', 'ACCOUNTANT_AUDITOR'] },
+      { path: 'stock-movement', label: 'Stock Movement', Icon: ArrowLeftRight, roles: ['OWNER', 'ADMIN', 'PRODUCTION_SUPERVISOR', 'ACCOUNTANT_AUDITOR'] },
+      { path: 'quality-audit-trail', label: 'Quality & Audit Trail', Icon: CheckCircle, roles: ['OWNER', 'ADMIN', 'PRODUCTION_SUPERVISOR', 'ACCOUNTANT_AUDITOR'] },
     ],
   },
   {
     section: 'SUPPLY CHAIN',
     items: [
-      { path: 'purchases-grn', label: 'Purchases & GRN', Icon: ShoppingCart },
-      { path: 'suppliers-directory', label: 'Suppliers Directory', Icon: Users },
-      { path: 'dispatch-gate-pass', label: 'Dispatch & Gate Pass', Icon: Truck },
+      { path: 'purchases-grn', label: 'Purchases & GRN', Icon: ShoppingCart, roles: ['OWNER', 'ADMIN', 'PRODUCTION_SUPERVISOR', 'ACCOUNTANT_AUDITOR'] },
+      { path: 'suppliers-directory', label: 'Suppliers Directory', Icon: Users, roles: ['OWNER', 'ADMIN', 'PRODUCTION_SUPERVISOR'] },
+      { path: 'dispatch-gate-pass', label: 'Dispatch & Gate Pass', Icon: Truck, roles: ['OWNER', 'ADMIN'] },
     ],
   },
   {
     section: 'COMMERCIAL & SALES',
     items: [
-      { path: 'sales-orders', label: 'Sales & Orders', Icon: ShoppingBag },
-      { path: 'customers', label: 'Retail & Wholesale Customers', Icon: Store },
-      { path: 'gst-invoices-eway', label: 'GST Invoices & E-Way', Icon: FileText },
-      { path: 'payments-receivables', label: 'Payments & Receivables', Icon: Wallet },
-      { path: 'costing-margins', label: 'Costing & Margins', Icon: TrendingUp },
+      { path: 'sales-orders', label: 'Sales & Orders', Icon: ShoppingBag, roles: ['OWNER', 'ADMIN', 'SALESMAN', 'ACCOUNTANT_AUDITOR'] },
+      { path: 'customers', label: 'Retail & Wholesale Customers', Icon: Store, roles: ['OWNER', 'ADMIN', 'SALESMAN', 'ACCOUNTANT_AUDITOR'] },
+      { path: 'gst-invoices-eway', label: 'GST Invoices & E-Way', Icon: FileText, roles: ['OWNER', 'ADMIN', 'ACCOUNTANT_AUDITOR'] },
+      { path: 'payments-receivables', label: 'Payments & Receivables', Icon: Wallet, roles: ['OWNER', 'ADMIN', 'ACCOUNTANT_AUDITOR'] },
+      { path: 'costing-margins', label: 'Costing & Margins', Icon: TrendingUp, roles: ['OWNER', 'ADMIN', 'ACCOUNTANT_AUDITOR'] },
     ],
   },
   {
     section: 'ENTERPRISE',
     items: [
-      { path: 'reports-analytics', label: 'Reports & Analytics', Icon: BarChart2 },
-      { path: 'user-management', label: 'User Management', Icon: Users2 },
-      { path: 'plant-settings', label: 'Plant Settings', Icon: Settings },
+      { path: 'reports-analytics', label: 'Reports & Analytics', Icon: BarChart2, roles: ['OWNER', 'ADMIN', 'ACCOUNTANT_AUDITOR'] },
+      { path: 'user-management', label: 'User Management', Icon: Users2, roles: ['OWNER', 'ADMIN'] },
+      { path: 'plant-settings', label: 'Plant Settings', Icon: Settings, roles: ['OWNER', 'ADMIN'] },
     ],
   },
 ];
@@ -141,7 +141,12 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
 
       {/* Nav */}
       <nav className="flex-1 overflow-y-auto py-3 space-y-4" style={{ scrollbarWidth: 'thin', scrollbarColor: '#1E293B transparent' }}>
-        {NAV_ITEMS.map((group) => (
+        {NAV_ITEMS.map((group) => {
+          const visibleItems = group.items.filter(
+            (item) => !user?.role || item.roles.includes(user.role)
+          );
+          if (visibleItems.length === 0) return null;
+          return (
           <div key={group.section}>
             {!collapsed && (
               <p className="px-4 mb-1 text-[10px] font-semibold uppercase tracking-widest text-[#475569]">
@@ -149,7 +154,7 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
               </p>
             )}
             <div className="space-y-0.5 px-2">
-              {group.items.map(({ path, label, Icon, badge, badgeColor }) => {
+              {visibleItems.map(({ path, label, Icon, badge, badgeColor }) => {
                 const isActive = currentPath === path;
                 return (
                   <button
@@ -184,7 +189,8 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
               })}
             </div>
           </div>
-        ))}
+          );
+        })}
       </nav>
 
       {/* Bottom Status + User */}
