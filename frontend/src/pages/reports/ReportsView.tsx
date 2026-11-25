@@ -25,16 +25,12 @@ export function ReportsView({ onNavigate: _onNavigate }: { onNavigate?: (path: s
     { id: 'audit-trail', name: 'Immutable User Audit Trail Log', category: 'AUDIT', desc: 'Timestamped user actions, logins, approvals, and stock adjustments' },
   ];
 
-  const handleExport = async (format: 'csv' | 'pdf') => {
+  const handleExport = async (format: 'csv' | 'excel') => {
     setExporting(true);
     try {
       const token = getAuthToken();
-      const exportKind = format === 'csv' ? 'csv' : 'excel';
       const ext = format === 'csv' ? 'csv' : 'xlsx';
-      const endpoint =
-        selectedRegister === 'sales-register' || selectedRegister === 'stock-ledger'
-          ? `/api/reports/export/${exportKind}/${selectedRegister}`
-          : `/api/reports/${selectedRegister}?startDate=${startDate}&endDate=${endDate}`;
+      const endpoint = `/api/reports/export/${format}/${selectedRegister}?startDate=${startDate}&endDate=${endDate}`;
 
       const res = await fetch(endpoint, {
         headers: token ? { Authorization: `Bearer ${token}` } : {},
@@ -46,9 +42,7 @@ export function ReportsView({ onNavigate: _onNavigate }: { onNavigate?: (path: s
       const url = window.URL.createObjectURL(blob);
       const a = document.createElement('a');
       a.href = url;
-      a.download = `${selectedRegister}_${startDate}_to_${endDate}.${
-        selectedRegister === 'sales-register' || selectedRegister === 'stock-ledger' ? ext : 'json'
-      }`;
+      a.download = `${selectedRegister}_${startDate}_to_${endDate}.${ext}`;
       a.click();
       window.URL.revokeObjectURL(url);
     } catch (err: any) {
@@ -105,12 +99,12 @@ export function ReportsView({ onNavigate: _onNavigate }: { onNavigate?: (path: s
           </button>
 
           <button
-            onClick={() => handleExport('pdf')}
+            onClick={() => handleExport('excel')}
             disabled={exporting}
             className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm transition-colors"
           >
             <FileDown size={15} />
-            <span>Export Formal PDF</span>
+            <span>Export Excel (.xlsx)</span>
           </button>
         </div>
       </div>

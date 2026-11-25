@@ -255,19 +255,157 @@ reportRouter.get('/customer-ageing', async (req: AuthenticatedRequest, res: Resp
 });
 
 // ==========================================
-// CSV & EXCEL EXPORTS
+// CSV & EXCEL EXPORTS (Unified across all reports)
 // ==========================================
+async function getExportRows(reportName: string, startDate?: string, endDate?: string): Promise<any[]> {
+  switch (reportName) {
+    case 'sales-register': {
+      const { clause, params } = getDateFilter(startDate, endDate, 'i."invoiceDate"');
+      return query(
+        `SELECT i."invoiceNumber", i."invoiceDate", c.name as "customerName", c.gstin as "customerGstin",
+                i."placeOfSupply", i."taxableAmount", i."cgstAmount", i."sgstAmount", i."igstAmount",
+                i."grandTotal", i."balanceDue", i.status
+         FROM "Invoice" i
+         JOIN "Customer" c ON i."customerId" = c.id
+         WHERE 1=1 ${clause}
+         ORDER BY i."invoiceDate" DESC`,
+        params
+      );
+    }
+    case 'stock-ledger':
+      return query(
+        `SELECT im."transactionDate", im.category, im."transactionType",
+                COALESCE(m.code, p.code) as "itemCode", COALESCE(m.name, p.name) as "itemName",
+                im."qtyIn", im."qtyOut", im."balanceAfter", im.unit,
+                im."sourceDocumentType", im."sourceDocumentId", u.name as "performedBy"
+         FROM "InventoryMovement" im
+         LEFT JOIN "Material" m ON im."materialId" = m.id
+         LEFT JOIN "Product" p ON im."productId" = p.id
+         LEFT JOIN "User" u ON im."performedByUserId" = u.id
+         ORDER BY im."transactionDate" DESC, im."createdAt" DESC`
+      );
+    case 'raw-material-summary':
+      return query(
+        `SELECT m.code, m.name, m.unit, m."purchaseRate", m."reorderLevel",
+                COALESCE(SUM(im."qtyIn") - SUM(im."qtyOut"), 0) as "currentStock"
+         FROM "Material" m
+         LEFT JOIN "InventoryMovement" im ON m.id = im."materialId"
+         WHERE m.category = 'RAW_MATERIAL'
+         GROUP BY m.id, m.code, m.name, m.unit, m."purchaseRate", m."reorderLevel"
+         ORDER BY m.name ASC`
+      );
+    case 'packaging-summary':
+      return query(
+        `SELECT m.code, m.name, m.unit, m."purchaseRate", m."reorderLevel",
+                COALESCE(SUM(im."qtyIn") - SUM(im."qtyOut"), 0) as "currentStock"
+         FROM "Material" m
+         LEFT JOIN "InventoryMovement" im ON m.id = im."materialId"
+         WHERE m.category = 'PACKAGING'
+         GROUP BY m.id, m.code, m.name, m.unit, m."purchaseRate", m."reorderLevel"
+         ORDER BY m.name ASC`
+      );
+    case 'finished-goods-summary':
+      return query(
+        `SELECT p.code, p.name, p."packSize", p."sellingPrice",
+                COALESCE(SUM(im."qtyIn") - SUM(im."qtyOut"), 0) as "currentStock"
+         FROM "Product" p
+         LEFT JOIN "InventoryMovement" im ON p.id = im."productId"
+         GROUP BY p.id, p.code, p.name, p."packSize", p."sellingPrice"
+         ORDER BY p.name ASC`
+      );
+    case 'production-report':
+      return query(
+        `SELECT pr."runNumber", pr."productionDate", p.name as "productName", pr."batchSize",
+                pr."plannedOutput", pr."goodOutput", pr."damagedPackagingQty", pr."cartonsUsed",
+                pr."yieldVariancePct", pr."costPerPacket", pr."totalCost"
+         FROM "ProductionRun" pr
+         JOIN "Product" p ON pr."productId" = p.id
+         ORDER BY pr."productionDate" DESC`
+      );
+    case 'planned-vs-actual-consumption':
+      return query(
+        `SELECT pr."runNumber", pr."productionDate", m.name as "materialName", m.code as "materialCode",
+                pc."plannedQty", pc."actualQty", pc."varianceQty", pc."variancePct", pc.unit
+         FROM "ProductionConsumption" pc
+         JOIN "ProductionRun" pr ON pc."productionRunId" = pr.id
+         JOIN "Material" m ON pc."materialId" = m.id
+         ORDER BY pr."productionDate" DESC`
+      );
+    case 'yield-wastage':
+      return query(
+        `SELECT pr."runNumber", pr."productionDate", p.name as "productName",
+                pr."plannedOutput", pr."goodOutput",
+                (pr."plannedOutput" - pr."goodOutput") as "wastageQty",
+                pr."yieldVariancePct", pr."damagedPackagingQty" as "damagedPouches"
+         FROM "ProductionRun" pr
+         JOIN "Product" p ON pr."productId" = p.id
+         ORDER BY pr."productionDate" DESC`
+      );
+    case 'product-cost-report':
+      return query(
+        `SELECT pr."runNumber", p.name as "productName", pr."goodOutput",
+                pr."materialCost", pr."packagingCost", pr."labourCost", pr."powerGasCost",
+                pr."totalCost", pr."costPerPacket", p."sellingPrice",
+                (p."sellingPrice" - pr."costPerPacket") as "grossMargin"
+         FROM "ProductionRun" pr
+         JOIN "Product" p ON pr."productId" = p.id
+         ORDER BY pr."productionDate" DESC`
+      );
+    case 'purchase-register':
+      return query(
+        `SELECT p."poNumber", p."orderDate", p."receivedDate", s.name as "supplierName", s.gstin as "supplierGstin",
+                p.subtotal, p."taxTotal", p."grandTotal", p.status
+         FROM "Purchase" p
+         JOIN "Supplier" s ON p."supplierId" = s.id
+         ORDER BY p."orderDate" DESC`
+      );
+    case 'gst-summary':
+      return query(
+        `SELECT i."placeOfSupply",
+                COALESCE(SUM(i."taxableAmount"), 0) as "totalTaxable",
+                COALESCE(SUM(i."cgstAmount"), 0) as "totalCgst",
+                COALESCE(SUM(i."sgstAmount"), 0) as "totalSgst",
+                COALESCE(SUM(i."igstAmount"), 0) as "totalIgst",
+                COALESCE(SUM(i."grandTotal"), 0) as "totalGrand"
+         FROM "Invoice" i
+         WHERE i.status != 'CANCELLED'
+         GROUP BY i."placeOfSupply"`
+      );
+    case 'payments-report':
+      return query(
+        `SELECT pay."paymentNumber", pay."paymentDate", c.name as "customerName",
+                i."invoiceNumber", pay.amount, pay."paymentMode", pay."referenceNumber"
+         FROM "Payment" pay
+         JOIN "Customer" c ON pay."customerId" = c.id
+         LEFT JOIN "Invoice" i ON pay."invoiceId" = i.id
+         ORDER BY pay."paymentDate" DESC`
+      );
+    case 'outstanding-receivables':
+      return query(
+        `SELECT c.code as "customerCode", c.name as "customerName", c.phone,
+                i."invoiceNumber", i."invoiceDate", i."grandTotal", i."balanceDue"
+         FROM "Invoice" i
+         JOIN "Customer" c ON i."customerId" = c.id
+         WHERE i."balanceDue" > 0 AND i.status != 'CANCELLED'
+         ORDER BY i."invoiceDate" ASC`
+      );
+    case 'audit-trail':
+      return query(
+        `SELECT a.timestamp, u.name as "userName", u.role as "userRole", a.action,
+                a."entityName", a."entityId", a."newValues"
+         FROM "AuditLog" a
+         LEFT JOIN "User" u ON a."userId" = u.id
+         ORDER BY a.timestamp DESC LIMIT 100`
+      );
+    default:
+      return query('SELECT code, name, category, "packSize", "sellingPrice", "hsnCode", "gstRate" FROM "Product"');
+  }
+}
+
 reportRouter.get('/export/csv/:reportName', async (req: AuthenticatedRequest, res: Response) => {
   const reportName = req.params.reportName;
-  let rows: any[] = [];
-
-  if (reportName === 'sales-register') {
-    rows = await query('SELECT * FROM "Invoice" ORDER BY "invoiceDate" DESC');
-  } else if (reportName === 'stock-ledger') {
-    rows = await query('SELECT * FROM "InventoryMovement" ORDER BY "transactionDate" DESC');
-  } else {
-    rows = await query('SELECT * FROM "Product"');
-  }
+  const { startDate, endDate } = req.query as { startDate?: string; endDate?: string };
+  const rows = await getExportRows(reportName, startDate, endDate);
 
   const csv = stringify(rows, { header: true });
   res.setHeader('Content-Type', 'text/csv');
@@ -277,21 +415,17 @@ reportRouter.get('/export/csv/:reportName', async (req: AuthenticatedRequest, re
 
 reportRouter.get('/export/excel/:reportName', async (req: AuthenticatedRequest, res: Response) => {
   const reportName = req.params.reportName;
+  const { startDate, endDate } = req.query as { startDate?: string; endDate?: string };
   const workbook = new ExcelJS.Workbook();
   const worksheet = workbook.addWorksheet(reportName);
 
-  let rows: any[] = [];
-  if (reportName === 'sales-register') {
-    rows = await query('SELECT * FROM "Invoice" ORDER BY "invoiceDate" DESC');
-  } else {
-    rows = await query('SELECT * FROM "Product"');
-  }
+  const rows = await getExportRows(reportName, startDate, endDate);
 
   if (rows.length > 0) {
     worksheet.columns = Object.keys(rows[0]).map((key) => ({
       header: key,
       key,
-      width: 20,
+      width: 22,
     }));
     rows.forEach((r) => worksheet.addRow(r));
   }
