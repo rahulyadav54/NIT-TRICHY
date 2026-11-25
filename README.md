@@ -87,6 +87,9 @@ Run the reproducible NIT Trichy E2E benchmark suite (`backend/test/benchmark.tes
 
 ## 🛠️ Technology Stack & Architecture
 
+### Why This Stack?
+We chose a **responsive Web Application (React + TypeScript + Vite) paired with a Node.js/Express REST API and PostgreSQL** rather than separate native mobile or low-code tools. A single responsive web codebase lets field salesmen place orders quickly from any mobile browser while giving plant supervisors, admins, auditors, and the owner full desktop dashboards, complex BOM/costing tables, and instant PDF/CSV/Excel exports without app-store friction. Using TypeScript end-to-end with `Decimal.js` and PostgreSQL ensures strict financial precision, atomic inventory ledger integrity, and zero-effort cloud deployment on Vercel + Supabase.
+
 | Layer | Technologies |
 |---|---|
 | **Frontend** | React 18, TypeScript, Vite 6, Tailwind CSS, Lucide Icons (`frontend/`) |
