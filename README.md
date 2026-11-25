@@ -145,6 +145,19 @@ npx tsx test/benchmark.test.ts   # 26/26 Master E2E Benchmark assertions
 
 ## ☁️ Deploying on Vercel + Supabase
 
+- **Hosted Demo:** `https://nit-trichy-git-main-rjrahulyadavs-projects.vercel.app`
+
+### Evaluation Criteria Compliance
+| Requirement | Implementation |
+|---|---|
+| **Real Database & Derived Ledger** | PostgreSQL (`prisma/schema.prisma`) on Supabase / PGlite; stock derived from immutable `InventoryMovement` (`SUM(qtyIn) - SUM(qtyOut)`) |
+| **Decimal Money Math** | `Decimal.js` + PostgreSQL `DECIMAL(12,2)` / `DECIMAL(12,4)` — zero float arithmetic |
+| **Full Traceability** | Every stock movement links to `sourceDocumentType`, `sourceDocumentId`, `performedByUserId`, and `transactionDate` |
+| **Audit Trail & Credit Notes** | `AuditLog` tracks all mutations; posted invoices are never deleted (`POST /api/invoice/:id/cancel` issues a `CreditNote`) |
+| **Reproducible Seed & Benchmark** | `backend/prisma/seed.ts`, `reset.ts`, and `backend/test/benchmark.test.ts` (`26/26` assertions) |
+| **Deployability** | One-click Vercel Services (`vercel.json`) + Supabase, or local Docker Compose / npm dev |
+
+### Deployment Steps
 1. Create a PostgreSQL database on **Supabase** and copy the **Shared/Session Pooler** URI (`*.pooler.supabase.com:5432`).
 2. Import this repository in **[Vercel](https://vercel.com/new)** (root `vercel.json` configures both `frontend` and `backend` automatically).
 3. Add Environment Variables in Vercel:
