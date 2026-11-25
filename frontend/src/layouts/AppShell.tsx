@@ -263,47 +263,45 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
           style={{ height: 64 }}
         >
           {/* Left: Mobile hamburger + Breadcrumb */}
-          <div className="flex items-center gap-3 min-w-0 flex-1">
+          <div className="flex items-center gap-2.5 min-w-0 flex-1 overflow-hidden">
             <button
               onClick={() => setMobileOpen(true)}
-              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-600"
+              className="lg:hidden p-2 rounded-lg hover:bg-gray-100 text-gray-600 flex-shrink-0"
             >
               <Menu size={20} />
             </button>
 
             {/* Breadcrumb */}
-            <div className="hidden sm:flex items-center gap-1.5 text-sm text-gray-500 min-w-0">
+            <div className="hidden sm:flex items-center gap-1.5 text-sm text-gray-500 min-w-0 truncate">
               <span
                 onClick={() => handleNav('overview')}
                 className="hover:text-[#2457D6] cursor-pointer transition-colors whitespace-nowrap"
               >
-                TRIMA Operations
+                TRIMA ERP
               </span>
-              <span className="text-gray-300">/</span>
-              <span className="whitespace-nowrap">Trichy Plant 1</span>
               <span className="text-gray-300">/</span>
               <span className="font-semibold text-[#172033] truncate">
                 {BREADCRUMB_MAP[currentPath] || 'Overview'}
               </span>
             </div>
 
-            {/* Plant selector */}
-            <div className="hidden lg:flex items-center gap-1.5 h-8 px-3 rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 cursor-pointer text-sm text-[#172033] ml-2 whitespace-nowrap">
-              <Building2 size={14} className="text-[#2457D6]" />
+            {/* Plant selector (wide screens only so breadcrumb never clips) */}
+            <div className="hidden 2xl:flex items-center gap-1.5 h-8 px-3 rounded-lg border border-gray-200 bg-gray-50 hover:bg-gray-100 cursor-pointer text-xs font-medium text-[#172033] ml-2 whitespace-nowrap flex-shrink-0">
+              <Building2 size={13} className="text-[#2457D6]" />
               <span>Trichy Plant 1</span>
               <ChevronDown size={12} className="text-gray-500" />
             </div>
           </div>
 
           {/* Center: Search */}
-          <div className="hidden md:flex relative items-center w-72 lg:w-96 flex-shrink-0">
+          <div className="hidden md:flex relative items-center w-56 xl:w-72 flex-shrink-0">
             <Search size={15} className="absolute left-3 text-gray-400" />
             <input
               type="text"
-              placeholder="Search orders, materials, batch #, GSTIN..."
-              className="w-full h-9 pl-9 pr-14 text-sm bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2457D6]/30 focus:border-[#2457D6] text-[#172033] placeholder:text-gray-400 transition-all"
+              placeholder="Search orders, materials, GSTIN..."
+              className="w-full h-9 pl-9 pr-12 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2457D6]/30 focus:border-[#2457D6] text-[#172033] placeholder:text-gray-400 transition-all"
             />
-            <span className="absolute right-3 text-[11px] font-mono text-gray-400 bg-white border border-gray-200 px-1.5 py-0.5 rounded">
+            <span className="absolute right-2.5 text-[10px] font-mono text-gray-400 bg-white border border-gray-200 px-1.5 py-0.5 rounded">
               ⌘K
             </span>
           </div>

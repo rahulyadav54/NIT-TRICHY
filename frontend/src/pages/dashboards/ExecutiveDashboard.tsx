@@ -69,70 +69,70 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
         <div className="flex flex-wrap items-center gap-2">
           <div className="relative inline-flex items-center">
             <Building2 size={14} className="absolute left-2.5 text-[#2457D6]" />
-            <select className="h-8 pl-8 pr-7 bg-white text-sm text-[#172033] rounded-lg shadow-sm focus:outline-none appearance-none cursor-pointer border border-gray-200 hover:border-gray-300 transition-colors">
-              <option>Trichy Plant 1 - Confectionery & Savories Unit</option>
-              <option>Trichy Plant 2 - Extruded Snacks & Fryer Line</option>
-              <option>Central Cold Storage & Raw Silos (Viralimalai)</option>
+            <select className="h-9 pl-8 pr-7 bg-white text-xs font-medium text-[#172033] rounded-lg shadow-sm focus:outline-none appearance-none cursor-pointer border border-gray-200 hover:border-gray-300 transition-colors">
+              <option>Trichy Plant 1 • Unit-01</option>
+              <option>Trichy Plant 2 • Extruded</option>
+              <option>Viralimalai Silos</option>
             </select>
             <ChevronDown size={12} className="absolute right-2 text-[#64748B] pointer-events-none" />
           </div>
 
           <div className="relative inline-flex items-center">
             <Calendar size={14} className="absolute left-2.5 text-[#64748B]" />
-            <select className="h-8 pl-8 pr-7 bg-white text-sm text-[#172033] rounded-lg shadow-sm focus:outline-none appearance-none cursor-pointer border border-gray-200 hover:border-gray-300 transition-colors">
-              <option>Today: Shift A + B (Live Sync)</option>
-              <option>Yesterday: Complete Shift Run</option>
-              <option>Current Financial Week (W42)</option>
-              <option>Month to Date (Oct 2024)</option>
+            <select className="h-9 pl-8 pr-7 bg-white text-xs font-medium text-[#172033] rounded-lg shadow-sm focus:outline-none appearance-none cursor-pointer border border-gray-200 hover:border-gray-300 transition-colors">
+              <option>Today: Shift A + B</option>
+              <option>Yesterday</option>
+              <option>Current Week</option>
+              <option>Month to Date</option>
             </select>
             <ChevronDown size={12} className="absolute right-2 text-[#64748B] pointer-events-none" />
           </div>
 
           <button
             onClick={() => onNavigate?.('reports-analytics')}
-            className="flex items-center gap-1.5 h-8 px-3 bg-white hover:bg-gray-50 text-sm text-[#172033] font-medium rounded-lg shadow-sm transition-all border border-gray-200 hover:border-gray-300"
+            className="flex items-center gap-1.5 h-9 px-3 bg-white hover:bg-gray-50 text-xs text-[#172033] font-semibold rounded-lg shadow-sm transition-all border border-gray-200 hover:border-gray-300 whitespace-nowrap"
           >
             <FileDown size={14} className="text-red-500" />
-            Export Audit Report
+            Export Report
           </button>
 
           <button
             onClick={fetchTelemetry}
-            className="flex items-center gap-1.5 h-8 px-3 bg-white hover:bg-gray-50 text-sm text-[#172033] font-medium rounded-lg shadow-sm transition-all border border-gray-200 hover:border-gray-300 group"
+            className="flex items-center gap-1.5 h-9 px-3 bg-white hover:bg-gray-50 text-xs text-[#172033] font-semibold rounded-lg shadow-sm transition-all border border-gray-200 hover:border-gray-300 group whitespace-nowrap"
           >
             <RefreshCw size={14} className={`text-[#64748B] ${loading ? 'animate-spin' : 'group-hover:rotate-180 transition-transform duration-500'}`} />
-            Refresh Telemetry
+            Refresh
           </button>
         </div>
       </div>
 
-      {/* KPI Grid */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-6 gap-4 mb-6">
+      {/* KPI Grid — 3 cols on laptop (roomy, zero wrapping), 6 cols on 2xl ultra-wide */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 2xl:grid-cols-6 gap-4 mb-6">
         {/* KPI 1: Sales */}
         <div className="bg-white p-5 rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow relative overflow-hidden border border-gray-100">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Total Sales (Today)</span>
-            <div className="w-8 h-8 rounded-lg bg-[#2457D6]/10 flex items-center justify-center">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B] truncate">Total Sales (Today)</span>
+            <div className="w-8 h-8 rounded-lg bg-[#2457D6]/10 flex items-center justify-center flex-shrink-0">
               <TrendingUp size={16} className="text-[#2457D6]" />
             </div>
           </div>
           <div className="my-3">
-            <div className="text-3xl font-bold text-[#172033] tracking-tight">
+            <div className="text-2xl font-bold text-[#172033] tracking-tight whitespace-nowrap">
               ₹{totalSalesVal.toLocaleString('en-IN')}
             </div>
-            <div className="flex items-center gap-1 mt-1.5">
+            <div className="flex items-center gap-1.5 mt-1.5 whitespace-nowrap">
               <span className="inline-flex items-center gap-0.5 px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 text-[11px] font-bold">
                 <TrendingUp size={10} />+14.2%
               </span>
               <span className="text-[11px] text-[#64748B]">vs yesterday</span>
             </div>
           </div>
-          <div className="pt-2 border-t border-gray-100">
-            <div className="flex justify-between items-center text-[11px]">
+          <div className="pt-2.5 border-t border-gray-100">
+            <div className="flex justify-between items-center text-[11px] whitespace-nowrap gap-2">
               <span className="text-[#64748B]">Target ₹2.80L</span>
-              <span className="font-semibold text-[#2457D6]">87.5% achieved</span>
+              <span className="font-semibold text-[#2457D6]">87.5%</span>
             </div>
-            <div className="w-full h-1.5 bg-gray-100 rounded-full mt-1 overflow-hidden">
+            <div className="w-full h-1.5 bg-gray-100 rounded-full mt-1.5 overflow-hidden">
               <div className="h-full bg-[#2457D6] rounded-full" style={{ width: '87.5%' }} />
             </div>
           </div>
@@ -140,20 +140,22 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
 
         {/* KPI 2: Pending Orders */}
         <div className="bg-white p-5 rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow border border-gray-100">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Pending Orders</span>
-            <div className="w-8 h-8 rounded-lg bg-[#64748B]/10 flex items-center justify-center">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B] truncate">Pending Orders</span>
+            <div className="w-8 h-8 rounded-lg bg-[#64748B]/10 flex items-center justify-center flex-shrink-0">
               <ShoppingBag size={16} className="text-[#64748B]" />
             </div>
           </div>
           <div className="my-3">
-            <div className="text-3xl font-bold text-[#172033] tracking-tight">{pendingOrdersCount} <span className="text-base font-normal text-[#64748B]">Orders</span></div>
-            <div className="inline-flex items-center gap-1 mt-1.5 px-1.5 py-0.5 rounded bg-blue-50 text-[#2457D6] text-[11px] font-semibold">
+            <div className="text-2xl font-bold text-[#172033] tracking-tight whitespace-nowrap">
+              {pendingOrdersCount} <span className="text-sm font-normal text-[#64748B]">Orders</span>
+            </div>
+            <div className="inline-flex items-center gap-1.5 mt-1.5 px-2 py-0.5 rounded bg-blue-50 text-[#2457D6] text-[11px] font-semibold whitespace-nowrap">
               <span className="w-1.5 h-1.5 rounded-full bg-[#2457D6]" />
               6 Approval • 12 In Line
             </div>
           </div>
-          <div className="pt-2 border-t border-gray-100 flex justify-between items-center">
+          <div className="pt-2.5 border-t border-gray-100 flex justify-between items-center whitespace-nowrap gap-2">
             <span className="text-[11px] text-[#64748B] font-mono">Cut-off: 02:00 PM</span>
             <button onClick={() => onNavigate?.('sales-orders')} className="text-[11px] text-[#2457D6] font-semibold hover:underline flex items-center gap-0.5">
               Review <ArrowRight size={11} />
@@ -163,40 +165,40 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
 
         {/* KPI 3: Production Output */}
         <div className="bg-white p-5 rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow border border-gray-100">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Output (Packets)</span>
-            <div className="w-8 h-8 rounded-lg bg-[#0D9488]/10 flex items-center justify-center">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B] truncate">Output (Packets)</span>
+            <div className="w-8 h-8 rounded-lg bg-[#0D9488]/10 flex items-center justify-center flex-shrink-0">
               <Package size={16} className="text-[#0D9488]" />
             </div>
           </div>
           <div className="my-3">
-            <div className="text-3xl font-bold text-[#172033] tracking-tight">
-              {totalProdUnits.toLocaleString('en-IN')} <span className="text-base font-normal text-[#64748B]">pkts</span>
+            <div className="text-2xl font-bold text-[#172033] tracking-tight whitespace-nowrap">
+              {totalProdUnits.toLocaleString('en-IN')} <span className="text-sm font-normal text-[#64748B]">pkts</span>
             </div>
-            <div className="text-[11px] text-[#64748B] mt-1.5">Target: 1,500 pkts <span className="font-semibold text-[#0D9488]">(83.3%)</span></div>
+            <div className="text-[11px] text-[#64748B] mt-1.5 whitespace-nowrap">Target: 1,500 pkts <span className="font-semibold text-[#0D9488]">(83.3%)</span></div>
           </div>
-          <div className="pt-2 border-t border-gray-100 flex items-center gap-1 text-[#0D9488] text-[11px] font-mono">
-            <Zap size={11} />
-            Batch #TK-2024-884 Active
+          <div className="pt-2.5 border-t border-gray-100 flex items-center gap-1.5 text-[#0D9488] text-[11px] font-mono truncate">
+            <Zap size={11} className="flex-shrink-0" />
+            <span className="truncate">Batch #TK-2024-884 Active</span>
           </div>
         </div>
 
         {/* KPI 4: Stock Health */}
         <div className="bg-white p-5 rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow border border-gray-100">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Stock Health</span>
-            <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B] truncate">Stock Health</span>
+            <div className="w-8 h-8 rounded-lg bg-gray-100 flex items-center justify-center flex-shrink-0">
               <Warehouse size={16} className="text-[#64748B]" />
             </div>
           </div>
           <div className="my-3">
-            <div className="text-3xl font-bold text-[#172033] tracking-tight">78% <span className="text-base font-normal text-[#64748B]">Index</span></div>
-            <div className="inline-flex items-center gap-1 mt-1.5 px-1.5 py-0.5 rounded bg-red-50 text-red-600 text-[11px] font-semibold">
+            <div className="text-2xl font-bold text-[#172033] tracking-tight whitespace-nowrap">78% <span className="text-sm font-normal text-[#64748B]">Index</span></div>
+            <div className="inline-flex items-center gap-1 mt-1.5 px-2 py-0.5 rounded bg-red-50 text-red-600 text-[11px] font-semibold whitespace-nowrap">
               <AlertTriangle size={10} />
               4 critical reorders
             </div>
           </div>
-          <div className="pt-2 border-t border-gray-100 flex justify-between items-center text-[11px] text-[#64748B]">
+          <div className="pt-2.5 border-t border-gray-100 flex justify-between items-center text-[11px] text-[#64748B] whitespace-nowrap">
             <span>Inbound Dock:</span>
             <span className="font-semibold text-[#172033]">3 GRNs today</span>
           </div>
@@ -204,20 +206,20 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
 
         {/* KPI 5: Overdue Dues */}
         <div className="bg-white p-5 rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow border border-gray-100">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Overdue Dues</span>
-            <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B] truncate">Overdue Dues</span>
+            <div className="w-8 h-8 rounded-lg bg-red-50 flex items-center justify-center flex-shrink-0">
               <ReceiptText size={16} className="text-red-500" />
             </div>
           </div>
           <div className="my-3">
-            <div className="text-3xl font-bold text-red-600 tracking-tight">₹38,500</div>
-            <div className="flex items-center gap-1 mt-1.5 text-red-600 text-[11px] font-medium">
+            <div className="text-2xl font-bold text-red-600 tracking-tight whitespace-nowrap">₹38,500</div>
+            <div className="flex items-center gap-1 mt-1.5 text-red-600 text-[11px] font-medium whitespace-nowrap">
               <TrendingDown size={11} />
               3 accounts &gt; 30 days
             </div>
           </div>
-          <div className="pt-2 border-t border-gray-100 flex justify-between items-center text-[11px] text-[#64748B]">
+          <div className="pt-2.5 border-t border-gray-100 flex justify-between items-center text-[11px] text-[#64748B] whitespace-nowrap">
             <span>Total Ledger:</span>
             <span className="font-semibold text-[#172033]">₹1,94,200</span>
           </div>
@@ -225,22 +227,22 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
 
         {/* KPI 6: Yield & OEE */}
         <div className="bg-white p-5 rounded-xl shadow-sm flex flex-col justify-between hover:shadow-md transition-shadow border border-gray-100">
-          <div className="flex items-center justify-between">
-            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B]">Yield & OEE</span>
-            <div className="w-8 h-8 rounded-lg bg-[#2457D6]/10 flex items-center justify-center">
+          <div className="flex items-center justify-between gap-2">
+            <span className="text-[11px] font-semibold uppercase tracking-wider text-[#64748B] truncate">Yield & OEE</span>
+            <div className="w-8 h-8 rounded-lg bg-[#2457D6]/10 flex items-center justify-center flex-shrink-0">
               <FlaskConical size={16} className="text-[#2457D6]" />
             </div>
           </div>
           <div className="my-3">
-            <div className="text-3xl font-bold text-[#2457D6] tracking-tight">94.2%</div>
-            <div className="flex items-center gap-1 mt-1.5">
-              <span className="px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 text-[11px] font-bold">+1.8% vs spec</span>
+            <div className="text-2xl font-bold text-[#2457D6] tracking-tight whitespace-nowrap">94.2%</div>
+            <div className="flex items-center gap-1.5 mt-1.5 whitespace-nowrap">
+              <span className="px-1.5 py-0.5 rounded-full bg-green-100 text-green-700 text-[11px] font-bold">+1.8%</span>
               <span className="text-[11px] text-[#64748B] font-mono">BOM Validated</span>
             </div>
           </div>
-          <div className="pt-2 border-t border-gray-100 flex justify-between items-center text-[11px] text-[#64748B]">
+          <div className="pt-2.5 border-t border-gray-100 flex justify-between items-center text-[11px] text-[#64748B] whitespace-nowrap">
             <span>Scrap/Waste:</span>
-            <span className="font-semibold text-[#0D9488]">1.4% (&lt; 2.0% tol)</span>
+            <span className="font-semibold text-[#0D9488]">1.4% (&lt; 2% tol)</span>
           </div>
         </div>
       </div>
@@ -257,7 +259,7 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
                   <span className="font-headline-sm text-headline-sm text-on-surface">
                     Monthly Sales Revenue & Production Correlation
                   </span>
-                  <span className="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-micro text-label-micro font-semibold uppercase">
+                  <span className="px-2 py-0.5 rounded-full bg-surface-container text-on-surface-variant font-label-micro text-label-micro font-semibold uppercase whitespace-nowrap">
                     Live Telemetry
                   </span>
                 </div>
@@ -267,10 +269,10 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
               </div>
 
               {/* Switchable Tabs */}
-              <div className="inline-flex p-0.5 rounded bg-surface-container-low border border-surface-container">
+              <div className="inline-flex p-0.5 rounded bg-surface-container-low border border-surface-container flex-shrink-0">
                 <button
                   onClick={() => setActiveTab('revenue')}
-                  className={`px-3 py-1 rounded font-body-strong text-body-strong transition-colors ${
+                  className={`px-3 py-1 rounded font-body-strong text-body-strong transition-colors whitespace-nowrap ${
                     activeTab === 'revenue'
                       ? 'bg-surface-container-lowest text-primary shadow-xs'
                       : 'text-secondary hover:text-on-surface'
@@ -280,7 +282,7 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
                 </button>
                 <button
                   onClick={() => setActiveTab('shift')}
-                  className={`px-3 py-1 rounded font-body-strong text-body-strong transition-colors ${
+                  className={`px-3 py-1 rounded font-body-strong text-body-strong transition-colors whitespace-nowrap ${
                     activeTab === 'shift'
                       ? 'bg-surface-container-lowest text-primary shadow-xs'
                       : 'text-secondary hover:text-on-surface'
@@ -355,9 +357,9 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
                 <rect className="fill-surface-variant" height="120" opacity="0.6" rx="2" width="22" x="700" y="75"></rect>
 
                 {/* Revenue Line Gradient Area */}
-                <path d="M 86 130 Q 206 90, 326 115 T 446 50 T 566 40 T 686 65 L 686 195 L 86 195 Z" fill="url(#revenueGradient)"></path>
+                <path d="M 86 130 C 146 110, 176 98, 206 98 C 266 98, 296 115, 326 115 C 386 115, 416 55, 446 55 C 506 55, 536 42, 566 42 C 626 42, 656 65, 686 65 L 686 195 L 86 195 Z" fill="url(#revenueGradient)"></path>
                 {/* Revenue Smooth Spline Line */}
-                <path className="stroke-primary" d="M 86 130 Q 206 90, 326 115 T 446 50 T 566 40 T 686 65" fill="none" strokeLinecap="round" strokeWidth="3"></path>
+                <path className="stroke-primary" d="M 86 130 C 146 110, 176 98, 206 98 C 266 98, 296 115, 326 115 C 386 115, 416 55, 446 55 C 506 55, 536 42, 566 42 C 626 42, 656 65, 686 65" fill="none" strokeLinecap="round" strokeWidth="3"></path>
 
                 {/* Spline Nodes with Pulse Rings */}
                 <circle className="fill-surface-container-lowest stroke-primary" cx="86" cy="130" r="4" strokeWidth="2"></circle>
