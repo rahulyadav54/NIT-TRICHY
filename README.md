@@ -9,7 +9,6 @@
 [![Frontend](https://img.shields.io/badge/Frontend-React%2018%20%2B%20Vite%206-2457D6?style=for-the-badge)](./frontend)
 [![Backend](https://img.shields.io/badge/Backend-Express%20%2B%20TypeScript-101B33?style=for-the-badge)](./backend)
 [![Database](https://img.shields.io/badge/Database-PostgreSQL%20%2F%20Supabase-336791?style=for-the-badge)](./backend/prisma/schema.prisma)
-[![Audit](https://img.shields.io/badge/Audit%20Report-89%2F100%20Ready-success?style=for-the-badge)](./PROJECT_AUDIT_REPORT.md)
 
 </div>
 
@@ -102,7 +101,6 @@ I choose a **responsive Web Application (React + TypeScript + Vite) paired with 
 ### Repository Structure
 ```text
 ├── vercel.json                  # Vercel Services config (frontend SPA + backend serverless API)
-├── PROJECT_AUDIT_REPORT.md      # Full 10-section engineering & QA audit report (89/100)
 ├── backend/
 │   ├── prisma/                  # Schema, UTF-8 DDL, benchmark reset & seed scripts
 │   ├── src/
@@ -169,8 +167,8 @@ npx tsx test/benchmark.test.ts   # 26/26 Master E2E Benchmark assertions
 
 ### Implemented Stretch Goals & Known Gaps
 - **Offline Mobile Order Capture & Sync (Implemented):** When offline, salesmen can still book orders using cached customer/product catalogs (`localStorage` queue) and auto-sync to PostgreSQL (`POST /api/sales`) as soon as connectivity returns.
-- **Admin Configuration Screens:** `User Management` and `Plant Settings` sidebar items currently route to `ReportsView` rather than dedicated CRUD forms.
-- **Other Stretch Goals:** Tally XML export, e-Invoice/e-Way Bill IRN JSON mock, FEFO batch-expiry tracking, and Tamil UI translation are not yet implemented.
+- **Admin Configuration Screens (Implemented):** Dedicated `User Management` and `Plant Settings` views under the Admin workspace.
+- **Other Stretch Goals:** Tally XML export, e-Invoice/e-Way Bill IRN JSON mock, FEFO batch-expiry tracking, and Tamil UI translation are planned for future releases.
 
 ### Documented Assumptions
 - **Inventory Valuation:** Weighted-Average Cost (`(Opening Value + Purchase Receipts Value) / (Opening Qty + Received Qty)`).
@@ -182,6 +180,5 @@ npx tsx test/benchmark.test.ts   # 26/26 Master E2E Benchmark assertions
 
 ## 📚 Documentation
 
-- **[PROJECT_AUDIT_REPORT.md](./PROJECT_AUDIT_REPORT.md)** — Complete implementation audit, bug fixes, benchmark verification, and security review.
 - **[docs/architecture.md](./docs/architecture.md)** — System architecture and data model design.
 - **[docs/demo-script.md](./docs/demo-script.md)** — Step-by-step evaluation walkthrough.
