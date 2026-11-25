@@ -167,10 +167,10 @@ npx tsx test/benchmark.test.ts   # 26/26 Master E2E Benchmark assertions
 
 ---
 
-### Known Gaps & Stretch Goals
-- **Offline Mobile Order Capture:** Stretch goal (orders require active network connectivity; no IndexedDB offline sync queue yet).
+### Implemented Stretch Goals & Known Gaps
+- **Offline Mobile Order Capture & Sync (Implemented):** When offline, salesmen can still book orders using cached customer/product catalogs (`localStorage` queue) and auto-sync to PostgreSQL (`POST /api/sales`) as soon as connectivity returns.
 - **Admin Configuration Screens:** `User Management` and `Plant Settings` sidebar items currently route to `ReportsView` rather than dedicated CRUD forms.
-- **Stretch Exports:** Tally XML export, e-Invoice/e-Way Bill IRN JSON mock, FEFO batch-expiry tracking, and Tamil UI translation are not yet implemented.
+- **Other Stretch Goals:** Tally XML export, e-Invoice/e-Way Bill IRN JSON mock, FEFO batch-expiry tracking, and Tamil UI translation are not yet implemented.
 
 ### Documented Assumptions
 - **Inventory Valuation:** Weighted-Average Cost (`(Opening Value + Purchase Receipts Value) / (Opening Qty + Received Qty)`).

@@ -1,6 +1,14 @@
 import { useState, useEffect } from 'react';
-import { ShoppingCart, RefreshCw, Receipt, X } from 'lucide-react';
+import { ShoppingCart, RefreshCw, Receipt, X, WifiOff, CloudUpload } from 'lucide-react';
 import { apiRequest, getAuthToken } from '@/services/api';
+import {
+  OfflineOrderItem,
+  getOfflineOrderQueue,
+  saveOfflineOrderQueue,
+  enqueueOfflineOrder,
+  cacheSalesCatalog,
+  getCachedSalesCatalog,
+} from '@/services/offlineOrders';
 
 export function CommercialView({ subView = 'sales-orders', onNavigate: _onNavigate }: { subView: string; onNavigate?: (path: string) => void }) {
   const [salesOrders, setSalesOrders] = useState<any[]>([]);
@@ -10,6 +18,9 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
   const [costingDashboard, setCostingDashboard] = useState<any>(null);
   const [loading, setLoading] = useState(true);
   const [actionMsg, setActionMsg] = useState<string | null>(null);
+  const [isOnline, setIsOnline] = useState(typeof navigator !== 'undefined' ? navigator.onLine : true);
+  const [offlineQueue, setOfflineQueue] = useState<OfflineOrderItem[]>(() => getOfflineOrderQueue());
+  const [syncing, setSyncing] = useState(false);
 
   // New sales order form state
   const [showOrderModal, setShowOrderModal] = useState(false);
@@ -33,19 +44,30 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
 
       if (orderRes.status === 'fulfilled') setSalesOrders(orderRes.value.data || []);
       if (invRes.status === 'fulfilled') setInvoices(invRes.value.data || []);
+      let loadedCusts: any[] = [];
+      let loadedProds: any[] = [];
       if (custRes.status === 'fulfilled') {
-        const clist = custRes.value.data || [];
-        setCustomers(clist);
-        if (clist.length > 0) {
-          setOrderForm((prev) => ({ ...prev, customerId: prev.customerId || clist[0].id }));
-        }
+        loadedCusts = custRes.value.data || [];
       }
       if (prodRes.status === 'fulfilled') {
-        const plist = prodRes.value.data || [];
-        setProducts(plist);
-        if (plist.length > 0) {
-          setOrderForm((prev) => ({ ...prev, productId: prev.productId || plist[0].id }));
-        }
+        loadedProds = prodRes.value.data || [];
+      }
+
+      if (loadedCusts.length === 0 || loadedProds.length === 0) {
+        const cached = getCachedSalesCatalog();
+        if (loadedCusts.length === 0) loadedCusts = cached.customers;
+        if (loadedProds.length === 0) loadedProds = cached.products;
+      } else {
+        cacheSalesCatalog(loadedCusts, loadedProds);
+      }
+
+      if (loadedCusts.length > 0) {
+        setCustomers(loadedCusts);
+        setOrderForm((prev) => ({ ...prev, customerId: prev.customerId || loadedCusts[0].id }));
+      }
+      if (loadedProds.length > 0) {
+        setProducts(loadedProds);
+        setOrderForm((prev) => ({ ...prev, productId: prev.productId || loadedProds[0].id }));
       }
       if (costRes.status === 'fulfilled') setCostingDashboard(costRes.value.data || null);
     } catch (err) {
@@ -55,12 +77,89 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
     }
   };
 
+  const syncOfflineOrders = async () => {
+    const queue = getOfflineOrderQueue();
+    if (queue.length === 0 || !navigator.onLine) return;
+    setSyncing(true);
+    const remaining: OfflineOrderItem[] = [];
+    let syncedCount = 0;
+
+    for (const item of queue) {
+      try {
+        await apiRequest('/sales', {
+          method: 'POST',
+          body: JSON.stringify({
+            customerId: item.customerId,
+            orderNumber: item.orderNumber,
+            notes: 'Captured offline and auto-synced',
+            items: [{ productId: item.productId, quantity: item.quantity }],
+          }),
+        });
+        syncedCount++;
+      } catch (err: any) {
+        remaining.push({ ...item, lastError: err.message || 'Sync failed' });
+      }
+    }
+
+    saveOfflineOrderQueue(remaining);
+    setOfflineQueue(remaining);
+    setSyncing(false);
+    if (syncedCount > 0) {
+      setActionMsg(`Synced ${syncedCount} offline order(s) to server.`);
+      loadData();
+    }
+  };
+
   useEffect(() => {
     loadData();
   }, [subView]);
 
+  useEffect(() => {
+    const handleOnline = () => {
+      setIsOnline(true);
+      syncOfflineOrders();
+    };
+    const handleOffline = () => setIsOnline(false);
+
+    window.addEventListener('online', handleOnline);
+    window.addEventListener('offline', handleOffline);
+    if (navigator.onLine && getOfflineOrderQueue().length > 0) {
+      syncOfflineOrders();
+    }
+    return () => {
+      window.removeEventListener('online', handleOnline);
+      window.removeEventListener('offline', handleOffline);
+    };
+  }, []);
+
   const handleCreateOrder = async (e: React.FormEvent) => {
     e.preventDefault();
+    const cust = customers.find((c) => c.id === orderForm.customerId);
+    const prod = products.find((p) => p.id === orderForm.productId);
+
+    const queueOffline = () => {
+      const updated = enqueueOfflineOrder({
+        localId: `off-${Date.now()}`,
+        customerId: orderForm.customerId,
+        customerName: cust?.name || 'Customer',
+        productId: orderForm.productId,
+        productName: prod?.name || 'Product',
+        quantity: Number(orderForm.quantity),
+        unitPrice: Number(prod?.sellingPrice || 50),
+        orderNumber: orderForm.orderNumber,
+        createdAt: new Date().toISOString(),
+      });
+      setOfflineQueue(updated);
+      setShowOrderModal(false);
+      setOrderForm((prev) => ({ ...prev, orderNumber: `SO-${Date.now().toString().slice(-4)}` }));
+      setActionMsg(`Offline mode: Order ${orderForm.orderNumber} queued locally and will sync automatically when online.`);
+    };
+
+    if (!navigator.onLine) {
+      queueOffline();
+      return;
+    }
+
     try {
       await apiRequest('/sales', {
         method: 'POST',
@@ -80,7 +179,11 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
       setActionMsg('Sales order created and submitted.');
       loadData();
     } catch (err: any) {
-      alert(err.message || 'Failed to create sales order');
+      if (err instanceof TypeError || String(err.message).toLowerCase().includes('fetch')) {
+        queueOffline();
+      } else {
+        alert(err.message || 'Failed to create sales order');
+      }
     }
   };
 
@@ -188,6 +291,29 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
         </div>
       </div>
 
+      {(!isOnline || offlineQueue.length > 0) && (
+        <div className="mb-4 px-4 py-3 rounded-xl bg-amber-50 border border-amber-200 flex flex-wrap items-center justify-between gap-3">
+          <div className="flex items-center gap-2.5 text-amber-900 text-sm">
+            <WifiOff size={16} className="text-amber-600 flex-shrink-0" />
+            <span>
+              {!isOnline
+                ? 'Offline Mode Active — Orders captured now are saved locally and queued for sync.'
+                : `${offlineQueue.length} offline order(s) waiting to sync to server.`}
+            </span>
+          </div>
+          {offlineQueue.length > 0 && isOnline && (
+            <button
+              onClick={syncOfflineOrders}
+              disabled={syncing}
+              className="flex items-center gap-1.5 h-8 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-xs font-semibold"
+            >
+              <CloudUpload size={14} />
+              <span>{syncing ? 'Syncing...' : `Sync ${offlineQueue.length} Order(s) Now`}</span>
+            </button>
+          )}
+        </div>
+      )}
+
       {actionMsg && (
         <div className="mb-4 px-4 py-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center justify-between">
           <span>{actionMsg}</span>
@@ -246,6 +372,23 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-surface-container-high font-table-data text-table-data">
+                  {offlineQueue.map((oq) => (
+                    <tr key={oq.localId} className="bg-amber-50/70">
+                      <td className="py-2.5 px-3 font-mono font-semibold text-amber-800">{oq.orderNumber}</td>
+                      <td className="py-2.5 px-3 text-amber-700">{new Date(oq.createdAt).toLocaleDateString('en-IN')}</td>
+                      <td className="py-2.5 px-3 font-medium text-[#172033]">{oq.customerName}</td>
+                      <td className="py-2.5 px-3">
+                        <span className="px-2 py-0.5 rounded bg-amber-100 text-amber-800 text-[10px] font-semibold uppercase">OFFLINE QUEUE</span>
+                      </td>
+                      <td className="py-2.5 px-3 text-right font-mono font-bold text-[#172033]">{oq.quantity} pkts</td>
+                      <td className="py-2.5 px-3 text-right font-mono text-amber-800">₹{(oq.quantity * oq.unitPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}</td>
+                      <td className="py-2.5 px-3 text-right font-mono font-bold text-amber-900">Pending Tax</td>
+                      <td className="py-2.5 px-3 text-right">
+                        <span className="px-2 py-0.5 rounded-full bg-amber-200 text-amber-900 text-[10px] font-bold">PENDING SYNC</span>
+                      </td>
+                      <td className="py-2.5 px-3 text-right text-xs text-amber-700">Auto-sync on online</td>
+                    </tr>
+                  ))}
                   {salesOrders.length > 0 ? (
                     salesOrders.map((o) => {
                       const totalPkts = (o.items || []).reduce((s: number, it: any) => s + Number(it.quantity || 0), 0);
