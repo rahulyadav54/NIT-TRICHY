@@ -167,6 +167,14 @@ npx tsx test/benchmark.test.ts   # 26/26 Master E2E Benchmark assertions
 
 ---
 
+### Documented Assumptions
+- **Inventory Valuation:** Weighted-Average Cost (`(Opening Value + Purchase Receipts Value) / (Opening Qty + Received Qty)`).
+- **Damaged Packaging in Costing:** Damaged pouches (`6` in benchmark) are deducted from stock and included in batch packaging cost, divided by **actual good packets** (`188`) rather than expected output (`200`).
+- **GST Determination:** Factory is registered in Tamil Nadu (`State 33`). Same-state orders (`33`) split 5% GST into `2.5% CGST + 2.5% SGST`; inter-state orders (`29`, etc.) apply `5.0% IGST`.
+- **Variance Tolerance:** Yield and material consumption deviations exceeding **`±3.0%`** automatically trigger variance warnings.
+- **Unit Standard:** `1 Carton = 20 Packets` (with `KG↔G` and `L↔ML` conversions via `UnitConversionService`).
+- **Synthetic Data:** All company names, GSTINs, customers, and suppliers are invented dummy data for evaluation only.
+
 ## 📚 Documentation
 
 - **[PROJECT_AUDIT_REPORT.md](./PROJECT_AUDIT_REPORT.md)** — Complete implementation audit, bug fixes, benchmark verification, and security review.
