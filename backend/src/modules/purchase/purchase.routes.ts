@@ -53,6 +53,7 @@ purchaseRouter.get('/', async (req: AuthenticatedRequest, res: Response) => {
 
 // POST Create and Receive Purchase Order (Automatically updates Inventory Ledger)
 purchaseRouter.post('/', roleGuard([Role.ADMIN, Role.OWNER, Role.PRODUCTION_SUPERVISOR]), async (req: AuthenticatedRequest, res: Response) => {
+  try {
   const parsed = createPurchaseSchema.safeParse(req.body);
   if (!parsed.success) {
     return res.status(400).json({ success: false, errors: parsed.error.errors });
@@ -125,5 +126,11 @@ purchaseRouter.post('/', roleGuard([Role.ADMIN, Role.OWNER, Role.PRODUCTION_SUPE
   );
 
   res.status(201).json({ success: true, message: 'Purchase recorded and stock updated', purchaseId });
+  } catch (err: any) {
+    return res.status(400).json({
+      success: false,
+      message: err?.message || 'Failed to record purchase order',
+    });
+  }
 });
 

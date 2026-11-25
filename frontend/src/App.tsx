@@ -9,6 +9,7 @@ import { SupplyChainView } from '@/pages/supply/SupplyChainView';
 import { OperationsView } from '@/pages/operations/OperationsView';
 import { CommercialView } from '@/pages/commercial/CommercialView';
 import { ReportsView } from '@/pages/reports/ReportsView';
+import { AdminSettingsView } from '@/pages/admin/AdminSettingsView';
 
 export function App() {
   const { isAuthenticated, loading, user } = useAuth();
@@ -62,9 +63,11 @@ export function App() {
         return <CommercialView subView={currentPath} onNavigate={setCurrentPath} />;
 
       case 'reports-analytics':
+        return <ReportsView onNavigate={setCurrentPath} />;
+
       case 'user-management':
       case 'plant-settings':
-        return <ReportsView onNavigate={setCurrentPath} />;
+        return <AdminSettingsView subView={currentPath} />;
 
       default:
         return <ExecutiveDashboard onNavigate={setCurrentPath} />;

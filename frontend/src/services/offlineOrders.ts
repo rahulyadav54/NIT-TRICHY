@@ -53,3 +53,4 @@ export function getCachedSalesCatalog(): { customers: any[]; products: any[] } {
     return { customers: [], products: [] };
   }
 }
+

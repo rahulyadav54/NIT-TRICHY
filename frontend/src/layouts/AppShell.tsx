@@ -88,6 +88,8 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
   const [currentTime, setCurrentTime] = useState('');
   const [currentDate, setCurrentDate] = useState('');
   const [profileOpen, setProfileOpen] = useState(false);
+  const [notifOpen, setNotifOpen] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('');
   const [welcomeBanner, setWelcomeBanner] = useState<{ name: string; role: string } | null>(() => {
     try {
       const raw = sessionStorage.getItem('trima_welcome_user');
@@ -316,6 +318,17 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
             <Search size={15} className="absolute left-3 text-gray-400" />
             <input
               type="text"
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              onKeyDown={(e) => {
+                if (e.key !== 'Enter' || !searchTerm.trim()) return;
+                const q = searchTerm.trim().toLowerCase();
+                if (q.includes('so') || q.includes('order')) handleNav('sales-orders');
+                else if (q.includes('inv') || q.includes('uf/') || q.includes('gst')) handleNav('gst-invoices-eway');
+                else if (q.includes('po') || q.includes('grn')) handleNav('purchases-grn');
+                else if (q.includes('batch') || q.includes('run') || q.includes('prod')) handleNav('production-runs');
+                else handleNav('materials-inventory');
+              }}
               placeholder="Search orders, materials, GSTIN..."
               className="w-full h-9 pl-9 pr-12 text-xs bg-gray-50 border border-gray-200 rounded-lg focus:outline-none focus:ring-2 focus:ring-[#2457D6]/30 focus:border-[#2457D6] text-[#172033] placeholder:text-gray-400 transition-all"
             />
@@ -348,10 +361,28 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
             </button>
 
             {/* Notifications */}
-            <button className="relative p-2 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-[#172033] transition-colors">
-              <Bell size={18} />
-              <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white" />
-            </button>
+            <div className="relative">
+              <button
+                onClick={() => setNotifOpen(!notifOpen)}
+                className="relative p-2 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-[#172033] transition-colors"
+              >
+                <Bell size={18} />
+                <span className="absolute top-1.5 right-1.5 w-2 h-2 rounded-full bg-red-500 ring-2 ring-white" />
+              </button>
+              {notifOpen && (
+                <div className="absolute right-0 mt-2 w-72 bg-white rounded-xl shadow-lg border border-gray-100 p-3 z-50 space-y-2 text-xs">
+                  <div className="font-semibold text-[#172033] pb-1.5 border-b border-gray-100">Operational Alerts</div>
+                  <button onClick={() => { setNotifOpen(false); handleNav('materials-inventory'); }} className="w-full text-left p-2 rounded-lg hover:bg-red-50 text-red-700">
+                    <div className="font-semibold">Low Packaging Stock</div>
+                    <div className="text-[11px] text-[#64748B]">Check reorder levels in Materials &amp; Inventory</div>
+                  </button>
+                  <button onClick={() => { setNotifOpen(false); handleNav('production-runs'); }} className="w-full text-left p-2 rounded-lg hover:bg-amber-50 text-amber-800">
+                    <div className="font-semibold">Variance Monitor (±3%)</div>
+                    <div className="text-[11px] text-[#64748B]">Inspect yield &amp; oil consumption in Production Runs</div>
+                  </button>
+                </div>
+              )}
+            </div>
 
             {/* Profile */}
             <div className="relative" ref={profileRef}>
