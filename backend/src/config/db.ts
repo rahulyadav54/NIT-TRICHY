@@ -1,6 +1,5 @@
-import { PGlite } from '@electric-sql/pglite';
 import pg from 'pg';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { randomUUID } from 'crypto';
 import fs from 'fs';
 import path from 'path';
@@ -13,7 +12,8 @@ const usePostgresPool = Boolean(
   dbUrl && (process.env.VERCEL === '1' || process.env.USE_PG_POOL === 'true' || !isLocalPlaceholder)
 );
 
-let pgliteDb: PGlite | null = null;
+let pgliteInstance: any = null;
+let pglitePromise: Promise<any> | null = null;
 let pgPool: pg.Pool | null = null;
 let bootstrapPromise: Promise<void> | null = null;
 
@@ -23,12 +23,25 @@ if (usePostgresPool) {
     ssl: dbUrl.includes('localhost') || dbUrl.includes('127.0.0.1') ? false : { rejectUnauthorized: false },
     max: 5,
   });
-} else {
-  const pgdataDir = path.resolve(process.cwd(), 'prisma', 'pgdata');
-  pgliteDb = new PGlite(pgdataDir);
 }
 
-export const db = pgliteDb;
+async function getPGlite(): Promise<any> {
+  if (process.env.VERCEL === '1') {
+    throw new Error('DATABASE_URL environment variable is not configured in Vercel.');
+  }
+  if (pgliteInstance) return pgliteInstance;
+  if (!pglitePromise) {
+    pglitePromise = (async () => {
+      const { PGlite: PGliteClass } = await import('@electric-sql/pglite');
+      const pgdataDir = path.resolve(process.cwd(), 'prisma', 'pgdata');
+      pgliteInstance = new PGliteClass(pgdataDir);
+      return pgliteInstance;
+    })();
+  }
+  return pglitePromise;
+}
+
+export const db = pgliteInstance;
 
 async function ensurePostgresBootstrapped(pool: pg.Pool): Promise<void> {
   if (!bootstrapPromise) {
@@ -39,7 +52,6 @@ async function ensurePostgresBootstrapped(pool: pg.Pool): Promise<void> {
         );
         if (check.rows[0]?.exists) return;
 
-        // Locate init_utf8.sql relative to cwd or backend/prisma
         const candidates = [
           path.resolve(process.cwd(), 'prisma', 'init_utf8.sql'),
           path.resolve(process.cwd(), 'backend', 'prisma', 'init_utf8.sql'),
@@ -60,7 +72,6 @@ async function ensurePostgresBootstrapped(pool: pg.Pool): Promise<void> {
           await pool.query(stmt + ';');
         }
 
-        // Seed 5 core role users so login works immediately on fresh DB
         const passwordHash = await bcrypt.hash('password123', 10);
         const users = [
           { email: 'salesman@trima.com', name: 'Ravi Salesman', role: 'SALESMAN', phone: '+91 98765 00001' },
@@ -90,8 +101,9 @@ export async function query<T = any>(sql: string, params: any[] = []): Promise<T
     const result = await pgPool.query(sql, params);
     return result.rows as T[];
   }
-  const result = await pgliteDb!.query<T>(sql, params);
-  return result.rows;
+  const pglite = await getPGlite();
+  const result = await pglite.query(sql, params);
+  return result.rows as T[];
 }
 
 export async function queryOne<T = any>(sql: string, params: any[] = []): Promise<T | null> {
@@ -105,7 +117,8 @@ export async function execute(sql: string, params: any[] = []): Promise<void> {
     await pgPool.query(sql, params);
     return;
   }
-  await pgliteDb!.query(sql, params);
+  const pglite = await getPGlite();
+  await pglite.query(sql, params);
 }
 
 export async function checkDatabaseConnection(): Promise<boolean> {

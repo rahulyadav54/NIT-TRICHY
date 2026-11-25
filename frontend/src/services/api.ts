@@ -31,9 +31,18 @@ export async function apiRequest<T = any>(
     headers,
   });
 
-  const data = await response.json();
+  const text = await response.text();
+  let data: any = null;
+  try {
+    data = text ? JSON.parse(text) : {};
+  } catch {
+    throw new Error(
+      `Server returned non-JSON response (${response.status}): ${text.slice(0, 120)}`
+    );
+  }
+
   if (!response.ok) {
-    throw new Error(data.message || `Request failed with status ${response.status}`);
+    throw new Error(data?.message || `Request failed with status ${response.status}`);
   }
 
   return data;
