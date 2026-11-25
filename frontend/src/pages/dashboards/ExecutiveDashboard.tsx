@@ -590,7 +590,7 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
                     </td>
                     <td className="py-2.5 px-3 font-mono font-semibold text-primary">#SO-9821</td>
                     <td className="py-2.5 px-3">
-                      <span className="text-on-surface font-medium">Sri Krishna Sweets Trichy</span>
+                      <span className="text-on-surface font-medium">Retailer A (Trichy Demo)</span>
                       <span className="text-secondary ml-1">(450 pkts • ₹42,500)</span>
                     </td>
                     <td className="py-2.5 px-3 text-right">
@@ -630,7 +630,7 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
                     </td>
                     <td className="py-2.5 px-3 font-mono font-semibold text-on-surface">#INV-2024-1182</td>
                     <td className="py-2.5 px-3">
-                      <span className="text-on-surface font-medium">Annamalai Retailers Wholesale</span>
+                      <span className="text-on-surface font-medium">Distributor A (Wholesale Demo)</span>
                       <span className="text-secondary ml-1 font-mono">(CGST 2.5%, SGST 2.5%)</span>
                     </td>
                     <td className="py-2.5 px-3 text-right">
@@ -650,7 +650,7 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
                     </td>
                     <td className="py-2.5 px-3 font-mono font-semibold text-on-surface">TXN-0899120</td>
                     <td className="py-2.5 px-3">
-                      <span className="text-on-surface font-medium">Velan Mart Pudukkottai</span>
+                      <span className="text-on-surface font-medium">Retailer B (Pudukkottai Demo)</span>
                       <span className="text-secondary ml-1">(Direct Bank Credit ₹24,000)</span>
                     </td>
                     <td className="py-2.5 px-3 text-right">
@@ -671,7 +671,7 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
                     <td className="py-2.5 px-3 font-mono font-semibold text-on-surface">#GRN-309</td>
                     <td className="py-2.5 px-3">
                       <span className="text-on-surface font-medium">50 Bags Besan Flour</span>
-                      <span className="text-secondary ml-1">(Vetrivel Agro Mills)</span>
+                      <span className="text-secondary ml-1">(Demo Agro Mills)</span>
                     </td>
                     <td className="py-2.5 px-3 text-right">
                       <span className="inline-flex items-center gap-1 text-secondary font-label-micro text-label-micro font-semibold">
@@ -715,7 +715,7 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
                 Current balance is <strong className="text-red-600 font-mono">180 units</strong>, falling below reorder threshold (300 units). Depletion projected before tomorrow's Shift A.
               </p>
               <div className="flex items-center justify-between pt-1">
-                <span className="text-[11px] text-[#64748B] font-mono">Supplier: Balaji Polymers</span>
+                <span className="text-[11px] text-[#64748B] font-mono">Supplier: Demo Packaging Co.</span>
                 <button
                   onClick={() => onNavigate?.('purchases-grn')}
                   className="h-7 px-3 bg-red-500 hover:bg-red-600 text-white text-xs font-semibold rounded-lg transition-colors"
