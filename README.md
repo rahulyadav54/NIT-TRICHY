@@ -45,6 +45,49 @@ Every stock balance is **derived from an immutable movement ledger** (`Opening +
 
 ---
 
+## 📸 Portal & Working Flow Screenshots
+
+<table>
+  <tr>
+    <td width="50%">
+      <strong>1. Enterprise Login & 1-Click Role Auth</strong><br/>
+      <img src="./docs/screenshots/01-login-page.png" alt="Enterprise Login Page" />
+    </td>
+    <td width="50%">
+      <strong>2. Owner Executive Dashboard (KPIs & Telemetry)</strong><br/>
+      <img src="./docs/screenshots/02-owner-dashboard.png" alt="Owner Executive Dashboard" />
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <strong>3. Materials & Immutable Stock Ledger (WAC)</strong><br/>
+      <img src="./docs/screenshots/03-inventory-ledger.png" alt="Materials and Stock Ledger" />
+    </td>
+    <td width="50%">
+      <strong>4. Production Runs & ±3% Variance Guard</strong><br/>
+      <img src="./docs/screenshots/04-production-runs.png" alt="Production Runs and Batch Yields" />
+    </td>
+  </tr>
+  <tr>
+    <td width="50%">
+      <strong>5. Admin Sales Approval & GST Invoicing</strong><br/>
+      <img src="./docs/screenshots/05-admin-sales-invoicing.png" alt="Admin Sales Approval and GST Invoicing" />
+    </td>
+    <td width="50%">
+      <strong>6. Field Sales Executive Portal (Role-Isolated)</strong><br/>
+      <img src="./docs/screenshots/06-salesman-portal.png" alt="Field Sales Executive Portal" />
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+      <strong>7. Statutory Auditor — 16 Real-Time Registers & CSV/Excel Exports</strong><br/>
+      <img src="./docs/screenshots/07-auditor-reports.png" alt="Statutory Auditor Reports" />
+    </td>
+  </tr>
+</table>
+
+---
+
 ## 👥 Five User Roles & Demo Credentials
 
 > **Password for all 5 evaluation accounts:** `password123`
