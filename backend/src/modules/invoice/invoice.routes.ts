@@ -7,6 +7,8 @@ import Decimal from 'decimal.js';
 import { randomUUID } from 'crypto';
 import { config } from '../../config/env.js';
 import { InventoryLedgerService } from '../inventory/inventoryLedger.service.js';
+// @ts-expect-error pdfmake/src/printer.js has no bundled .d.ts
+import PdfPrinter from 'pdfmake/src/printer.js';
 
 export const invoiceRouter = Router();
 invoiceRouter.use(authGuard);
@@ -258,13 +260,6 @@ invoiceRouter.get('/:id/pdf', async (req: AuthenticatedRequest, res: Response) =
      WHERE ii."invoiceId" = $1`,
     [invoice.id]
   );
-
-  // @ts-expect-error pdfmake/src/printer.js has no bundled .d.ts
-  const PdfPrinterModule: any = await import('pdfmake/src/printer.js').catch(() => null);
-  const PdfPrinter = PdfPrinterModule?.default || PdfPrinterModule;
-  if (!PdfPrinter) {
-    return res.status(500).json({ success: false, message: 'PDF printer unavailable' });
-  }
 
   const printer = new PdfPrinter({
     Helvetica: {
