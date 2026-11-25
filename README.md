@@ -5,10 +5,15 @@
 
 **National Institute of Technology, Tiruchirappalli — Winter Internship Evaluation**
 
+[![Live Demo](https://img.shields.io/badge/Live%20Demo-nit--trichy--omega.vercel.app-059669?style=for-the-badge&logo=vercel&logoColor=white)](https://nit-trichy-omega.vercel.app/)
 [![Benchmark](https://img.shields.io/badge/NIT%20Benchmark-26%2F26%20Passed-0D9488?style=for-the-badge)](./backend/test/benchmark.test.ts)
 [![Frontend](https://img.shields.io/badge/Frontend-React%2018%20%2B%20Vite%206-2457D6?style=for-the-badge)](./frontend)
 [![Backend](https://img.shields.io/badge/Backend-Express%20%2B%20TypeScript-101B33?style=for-the-badge)](./backend)
 [![Database](https://img.shields.io/badge/Database-PostgreSQL%20%2F%20Supabase-336791?style=for-the-badge)](./backend/prisma/schema.prisma)
+
+<br/>
+
+> 🌐 **Live Evaluation Demo:** **[https://nit-trichy-omega.vercel.app/](https://nit-trichy-omega.vercel.app/)** — Open the link and use the **1-Click Quick Role Login** cards (or `password123`) to test every role end-to-end.
 
 </div>
 
@@ -143,7 +148,7 @@ npx tsx test/benchmark.test.ts   # 26/26 Master E2E Benchmark assertions
 
 ## ☁️ Deploying on Vercel + Supabase
 
-- **Hosted Demo:** `https://nit-trichy-git-main-rjrahulyadavs-projects.vercel.app`
+- **Hosted Demo:** [https://nit-trichy-omega.vercel.app/](https://nit-trichy-omega.vercel.app/)
 
 ### Evaluation Criteria Compliance
 | Requirement | Implementation |
