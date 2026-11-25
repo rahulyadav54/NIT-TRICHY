@@ -20,7 +20,7 @@ const app = express();
 
 // Security and utility middlewares
 app.use(cors({
-  origin: config.clientUrl,
+  origin: process.env.VERCEL ? true : config.clientUrl,
   credentials: true,
 }));
 app.use(express.json());
@@ -54,7 +54,12 @@ app.get('/api', (req, res) => {
 // Centralized error handling middleware
 app.use(errorHandler);
 
-if (process.env.NODE_ENV !== 'test' && !process.env.JEST_WORKER_ID && !process.argv[1]?.includes('test')) {
+if (
+  process.env.NODE_ENV !== 'test' &&
+  !process.env.JEST_WORKER_ID &&
+  !process.argv[1]?.includes('test') &&
+  !process.env.VERCEL
+) {
   app.listen(config.port, () => {
     console.log(`🚀 UdyamFlow ERP Backend running on http://localhost:${config.port}`);
     console.log(`📊 Health check available at http://localhost:${config.port}/api/health`);
