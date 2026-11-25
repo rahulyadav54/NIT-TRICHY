@@ -29,21 +29,11 @@ Every stock balance is **derived from an immutable movement ledger** (`Opening +
 
 ## 🔄 End-to-End Working Flow
 
-```mermaid
-flowchart LR
-    A["1. Purchase & GRN<br/>(Raw & Packaging)"] --> B["2. Immutable Stock Ledger<br/>(WAC Valuation)"]
-    B --> C["3. BOM & Production Run<br/>(±3% Variance Guard)"]
-    C --> B
-    C --> D["4. Finished Goods Stock"]
-    E["5. Salesman Order<br/>(Price Snapshot)"] --> F["6. Admin Approval<br/>(Shortage Block)"]
-    D --> F
-    F --> G["7. GST Tax Invoice<br/>(CGST+SGST / IGST + PDF)"]
-    G --> H["8. Dispatch & Gate Pass<br/>(Atomic Stock Deduction)"]
-    G --> I["9. Payment Collection<br/>(Overpayment Guard)"]
-    B --> J["10. 16 Statutory Reports<br/>& Owner Dashboard"]
-    H --> J
-    I --> J
-```
+<div align="center">
+
+![TRIMA ERP Order-to-Audit Live Data Flow](./docs/trima-erp-flow.gif)
+
+</div>
 
 ### How the Workflow Operates in Practice
 1. **Procurement (`Purchases & GRN`)**: Admin/Supervisor records raw material & packaging purchases; stock and **Weighted-Average Cost (WAC)** update automatically.
