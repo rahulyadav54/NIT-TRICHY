@@ -21,17 +21,19 @@ export function SupplyChainView({ subView = 'purchases-grn' }: { subView: string
     unit: 'KG',
   });
 
-  const [showSupModal, setShowSupModal] = useState(false);
-  const [supForm, setSupForm] = useState({
-    code: `SUP-${Date.now().toString().slice(-3)}`,
+  const createInitialSupForm = () => ({
+    code: `SUP-${Date.now().toString().slice(-4)}`,
     name: '',
-    gstin: '33AAAAA1111A1Z5',
-    contactInfo: '+91 98765 43210',
+    gstin: '',
+    contactInfo: '',
     address: 'Trichy Industrial Estate, Tamil Nadu',
     state: 'Tamil Nadu',
     stateCode: '33',
     paymentTerms: 'Net 15 Days',
   });
+
+  const [showSupModal, setShowSupModal] = useState(false);
+  const [supForm, setSupForm] = useState(createInitialSupForm);
 
   const loadData = async () => {
     setLoading(true);
@@ -100,6 +102,7 @@ export function SupplyChainView({ subView = 'purchases-grn' }: { subView: string
         body: JSON.stringify(supForm),
       });
       setShowSupModal(false);
+      setSupForm(createInitialSupForm());
       setMsg('Supplier added to directory.');
       loadData();
     } catch (err: any) {
@@ -146,7 +149,10 @@ export function SupplyChainView({ subView = 'purchases-grn' }: { subView: string
           )}
           {subView === 'suppliers-directory' && (
             <button
-              onClick={() => setShowSupModal(true)}
+              onClick={() => {
+                setSupForm(createInitialSupForm());
+                setShowSupModal(true);
+              }}
               className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm"
             >
               <PlusCircle size={15} />
@@ -366,17 +372,41 @@ export function SupplyChainView({ subView = 'purchases-grn' }: { subView: string
             <form onSubmit={handleAddSupplier} className="space-y-3 mt-4 text-sm">
               <div className="grid grid-cols-2 gap-3">
                 <div>
-                  <label className="block text-xs font-medium text-[#64748B] mb-1">Code</label>
-                  <input required value={supForm.code} onChange={(e) => setSupForm({ ...supForm, code: e.target.value })} className="w-full h-9 px-3 border border-gray-200 rounded-lg" />
+                  <label className="block text-xs font-medium text-[#64748B] mb-1">Supplier Code</label>
+                  <input required value={supForm.code} onChange={(e) => setSupForm({ ...supForm, code: e.target.value })} placeholder="SUP-1001" className="w-full h-9 px-3 border border-gray-200 rounded-lg font-mono" />
                 </div>
                 <div>
                   <label className="block text-xs font-medium text-[#64748B] mb-1">GSTIN (15 chars)</label>
-                  <input required minLength={15} maxLength={15} value={supForm.gstin} onChange={(e) => setSupForm({ ...supForm, gstin: e.target.value })} className="w-full h-9 px-3 border border-gray-200 rounded-lg font-mono" />
+                  <input required minLength={15} maxLength={15} value={supForm.gstin} onChange={(e) => setSupForm({ ...supForm, gstin: e.target.value.toUpperCase() })} placeholder="33AAAAA1111A1Z5" className="w-full h-9 px-3 border border-gray-200 rounded-lg font-mono uppercase" />
                 </div>
               </div>
               <div>
                 <label className="block text-xs font-medium text-[#64748B] mb-1">Supplier Name</label>
-                <input required value={supForm.name} onChange={(e) => setSupForm({ ...supForm, name: e.target.value })} className="w-full h-9 px-3 border border-gray-200 rounded-lg" />
+                <input required value={supForm.name} onChange={(e) => setSupForm({ ...supForm, name: e.target.value })} placeholder="Enter supplier company or contact name" className="w-full h-9 px-3 border border-gray-200 rounded-lg" />
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-[#64748B] mb-1">Contact Number / Info</label>
+                  <input required value={supForm.contactInfo} onChange={(e) => setSupForm({ ...supForm, contactInfo: e.target.value })} placeholder="+91 98765 43210" className="w-full h-9 px-3 border border-gray-200 rounded-lg" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#64748B] mb-1">Payment Terms</label>
+                  <input value={supForm.paymentTerms} onChange={(e) => setSupForm({ ...supForm, paymentTerms: e.target.value })} placeholder="Net 15 Days" className="w-full h-9 px-3 border border-gray-200 rounded-lg" />
+                </div>
+              </div>
+              <div className="grid grid-cols-3 gap-3">
+                <div className="col-span-2">
+                  <label className="block text-xs font-medium text-[#64748B] mb-1">State</label>
+                  <input required value={supForm.state} onChange={(e) => setSupForm({ ...supForm, state: e.target.value })} className="w-full h-9 px-3 border border-gray-200 rounded-lg" />
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#64748B] mb-1">State Code</label>
+                  <input required minLength={2} maxLength={2} value={supForm.stateCode} onChange={(e) => setSupForm({ ...supForm, stateCode: e.target.value })} className="w-full h-9 px-3 border border-gray-200 rounded-lg font-mono" />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-[#64748B] mb-1">Address</label>
+                <input required value={supForm.address} onChange={(e) => setSupForm({ ...supForm, address: e.target.value })} className="w-full h-9 px-3 border border-gray-200 rounded-lg" />
               </div>
               <div className="flex justify-end gap-2 pt-3 border-t border-gray-100">
                 <button type="button" onClick={() => setShowSupModal(false)} className="h-9 px-4 rounded-lg bg-gray-100 text-[#172033] font-medium">Cancel</button>
