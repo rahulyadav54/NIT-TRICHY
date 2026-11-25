@@ -244,6 +244,21 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
     }
   };
 
+  const handleCancelInvoice = async (inv: any) => {
+    const reason = window.prompt(`Enter reason to cancel ${inv.invoiceNumber} via Credit Note:`, 'Order correction / Customer request');
+    if (!reason) return;
+    try {
+      const res = await apiRequest(`/invoice/${inv.id}/cancel`, {
+        method: 'POST',
+        body: JSON.stringify({ reason }),
+      });
+      setActionMsg(res.message || `Invoice ${inv.invoiceNumber} cancelled with Credit Note.`);
+      loadData();
+    } catch (err: any) {
+      alert(err.message || 'Failed to cancel invoice');
+    }
+  };
+
   const selectedProduct = products.find((p) => p.id === orderForm.productId) || products[0];
   const selectedPrice = Number(selectedProduct?.sellingPrice || 50);
 
@@ -580,6 +595,15 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                               className="px-2 py-1 rounded bg-[#0D9488] hover:bg-[#0b7a70] text-white text-[11px] font-semibold"
                             >
                               Pay Due
+                            </button>
+                          )}
+                          {inv.status !== 'CANCELLED' && (
+                            <button
+                              onClick={() => handleCancelInvoice(inv)}
+                              className="px-2 py-1 rounded bg-red-50 hover:bg-red-100 text-red-600 text-[11px] font-semibold"
+                              title="Cancel with Credit Note"
+                            >
+                              Credit Note
                             </button>
                           )}
                         </td>
