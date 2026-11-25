@@ -55,7 +55,15 @@ export function MaterialsInventoryMaster({ onNavigate }: { onNavigate?: (path: s
     try {
       await apiRequest('/master/materials', {
         method: 'POST',
-        body: JSON.stringify(newMaterial),
+        body: JSON.stringify({
+          code: newMaterial.code,
+          name: newMaterial.name,
+          category: newMaterial.category,
+          unit: newMaterial.uom || 'KG',
+          openingStock: Number(newMaterial.currentStock || 0),
+          reorderLevel: Number(newMaterial.reorderLevel || 0),
+          purchaseRate: Number(newMaterial.unitCost || 0),
+        }),
       });
       setShowAddModal(false);
       fetchData();
@@ -707,13 +715,19 @@ export function MaterialsInventoryMaster({ onNavigate }: { onNavigate?: (path: s
               <div className="grid grid-cols-3 gap-3">
                 <div>
                   <label className="font-label-default text-label-default text-secondary block mb-1">UOM</label>
-                  <input
-                    required
+                  <select
                     value={newMaterial.uom}
                     onChange={(e) => setNewMaterial({ ...newMaterial, uom: e.target.value })}
-                    placeholder="KG / L / UNIT"
                     className="w-full h-8 px-2.5 text-body-default bg-surface border border-outline-variant/60 rounded focus:border-primary-container focus:outline-none"
-                  />
+                  >
+                    <option value="KG">KG</option>
+                    <option value="G">G</option>
+                    <option value="L">L</option>
+                    <option value="ML">ML</option>
+                    <option value="PIECES">PIECES</option>
+                    <option value="PACKETS">PACKETS</option>
+                    <option value="CARTONS">CARTONS</option>
+                  </select>
                 </div>
                 <div>
                   <label className="font-label-default text-label-default text-secondary block mb-1">Unit Cost (₹)</label>

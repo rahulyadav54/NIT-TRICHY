@@ -5,6 +5,7 @@ import { apiRequest } from '@/services/api';
 export function OperationsView({ subView = 'production-runs', onNavigate: _onNavigate }: { subView: string; onNavigate?: (path: string) => void }) {
   const [prodRuns, setProdRuns] = useState<any[]>([]);
   const [boms, setBoms] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [_stockLedger, setStockLedger] = useState<any[]>([]);
   const [scalingQty, setScalingQty] = useState<number>(100); // 100 kg batch
   const [scaledBOM, setScaledBOM] = useState<any[]>([]);
@@ -15,9 +16,9 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
   const [batchForm, setBatchForm] = useState({
     batchNumber: `BATCH-MRK-${Date.now().toString().slice(-4)}`,
     batchDate: new Date().toISOString().split('T')[0],
-    targetOutputPkt: 1000,
-    actualOutputPkt: 940,
-    damagedPouchCount: 15,
+    targetOutputPkt: 200,
+    actualOutputPkt: 188,
+    damagedPouchCount: 5,
     actualOilKg: 21.0,
     expectedOilKg: 20.0,
   });
@@ -25,9 +26,10 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
   const loadData = async () => {
     setLoading(true);
     try {
-      const [prRes, bomRes, ledgerRes] = await Promise.allSettled([
+      const [prRes, bomRes, prodRes, ledgerRes] = await Promise.allSettled([
         apiRequest('/production'),
         apiRequest('/bom'),
+        apiRequest('/master/products'),
         apiRequest('/reports/stock-movement'),
       ]);
 
@@ -37,6 +39,7 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
         setBoms(bomList);
         calculateScaledBOM(scalingQty, bomList);
       }
+      if (prodRes.status === 'fulfilled') setProducts(prodRes.value.data || []);
       if (ledgerRes.status === 'fulfilled') setStockLedger(ledgerRes.value.data || []);
     } catch (err) {
       console.error(err);
@@ -75,11 +78,45 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
   const handleRecordBatch = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      const activeBom = boms[0];
+      const activeProduct = products[0];
+      if (!activeBom || !activeProduct) {
+        alert('No active BOM or Product found in database.');
+        return;
+      }
+
+      const scale = Number(batchForm.targetOutputPkt) / Number(activeBom.expectedOutput || 200);
+      const actualConsumptions = (activeBom.items || []).map((it: any) => {
+        const isOil = String(it.materialCode || '').includes('OIL') || String(it.materialName || '').toLowerCase().includes('oil');
+        const qty = isOil
+          ? Number(batchForm.actualOilKg)
+          : Number((Number(it.standardQuantity) * scale).toFixed(4));
+        return {
+          materialId: it.materialId,
+          actualQty: qty > 0 ? qty : 1,
+          unit: it.unit || 'KG',
+        };
+      });
+
       await apiRequest('/production', {
         method: 'POST',
-        body: JSON.stringify(batchForm),
+        body: JSON.stringify({
+          productId: activeProduct.id,
+          bomId: activeBom.id,
+          runNumber: batchForm.batchNumber,
+          batchSize: Number((Number(activeBom.batchSize || 40) * scale).toFixed(2)),
+          plannedOutput: Number(batchForm.targetOutputPkt),
+          goodOutput: Number(batchForm.actualOutputPkt),
+          damagedPackagingQty: Number(batchForm.damagedPouchCount),
+          cartonsUsed: Math.max(1, Math.floor(Number(batchForm.actualOutputPkt) / 10)),
+          labourCost: 1200,
+          powerGasCost: 600,
+          otherOverheads: 0,
+          actualConsumptions,
+        }),
       });
       setShowBatchModal(false);
+      setBatchForm((prev) => ({ ...prev, batchNumber: `BATCH-MRK-${Date.now().toString().slice(-4)}` }));
       loadData();
     } catch (err: any) {
       alert(err.message || 'Failed to record batch');

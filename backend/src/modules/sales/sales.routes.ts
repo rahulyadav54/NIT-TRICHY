@@ -51,7 +51,7 @@ salesRouter.get('/', async (req: AuthenticatedRequest, res: Response) => {
   const ordersWithItems = await Promise.all(
     orders.map(async (order) => {
       const items = await query(
-        `SELECT soi.*, p.name as "productName", p.code as "productCode", p.packSize as "packSize"
+        `SELECT soi.*, p.name as "productName", p.code as "productCode", p."packSize" as "packSize"
          FROM "SalesOrderItem" soi
          JOIN "Product" p ON soi."productId" = p.id
          WHERE soi."salesOrderId" = $1`,

@@ -6,32 +6,28 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
   const [salesOrders, setSalesOrders] = useState<any[]>([]);
   const [invoices, setInvoices] = useState<any[]>([]);
   const [customers, setCustomers] = useState<any[]>([]);
+  const [products, setProducts] = useState<any[]>([]);
   const [costingDashboard, setCostingDashboard] = useState<any>(null);
   const [_loading, setLoading] = useState(true);
+  const [actionMsg, setActionMsg] = useState<string | null>(null);
 
   // New sales order form state
   const [showOrderModal, setShowOrderModal] = useState(false);
   const [orderForm, setOrderForm] = useState({
     customerId: '',
-    customerType: 'WHOLESALE',
+    productId: '',
     orderNumber: `SO-${Date.now().toString().slice(-4)}`,
-    items: [
-      {
-        productCode: 'FG-MRK-200',
-        productName: 'Trichy Traditional Murukku (200g)',
-        orderedPkt: 570,
-        unitPrice: 50.0,
-      },
-    ],
+    quantity: 50,
   });
 
   const loadData = async () => {
     setLoading(true);
     try {
-      const [orderRes, invRes, custRes, costRes] = await Promise.allSettled([
+      const [orderRes, invRes, custRes, prodRes, costRes] = await Promise.allSettled([
         apiRequest('/sales'),
         apiRequest('/invoice'),
         apiRequest('/master/customers'),
+        apiRequest('/master/products'),
         apiRequest('/costing/dashboard'),
       ]);
 
@@ -40,8 +36,15 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
       if (custRes.status === 'fulfilled') {
         const clist = custRes.value.data || [];
         setCustomers(clist);
-        if (clist.length > 0 && !orderForm.customerId) {
-          setOrderForm((prev) => ({ ...prev, customerId: clist[0].id }));
+        if (clist.length > 0) {
+          setOrderForm((prev) => ({ ...prev, customerId: prev.customerId || clist[0].id }));
+        }
+      }
+      if (prodRes.status === 'fulfilled') {
+        const plist = prodRes.value.data || [];
+        setProducts(plist);
+        if (plist.length > 0) {
+          setOrderForm((prev) => ({ ...prev, productId: prev.productId || plist[0].id }));
         }
       }
       if (costRes.status === 'fulfilled') setCostingDashboard(costRes.value.data || null);
@@ -61,14 +64,85 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
     try {
       await apiRequest('/sales', {
         method: 'POST',
-        body: JSON.stringify(orderForm),
+        body: JSON.stringify({
+          customerId: orderForm.customerId,
+          orderNumber: orderForm.orderNumber,
+          items: [
+            {
+              productId: orderForm.productId,
+              quantity: Number(orderForm.quantity),
+            },
+          ],
+        }),
       });
       setShowOrderModal(false);
+      setOrderForm((prev) => ({ ...prev, orderNumber: `SO-${Date.now().toString().slice(-4)}` }));
+      setActionMsg('Sales order created and submitted.');
       loadData();
     } catch (err: any) {
       alert(err.message || 'Failed to create sales order');
     }
   };
+
+  const handleUpdateOrderStatus = async (orderId: string, status: 'APPROVED' | 'REJECTED') => {
+    try {
+      await apiRequest(`/sales/${orderId}/status`, {
+        method: 'PATCH',
+        body: JSON.stringify({ status }),
+      });
+      setActionMsg(`Order ${status.toLowerCase()} successfully.`);
+      loadData();
+    } catch (err: any) {
+      alert(err.message || 'Failed to update order status');
+    }
+  };
+
+  const handleGenerateInvoice = async (orderId: string) => {
+    try {
+      await apiRequest(`/invoice/from-order/${orderId}`, { method: 'POST' });
+      setActionMsg('GST Tax Invoice generated.');
+      loadData();
+    } catch (err: any) {
+      alert(err.message || 'Failed to generate invoice');
+    }
+  };
+
+  const handleDispatchInvoice = async (invoiceId: string) => {
+    try {
+      await apiRequest('/dispatch', {
+        method: 'POST',
+        body: JSON.stringify({ invoiceId }),
+      });
+      setActionMsg('Dispatch completed & stock deducted from ledger.');
+      loadData();
+    } catch (err: any) {
+      alert(err.message || 'Failed to dispatch invoice');
+    }
+  };
+
+  const handleRecordPayment = async (inv: any) => {
+    const due = Number(inv.balanceDue ?? inv.grandTotal ?? 0);
+    if (due <= 0) return;
+    try {
+      await apiRequest('/payment', {
+        method: 'POST',
+        body: JSON.stringify({
+          customerId: inv.customerId,
+          invoiceId: inv.id,
+          amount: due,
+          paymentMode: 'NEFT',
+          referenceNumber: `NEFT-${Date.now().toString().slice(-6)}`,
+        }),
+      });
+      setActionMsg(`Payment of ₹${due.toLocaleString('en-IN')} recorded.`);
+      loadData();
+    } catch (err: any) {
+      alert(err.message || 'Failed to record payment');
+    }
+  };
+
+  const selectedProduct = products.find((p) => p.id === orderForm.productId) || products[0];
+  const selectedPrice = Number(selectedProduct?.sellingPrice || 50);
 
   const valuation = costingDashboard?.inventoryValuation || {};
 
@@ -76,11 +150,13 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
     <div className="flex flex-col w-full pb-space-xl">
       {/* Top Header Strip */}
       <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-space-md py-space-md bg-surface">
-        <div>
-          <div className="flex items-center gap-space-xs">
+        <div className="flex flex-wrap items-center gap-2">
+          <div className="flex items-center gap-2 flex-wrap">
             <span className="font-headline-lg text-headline-lg text-on-surface font-bold tracking-tight">
               {subView === 'sales-orders' && 'Commercial Sales Orders & Price Snapshotting'}
+              {subView === 'customers' && 'Retail & Wholesale Customers'}
               {subView === 'gst-invoices-eway' && 'GST Compliance Invoices & E-Way Bills'}
+              {subView === 'payments-receivables' && 'Payments & Outstanding Receivables'}
               {subView === 'costing-margins' && 'Batch Costing, Margins & Gross Valuation'}
             </span>
             <span className="px-2 py-0.5 rounded-full bg-surface-container-high text-primary font-label-micro text-label-micro uppercase font-semibold">
@@ -111,6 +187,13 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
           </button>
         </div>
       </div>
+
+      {actionMsg && (
+        <div className="mb-4 px-4 py-2.5 rounded-lg bg-emerald-50 border border-emerald-200 text-emerald-800 text-sm flex items-center justify-between">
+          <span>{actionMsg}</span>
+          <button onClick={() => setActionMsg(null)} className="text-emerald-600 hover:text-emerald-900 font-bold">×</button>
+        </div>
+      )}
 
       {/* VIEW 1: SALES & ORDERS */}
       {subView === 'sales-orders' && (
@@ -159,35 +242,64 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                     <th className="py-2.5 px-3 text-right">Taxable Value</th>
                     <th className="py-2.5 px-3 text-right">Grand Total</th>
                     <th className="py-2.5 px-3 text-right">Status</th>
+                    <th className="py-2.5 px-3 text-right">Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-surface-container-high font-table-data text-table-data">
                   {salesOrders.length > 0 ? (
-                    salesOrders.map((o) => (
+                    salesOrders.map((o) => {
+                      const totalPkts = (o.items || []).reduce((s: number, it: any) => s + Number(it.quantity || 0), 0);
+                      return (
                       <tr key={o.id || o.orderNumber} className="hover:bg-surface-container-low/70 transition-colors">
                         <td className="py-2.5 px-3 font-mono font-semibold text-primary">{o.orderNumber}</td>
                         <td className="py-2.5 px-3 text-secondary">{new Date(o.orderDate || Date.now()).toLocaleDateString('en-IN')}</td>
-                        <td className="py-2.5 px-3 font-medium text-on-surface">{o.customerName || 'Distributor A (Tamil Nadu)'}</td>
+                        <td className="py-2.5 px-3 font-medium text-on-surface">{o.customerName || 'Customer'}</td>
                         <td className="py-2.5 px-3">
                           <span className="px-2 py-0.5 rounded bg-surface-container font-label-micro text-label-micro font-semibold uppercase">
                             {o.customerType || 'WHOLESALE'}
                           </span>
                         </td>
-                        <td className="py-2.5 px-3 text-right font-mono font-bold text-on-surface">570 pkts</td>
+                        <td className="py-2.5 px-3 text-right font-mono font-bold text-on-surface">{totalPkts} pkts</td>
                         <td className="py-2.5 px-3 text-right font-mono text-secondary">
-                          ₹{Number(o.taxableAmount || 27142.86).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                          ₹{Number(o.subtotal || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                         </td>
                         <td className="py-2.5 px-3 text-right font-mono font-bold text-primary">
-                          ₹{Number(o.grandTotal || 28500).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                          ₹{Number(o.grandTotal || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                         </td>
                         <td className="py-2.5 px-3 text-right">
                           <span className="inline-flex items-center gap-1 text-tertiary font-label-micro text-label-micro font-semibold">
                             <span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-                            {o.status || 'APPROVED'}
+                            {o.status}
                           </span>
                         </td>
+                        <td className="py-2.5 px-3 text-right space-x-1.5 whitespace-nowrap">
+                          {(o.status === 'SUBMITTED' || o.status === 'DRAFT') && (
+                            <>
+                              <button
+                                onClick={() => handleUpdateOrderStatus(o.id, 'APPROVED')}
+                                className="px-2 py-1 rounded bg-[#0D9488] hover:bg-[#0b7a70] text-white text-[11px] font-semibold"
+                              >
+                                Approve
+                              </button>
+                              <button
+                                onClick={() => handleUpdateOrderStatus(o.id, 'REJECTED')}
+                                className="px-2 py-1 rounded bg-red-50 hover:bg-red-100 text-red-600 text-[11px] font-semibold"
+                              >
+                                Reject
+                              </button>
+                            </>
+                          )}
+                          {o.status === 'APPROVED' && (
+                            <button
+                              onClick={() => handleGenerateInvoice(o.id)}
+                              className="px-2 py-1 rounded bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-[11px] font-semibold"
+                            >
+                              Generate Invoice
+                            </button>
+                          )}
+                        </td>
                       </tr>
-                    ))
+                    );})
                   ) : (
                     <tr className="hover:bg-surface-container-low/70 transition-colors">
                       <td className="py-2.5 px-3 font-mono font-semibold text-primary">SO-2024-001</td>
@@ -258,7 +370,7 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                     <th className="py-2.5 px-3 text-right">SGST (2.5%)</th>
                     <th className="py-2.5 px-3 text-right">IGST (5.0%)</th>
                     <th className="py-2.5 px-3 text-right">Grand Total</th>
-                    <th className="py-2.5 px-3 text-right">E-Way Status</th>
+                    <th className="py-2.5 px-3 text-right">Status / Actions</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-surface-container-high font-table-data text-table-data">
@@ -267,7 +379,7 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                       <tr key={inv.id || inv.invoiceNumber} className="hover:bg-surface-container-low/70 transition-colors">
                         <td className="py-2.5 px-3 font-mono font-semibold text-primary">{inv.invoiceNumber}</td>
                         <td className="py-2.5 px-3 text-secondary">{new Date(inv.invoiceDate || Date.now()).toLocaleDateString('en-IN')}</td>
-                        <td className="py-2.5 px-3 font-mono text-on-surface">{inv.buyerGstin || '33AAAAA0000A1Z5'}</td>
+                        <td className="py-2.5 px-3 font-mono text-on-surface">{inv.buyerGstin || inv.customerGstin || '33AAAAA0000A1Z5'}</td>
                         <td className="py-2.5 px-3">
                           <span className={`px-2 py-0.5 rounded font-label-micro text-label-micro font-semibold uppercase ${
                             inv.isInterState ? 'bg-secondary-container text-on-secondary-fixed' : 'bg-surface-container text-primary'
@@ -276,25 +388,38 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                           </span>
                         </td>
                         <td className="py-2.5 px-3 text-right font-mono text-secondary">
-                          ₹{Number(inv.taxableAmount || 27142.86).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                          ₹{Number(inv.subtotal || inv.taxableAmount || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                         </td>
                         <td className="py-2.5 px-3 text-right font-mono text-secondary">
-                          {inv.isInterState ? '-' : `₹${Number(inv.cgstAmount || 678.57).toFixed(2)}`}
+                          {inv.isInterState ? '-' : `₹${Number(inv.cgstAmount || 0).toFixed(2)}`}
                         </td>
                         <td className="py-2.5 px-3 text-right font-mono text-secondary">
-                          {inv.isInterState ? '-' : `₹${Number(inv.sgstAmount || 678.57).toFixed(2)}`}
+                          {inv.isInterState ? '-' : `₹${Number(inv.sgstAmount || 0).toFixed(2)}`}
                         </td>
                         <td className="py-2.5 px-3 text-right font-mono text-secondary">
-                          {inv.isInterState ? `₹${Number(inv.igstAmount || 1357.14).toFixed(2)}` : '-'}
+                          {inv.isInterState ? `₹${Number(inv.igstAmount || 0).toFixed(2)}` : '-'}
                         </td>
                         <td className="py-2.5 px-3 text-right font-mono font-bold text-primary">
-                          ₹{Number(inv.grandTotal || 28500).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                          ₹{Number(inv.grandTotal || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                         </td>
-                        <td className="py-2.5 px-3 text-right">
-                          <span className="inline-flex items-center gap-1 text-tertiary font-label-micro text-label-micro font-semibold">
-                            <span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-                            Generated
+                        <td className="py-2.5 px-3 text-right space-x-1.5 whitespace-nowrap">
+                          <span className="inline-flex items-center gap-1 text-tertiary font-label-micro text-label-micro font-semibold mr-1">
+                            {inv.status || 'ISSUED'}
                           </span>
+                          <button
+                            onClick={() => handleDispatchInvoice(inv.id)}
+                            className="px-2 py-1 rounded bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-[11px] font-semibold"
+                          >
+                            Dispatch
+                          </button>
+                          {Number(inv.balanceDue ?? inv.grandTotal ?? 0) > 0 && (
+                            <button
+                              onClick={() => handleRecordPayment(inv)}
+                              className="px-2 py-1 rounded bg-[#0D9488] hover:bg-[#0b7a70] text-white text-[11px] font-semibold"
+                            >
+                              Pay Due
+                            </button>
+                          )}
                         </td>
                       </tr>
                     ))
@@ -417,6 +542,85 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
         </div>
       )}
 
+      {/* VIEW 4: CUSTOMERS */}
+      {subView === 'customers' && (
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 className="text-base font-semibold text-[#172033]">Registered Retail & Wholesale Customers</h3>
+            <span className="text-xs text-[#64748B] font-mono">{customers.length} Active Accounts</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-gray-50 text-xs uppercase text-[#64748B]">
+                <tr>
+                  <th className="py-2.5 px-4">Code</th>
+                  <th className="py-2.5 px-4">Customer Name</th>
+                  <th className="py-2.5 px-4">Type</th>
+                  <th className="py-2.5 px-4">GSTIN</th>
+                  <th className="py-2.5 px-4">State</th>
+                  <th className="py-2.5 px-4 text-right">Credit Limit</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {customers.map((c) => (
+                  <tr key={c.id} className="hover:bg-gray-50">
+                    <td className="py-2.5 px-4 font-mono text-[#2457D6] font-semibold">{c.code}</td>
+                    <td className="py-2.5 px-4 font-medium text-[#172033]">{c.name}</td>
+                    <td className="py-2.5 px-4"><span className="px-2 py-0.5 rounded bg-blue-50 text-[#2457D6] text-xs font-semibold">{c.type}</span></td>
+                    <td className="py-2.5 px-4 font-mono text-xs">{c.gstin}</td>
+                    <td className="py-2.5 px-4 text-[#64748B]">{c.state} ({c.stateCode})</td>
+                    <td className="py-2.5 px-4 text-right font-mono">₹{Number(c.creditLimit || 0).toLocaleString('en-IN')}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
+      {/* VIEW 5: PAYMENTS & RECEIVABLES */}
+      {subView === 'payments-receivables' && (
+        <div className="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+          <div className="p-4 border-b border-gray-100 flex items-center justify-between">
+            <h3 className="text-base font-semibold text-[#172033]">Invoice Receivables & Collections</h3>
+            <span className="text-xs text-[#64748B] font-mono">{invoices.length} Invoices</span>
+          </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left text-sm">
+              <thead className="bg-gray-50 text-xs uppercase text-[#64748B]">
+                <tr>
+                  <th className="py-2.5 px-4">Invoice #</th>
+                  <th className="py-2.5 px-4 text-right">Grand Total</th>
+                  <th className="py-2.5 px-4 text-right">Balance Due</th>
+                  <th className="py-2.5 px-4">Status</th>
+                  <th className="py-2.5 px-4 text-right">Action</th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {invoices.map((inv) => (
+                  <tr key={inv.id} className="hover:bg-gray-50">
+                    <td className="py-2.5 px-4 font-mono font-semibold text-[#2457D6]">{inv.invoiceNumber}</td>
+                    <td className="py-2.5 px-4 text-right font-mono">₹{Number(inv.grandTotal || 0).toLocaleString('en-IN')}</td>
+                    <td className="py-2.5 px-4 text-right font-mono font-bold text-red-600">₹{Number(inv.balanceDue ?? inv.grandTotal ?? 0).toLocaleString('en-IN')}</td>
+                    <td className="py-2.5 px-4 text-xs font-semibold">{inv.status}</td>
+                    <td className="py-2.5 px-4 text-right">
+                      {Number(inv.balanceDue ?? inv.grandTotal ?? 0) > 0 && (
+                        <button
+                          onClick={() => handleRecordPayment(inv)}
+                          className="px-3 py-1 rounded-lg bg-[#0D9488] hover:bg-[#0b7a70] text-white text-xs font-semibold"
+                        >
+                          Record Full Payment
+                        </button>
+                      )}
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      )}
+
       {/* New Sales Order Modal */}
       {showOrderModal && (
         <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
@@ -447,7 +651,7 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                 </select>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-1 gap-3">
                 <div>
                   <label className="font-label-default text-label-default text-secondary block mb-1">Order Number</label>
                   <input
@@ -457,26 +661,22 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                     className="w-full h-8 px-2.5 text-body-default bg-surface border border-outline-variant/60 rounded"
                   />
                 </div>
-                <div>
-                  <label className="font-label-default text-label-default text-secondary block mb-1">Channel Type</label>
-                  <select
-                    value={orderForm.customerType}
-                    onChange={(e) => setOrderForm({ ...orderForm, customerType: e.target.value })}
-                    className="w-full h-8 px-2.5 text-body-default bg-surface border border-outline-variant/60 rounded"
-                  >
-                    <option value="WHOLESALE">Wholesale</option>
-                    <option value="RETAIL">Retail</option>
-                  </select>
-                </div>
               </div>
 
               <div>
                 <label className="font-label-default text-label-default text-secondary block mb-1">Product SKU</label>
-                <input
-                  disabled
-                  value="Trichy Traditional Murukku (200g) - Standard Pack"
-                  className="w-full h-8 px-2.5 text-body-default bg-surface-container text-secondary border border-outline-variant/60 rounded"
-                />
+                <select
+                  required
+                  value={orderForm.productId}
+                  onChange={(e) => setOrderForm({ ...orderForm, productId: e.target.value })}
+                  className="w-full h-8 px-2.5 text-body-default bg-surface border border-outline-variant/60 rounded focus:border-primary-container focus:outline-none"
+                >
+                  {products.map((p) => (
+                    <option key={p.id} value={p.id}>
+                      {p.name} ({p.packSize}) — ₹{Number(p.sellingPrice).toFixed(2)}
+                    </option>
+                  ))}
+                </select>
               </div>
 
               <div className="grid grid-cols-2 gap-3">
@@ -484,15 +684,10 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                   <label className="font-label-default text-label-default text-secondary block mb-1">Ordered Quantity (pkts)</label>
                   <input
                     type="number"
+                    min="1"
                     required
-                    value={orderForm.items[0].orderedPkt}
-                    onChange={(e) => {
-                      const pkts = Number(e.target.value);
-                      setOrderForm({
-                        ...orderForm,
-                        items: [{ ...orderForm.items[0], orderedPkt: pkts }],
-                      });
-                    }}
+                    value={orderForm.quantity}
+                    onChange={(e) => setOrderForm({ ...orderForm, quantity: Number(e.target.value) })}
                     className="w-full h-8 px-2.5 text-body-default bg-surface border border-outline-variant/60 rounded"
                   />
                 </div>
@@ -500,25 +695,17 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                   <label className="font-label-default text-label-default text-secondary block mb-1">Unit Selling Price (₹)</label>
                   <input
                     type="number"
-                    step="0.01"
-                    required
-                    value={orderForm.items[0].unitPrice}
-                    onChange={(e) => {
-                      const pr = Number(e.target.value);
-                      setOrderForm({
-                        ...orderForm,
-                        items: [{ ...orderForm.items[0], unitPrice: pr }],
-                      });
-                    }}
-                    className="w-full h-8 px-2.5 text-body-default bg-surface border border-outline-variant/60 rounded"
+                    disabled
+                    value={selectedPrice}
+                    className="w-full h-8 px-2.5 text-body-default bg-surface-container text-secondary border border-outline-variant/60 rounded"
                   />
                 </div>
               </div>
 
               <div className="p-3 bg-surface-container-low rounded border border-surface-container flex justify-between items-center text-xs">
-                <span className="text-secondary font-medium">Estimated Order Total:</span>
+                <span className="text-secondary font-medium">Estimated Subtotal (excl. GST):</span>
                 <span className="font-mono font-bold text-primary text-sm">
-                  ₹{(orderForm.items[0].orderedPkt * orderForm.items[0].unitPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
+                  ₹{(orderForm.quantity * selectedPrice).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                 </span>
               </div>
 
