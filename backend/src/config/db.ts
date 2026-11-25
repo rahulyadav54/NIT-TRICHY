@@ -7,7 +7,7 @@ import path from 'path';
 const { Pool } = pg;
 
 const dbUrl = process.env.DATABASE_URL || '';
-const isLocalPlaceholder = dbUrl.includes('localhost:5432/udyamflow_erp');
+const isLocalPlaceholder = dbUrl.includes('localhost:5432/trima_erp');
 const usePostgresPool = Boolean(
   dbUrl && (process.env.VERCEL === '1' || process.env.USE_PG_POOL === 'true' || !isLocalPlaceholder)
 );

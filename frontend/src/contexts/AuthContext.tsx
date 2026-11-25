@@ -17,7 +17,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const token = localStorage.getItem('udyamflow_token');
+    const token = localStorage.getItem('trima_token');
     if (!token) {
       setLoading(false);
       return;

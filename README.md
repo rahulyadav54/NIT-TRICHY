@@ -17,7 +17,7 @@
 
 ## 🌟 Project Overview
 
-**TRIMA ERP (UdyamFlow)** is a full-stack, commercial-grade **Order-to-Audit Manufacturing ERP** engineered for South Indian packaged food manufacturers, benchmarked on a complete **Murukku 200g** production, inventory, GST billing, and audit lifecycle.
+**TRIMA ERP** is a full-stack, commercial-grade **Order-to-Audit Manufacturing ERP** engineered for South Indian packaged food manufacturers, benchmarked on a complete **Murukku 200g** production, inventory, GST billing, and audit lifecycle.
 
 Every stock balance is **derived from an immutable movement ledger** (`Opening + Receipts − Issues + Adjustments = Closing`), every financial calculation uses **`Decimal.js`** (zero floating-point drift), and every action is **role-gated and audit-logged**.
 

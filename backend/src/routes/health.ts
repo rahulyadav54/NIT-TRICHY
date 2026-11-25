@@ -10,7 +10,7 @@ healthRouter.get('/', async (req: Request, res: Response) => {
     status: dbStatus ? 'UP' : 'DEGRADED',
     timestamp: new Date().toISOString(),
     uptimeSeconds: Math.floor(process.uptime()),
-    service: 'udyamflow-backend',
+    service: 'trima-backend',
     version: '1.0.0',
     database: {
       engine: 'PostgreSQL',

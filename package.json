@@ -1,7 +1,7 @@
 {
-  "name": "udyamflow-erp-root",
+  "name": "trima-erp-root",
   "version": "1.0.0",
-  "description": "UdyamFlow ERP - From Order to Audit. Everything Connected.",
+  "description": "TRIMA ERP - From Order to Audit. Everything Connected.",
   "private": true,
   "workspaces": [
     "backend",

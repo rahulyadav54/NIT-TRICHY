@@ -1,14 +1,14 @@
 const API_BASE = '/api';
 
 export function getAuthToken(): string | null {
-  return localStorage.getItem('udyamflow_token');
+  return localStorage.getItem('trima_token');
 }
 
 export function setAuthToken(token: string | null) {
   if (token) {
-    localStorage.setItem('udyamflow_token', token);
+    localStorage.setItem('trima_token', token);
   } else {
-    localStorage.removeItem('udyamflow_token');
+    localStorage.removeItem('trima_token');
   }
 }
 

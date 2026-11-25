@@ -1,4 +1,4 @@
-// Prisma Schema for UdyamFlow ERP (TRIMA - NIT Tiruchirappalli)
+// Prisma Schema for TRIMA ERP (TRIMA - NIT Tiruchirappalli)
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]

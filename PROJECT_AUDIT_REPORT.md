@@ -1,6 +1,6 @@
 # TRIMA ERP — Full Project Implementation Audit & Completion Report
 
-**Project:** TRIMA (Trichy Integrated Manufacturing & Audit) / UdyamFlow ERP  
+**Project:** TRIMA ERP (Trichy Integrated Manufacturing & Audit)  
 **Audit Date:** 2026-11-26  
 **Scope:** End-to-End Order-to-Audit System (Backend APIs, Database Ledger, RBAC, Frontend Workflows, Costing, GST, Reports, Deployment)
 
@@ -8,7 +8,7 @@
 
 ## 1. Project Overview
 
-- **Frontend:** React 18 + TypeScript + Vite (`frontend/`), styled with Tailwind CSS and `lucide-react` icons. Uses `AuthContext` (`udyamflow_token` JWT) and `apiRequest()` over `/api`.
+- **Frontend:** React 18 + TypeScript + Vite (`frontend/`), styled with Tailwind CSS and `lucide-react` icons. Uses `AuthContext` (`trima_token` JWT) and `apiRequest()` over `/api`.
 - **Backend:** Node.js + Express + TypeScript (`backend/`), Zod input validation, `decimal.js` arbitrary-precision arithmetic, `bcryptjs` password hashing, `jsonwebtoken` JWT auth, `csv-stringify`, `exceljs`, and `pdfmake`.
 - **Database:** PostgreSQL schema (`backend/prisma/schema.prisma`, DDL in `backend/prisma/init_utf8.sql`), running on **PGlite** (`backend/prisma/pgdata`) for local/test execution and **`pg.Pool`** via `DATABASE_URL` (tested against Supabase PostgreSQL) for Vercel serverless deployment.
 - **Deployment:** Configured via root `vercel.json` using **Vercel Services** (`frontend` SPA + `backend` serverless Express entrypoint).

@@ -8,7 +8,7 @@ import Decimal from 'decimal.js';
 async function runMasterBenchmarkE2E() {
   console.log('================================================================');
   console.log('🏛️  NIT TIRUCHIRAPPALLI WINTER INTERNSHIP BENCHMARK E2E SUITE');
-  console.log('    TRIMA - Trichy Integrated Manufacturing & Audit (UdyamFlow ERP)');
+  console.log('    TRIMA ERP - Trichy Integrated Manufacturing & Audit');
   console.log('================================================================\n');
 
   // Step 0: Clean Reset & Reseed

@@ -1,6 +1,6 @@
-# UdyamFlow ERP — Comprehensive Feature & Requirement Checklist
+# TRIMA ERP — Comprehensive Feature & Requirement Checklist
 
-This checklist tracks every mandatory requirement, should-have feature, business rule, and benchmark calculation specified for the **UdyamFlow ERP (TRIMA)** project.
+This checklist tracks every mandatory requirement, should-have feature, business rule, and benchmark calculation specified for the **TRIMA ERP** project.
 
 ---
 

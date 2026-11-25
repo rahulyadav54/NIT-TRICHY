@@ -1,4 +1,4 @@
-# UdyamFlow ERP — 8-Minute Evaluation Walkthrough Script
+# TRIMA ERP — 8-Minute Evaluation Walkthrough Script
 **NIT Tiruchirappalli Winter Internship Demonstration**
 
 ---
@@ -7,7 +7,7 @@
 
 | Time | Stage | Action & Screen Demonstrated | Key Talking Points |
 |---|---|---|---|
-| **0:00 - 0:45** | **Architecture & Concept** | Open Landing Screen / Architecture Diagram | Introduce UdyamFlow ERP. Explain the NIT Trichy internship problem: small South Indian snacks manufacturer (Murukku 200g). Emphasize: Real PostgreSQL database, Decimal.js financial math, derived stock balances, 5 distinct roles. |
+| **0:00 - 0:45** | **Architecture & Concept** | Open Landing Screen / Architecture Diagram | Introduce TRIMA ERP. Explain the NIT Trichy internship problem: small South Indian snacks manufacturer (Murukku 200g). Emphasize: Real PostgreSQL database, Decimal.js financial math, derived stock balances, 5 distinct roles. |
 | **0:45 - 2:00** | **Salesman Mobile Order** | Login as `salesman@trima.com`. Switch to mobile viewport. Open "New Sales Order". Select "Retailer A (Madurai)". | Show that only assigned customers are visible. Select Murukku 200g (150 pkts). Notice price auto-populates ₹50.00 and is snapshotted. Subtotal: ₹7,500, Total with 5% GST: ₹7,875. Submit order in < 1 min. Status becomes `SUBMITTED`. |
 | **2:00 - 3:30** | **Admin Verification & Invoicing** | Logout. Login as `admin@trima.com`. Open Operations Dashboard. | Inspect incoming order from Salesman Ravi. Show available finished goods stock (238 pkts). Click "Approve". Click "Generate GST Invoice". Point out place of supply: Tamil Nadu (33) $\rightarrow$ CGST (₹187.50) + SGST (₹187.50) = ₹7,875.00. Sequential numbering `UF/2026-27/0001`. |
 | **3:30 - 4:45** | **Dispatch & Inventory Deduction** | On Invoice screen, click "Dispatch Goods". Confirm dispatch of 150 packets. | Navigate to Master Data $\rightarrow$ Materials/Finished Goods. Show that Finished Goods stock automatically reduced from 238 to exactly 88 packets. Attempt duplicate dispatch to show safety check. |

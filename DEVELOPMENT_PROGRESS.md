@@ -1,4 +1,4 @@
-# UdyamFlow ERP — Development Progress & Phase Tracker
+# TRIMA ERP — Development Progress & Phase Tracker
 
 | Phase | Title | Status | Completion Date | Verified By |
 |---|---|---|---|---|

@@ -1,4 +1,4 @@
-# UdyamFlow ERP — Trichy Integrated Manufacturing & Audit (TRIMA)
+# TRIMA ERP — Trichy Integrated Manufacturing & Audit
 ## Development Plan & Technical Architecture Roadmap
 
 **Version:** 1.0  
@@ -10,7 +10,7 @@
 
 ## 1. Executive Summary & Problem Scope
 
-**UdyamFlow ERP** (*"From Order to Audit. Everything Connected."*) is a mission-critical, full-stack Enterprise Resource Planning solution engineered specifically for small packaged snack food manufacturing units in South India.
+**TRIMA ERP** (*"From Order to Audit. Everything Connected."*) is a mission-critical, full-stack Enterprise Resource Planning solution engineered specifically for small packaged snack food manufacturing units in South India.
 
 The application manages the end-to-end operational and financial life cycle:
 1. **Sales Order Capture** via a mobile-optimized salesman interface.

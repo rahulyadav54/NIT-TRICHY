@@ -1,18 +1,18 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: udyamflow_postgres
+    container_name: trima_postgres
     restart: unless-stopped
     environment:
-      POSTGRES_USER: udyam_user
-      POSTGRES_PASSWORD: udyam_password
-      POSTGRES_DB: udyamflow_erp
+      POSTGRES_USER: trima_user
+      POSTGRES_PASSWORD: trima_password
+      POSTGRES_DB: trima_erp
     ports:
       - "5432:5432"
     volumes:
       - pgdata:/var/lib/postgresql/data
     healthcheck:
-      test: ["CMD-SHELL", "pg_isready -U udyam_user -d udyamflow_erp"]
+      test: ["CMD-SHELL", "pg_isready -U trima_user -d trima_erp"]
       interval: 5s
       timeout: 5s
       retries: 5

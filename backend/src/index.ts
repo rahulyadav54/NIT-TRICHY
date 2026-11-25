@@ -44,7 +44,7 @@ app.use('/api/reports', reportRouter);
 // Welcome / Root index
 app.get('/api', (req, res) => {
   res.json({
-    name: 'UdyamFlow ERP API',
+    name: 'TRIMA ERP API',
     tagline: 'From Order to Audit. Everything Connected.',
     institution: 'NIT Tiruchirappalli',
     version: '1.0.0',
@@ -61,7 +61,7 @@ if (
   !process.env.VERCEL
 ) {
   app.listen(config.port, () => {
-    console.log(`🚀 UdyamFlow ERP Backend running on http://localhost:${config.port}`);
+    console.log(`🚀 TRIMA ERP Backend running on http://localhost:${config.port}`);
     console.log(`📊 Health check available at http://localhost:${config.port}/api/health`);
   });
 }

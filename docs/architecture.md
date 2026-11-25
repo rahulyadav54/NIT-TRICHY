@@ -1,6 +1,6 @@
-# UdyamFlow ERP — System Architecture & Design Specification
+# TRIMA ERP — System Architecture & Design Specification
 
-**System Name:** UdyamFlow ERP (TRIMA)  
+**System Name:** TRIMA ERP  
 **Enterprise Focus:** Small-scale Food & Packaged Snacks Manufacturing  
 **Reference Model:** Murukku 200g Packaged Snack Operations  
 

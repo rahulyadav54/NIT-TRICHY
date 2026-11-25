@@ -1,4 +1,4 @@
-# UdyamFlow ERP — Design Note & Architectural Specification
+# TRIMA ERP — Design Note & Architectural Specification
 **Institution:** National Institute of Technology, Tiruchirappalli  
 **Project:** TRIMA — Trichy Integrated Manufacturing & Audit  
 **Target Enterprise:** Packaged Snacks Manufacturing (Murukku 200g Reference Unit)  
@@ -12,7 +12,7 @@ Small packaged food and snack enterprises in South India frequently operate with
 3. Errors in statutory GST computation across Intra-state (CGST + SGST) and Inter-state (IGST) dispatches.
 4. Stock-outs and unfulfilled customer commitments due to absent atomic reservation.
 
-**UdyamFlow ERP** resolves these deficiencies through an integrated *"From Order to Audit"* platform featuring role-based access control (RBAC), an immutable double-entry stock ledger, automated BOM scaling, weighted-average costing, and statutory GST compliance.
+**TRIMA ERP** resolves these deficiencies through an integrated *"From Order to Audit"* platform featuring role-based access control (RBAC), an immutable double-entry stock ledger, automated BOM scaling, weighted-average costing, and statutory GST compliance.
 
 ---
 
