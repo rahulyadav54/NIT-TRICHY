@@ -270,55 +270,159 @@ invoiceRouter.get('/:id/pdf', async (req: AuthenticatedRequest, res: Response) =
     },
   });
 
+  const isInterState = Number(invoice.igstAmount || 0) > 0;
   const docDefinition: any = {
-    defaultStyle: { font: 'Helvetica', fontSize: 10 },
+    pageSize: 'A4',
+    pageMargins: [36, 36, 36, 48],
+    defaultStyle: { font: 'Helvetica', fontSize: 9.5, color: '#172033' },
     content: [
-      { text: 'TAX INVOICE', style: 'header', alignment: 'center' },
-      { text: config.company.name, bold: true, fontSize: 13, margin: [0, 6, 0, 2] },
-      { text: `GSTIN: ${config.company.gstin} | State: ${config.company.state} (${config.company.stateCode})` },
-      { text: config.company.address, margin: [0, 0, 0, 10] },
+      // Top Navy Banner
       {
-        columns: [
-          [
-            { text: 'Billed To:', bold: true },
-            { text: invoice.customerName },
-            { text: `GSTIN: ${invoice.customerGstin}` },
-            { text: `Place of Supply: ${invoice.placeOfSupply}` },
+        table: {
+          widths: ['*', 'auto'],
+          body: [
+            [
+              {
+                stack: [
+                  { text: config.company.name.toUpperCase(), fontSize: 15, bold: true, color: '#FFFFFF' },
+                  { text: config.company.address, fontSize: 8.5, color: '#CBD5E1', margin: [0, 3, 0, 2] },
+                  { text: `GSTIN: ${config.company.gstin}  |  State: ${config.company.state} (${config.company.stateCode})  |  ${config.company.phone}`, fontSize: 8.5, color: '#93C5FD' },
+                ],
+                fillColor: '#101B33',
+                margin: [14, 12, 10, 12],
+                border: [false, false, false, false],
+              },
+              {
+                stack: [
+                  { text: 'TAX INVOICE', fontSize: 16, bold: true, color: '#FFFFFF', alignment: 'right' },
+                  { text: 'Original for Recipient', fontSize: 8, color: '#94A3B8', alignment: 'right', margin: [0, 3, 0, 0] },
+                ],
+                fillColor: '#101B33',
+                margin: [10, 14, 14, 12],
+                border: [false, false, false, false],
+              },
+            ],
           ],
-          [
-            { text: `Invoice #: ${invoice.invoiceNumber}`, bold: true, alignment: 'right' },
-            { text: `Date: ${new Date(invoice.invoiceDate).toLocaleDateString('en-IN')}`, alignment: 'right' },
-            { text: `Status: ${invoice.status}`, alignment: 'right' },
-          ],
-        ],
-        margin: [0, 0, 0, 12],
+        },
+        layout: 'noBorders',
+        margin: [0, 0, 0, 14],
       },
+      // Customer & Invoice Metadata Cards
+      {
+        table: {
+          widths: ['55%', '45%'],
+          body: [
+            [
+              {
+                stack: [
+                  { text: 'BILLED TO', fontSize: 8, bold: true, color: '#2457D6', margin: [0, 0, 0, 4] },
+                  { text: invoice.customerName, fontSize: 11, bold: true, color: '#172033' },
+                  { text: invoice.billingAddress || invoice.customerState || '', fontSize: 8.5, color: '#64748B', margin: [0, 2, 0, 3] },
+                  { text: `GSTIN: ${invoice.customerGstin || 'N/A'}`, fontSize: 8.5, bold: true },
+                  { text: `Place of Supply: ${invoice.placeOfSupply}`, fontSize: 8.5, color: '#475569', margin: [0, 2, 0, 0] },
+                ],
+                fillColor: '#F4F7FB',
+                margin: [10, 10, 10, 10],
+              },
+              {
+                stack: [
+                  { text: 'INVOICE DETAILS', fontSize: 8, bold: true, color: '#2457D6', margin: [0, 0, 0, 4] },
+                  { text: `Invoice No: ${invoice.invoiceNumber}`, fontSize: 10.5, bold: true, color: '#172033' },
+                  { text: `Invoice Date: ${new Date(invoice.invoiceDate).toLocaleDateString('en-IN', { day: '2-digit', month: 'short', year: 'numeric' })}`, fontSize: 8.5, margin: [0, 3, 0, 2] },
+                  { text: `Supply Type: ${isInterState ? 'Inter-State (IGST 5%)' : 'Intra-State (CGST 2.5% + SGST 2.5%)'}`, fontSize: 8.5, color: '#0D9488', bold: true },
+                  { text: `Status: ${invoice.status}`, fontSize: 8.5, bold: true, color: invoice.status === 'PAID' ? '#0D9488' : '#2457D6', margin: [0, 2, 0, 0] },
+                ],
+                fillColor: '#F4F7FB',
+                margin: [10, 10, 10, 10],
+              },
+            ],
+          ],
+        },
+        layout: {
+          hLineColor: () => '#E2E8F0',
+          vLineColor: () => '#E2E8F0',
+        },
+        margin: [0, 0, 0, 14],
+      },
+      // Line Items Table
       {
         table: {
           headerRows: 1,
-          widths: ['*', 'auto', 'auto', 'auto', 'auto'],
+          widths: ['auto', '*', 'auto', 'auto', 'auto', 'auto', 'auto'],
           body: [
-            ['Product', 'HSN', 'Qty', 'Rate (₹)', 'Total (₹)'],
-            ...items.map((it) => [
-              `${it.productName} (${it.packSize})`,
-              it.hsnCode,
-              Number(it.quantity).toString(),
-              Number(it.unitPrice).toFixed(2),
-              Number(it.totalAmount).toFixed(2),
-            ]),
+            [
+              { text: '#', bold: true, color: '#FFFFFF', fillColor: '#101B33', margin: [6, 7, 6, 7] },
+              { text: 'Description & Pack Size', bold: true, color: '#FFFFFF', fillColor: '#101B33', margin: [6, 7, 6, 7] },
+              { text: 'HSN', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'center', margin: [6, 7, 6, 7] },
+              { text: 'Qty', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'right', margin: [6, 7, 6, 7] },
+              { text: 'Rate (₹)', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'right', margin: [6, 7, 6, 7] },
+              { text: 'Taxable (₹)', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'right', margin: [6, 7, 6, 7] },
+              { text: 'Total (₹)', bold: true, color: '#FFFFFF', fillColor: '#101B33', alignment: 'right', margin: [6, 7, 6, 7] },
+            ],
+            ...items.map((it, idx) => {
+              const bg = idx % 2 === 1 ? '#F8FAFC' : '#FFFFFF';
+              return [
+                { text: `${idx + 1}`, fillColor: bg, margin: [6, 6, 6, 6] },
+                { text: `${it.productName} (${it.packSize})`, bold: true, fillColor: bg, margin: [6, 6, 6, 6] },
+                { text: it.hsnCode, alignment: 'center', fillColor: bg, color: '#475569', margin: [6, 6, 6, 6] },
+                { text: `${Number(it.quantity)} pkts`, alignment: 'right', fillColor: bg, margin: [6, 6, 6, 6] },
+                { text: Number(it.unitPrice).toFixed(2), alignment: 'right', fillColor: bg, margin: [6, 6, 6, 6] },
+                { text: Number(it.taxableAmount).toFixed(2), alignment: 'right', fillColor: bg, margin: [6, 6, 6, 6] },
+                { text: Number(it.totalAmount).toFixed(2), bold: true, alignment: 'right', fillColor: bg, margin: [6, 6, 6, 6] },
+              ];
+            }),
           ],
         },
-        margin: [0, 0, 0, 12],
+        layout: {
+          hLineColor: () => '#E2E8F0',
+          vLineColor: () => '#E2E8F0',
+        },
+        margin: [0, 0, 0, 14],
       },
-      { text: `Taxable Amount: ₹${Number(invoice.taxableAmount).toFixed(2)}`, alignment: 'right' },
-      { text: `CGST (2.5%): ₹${Number(invoice.cgstAmount).toFixed(2)}`, alignment: 'right' },
-      { text: `SGST (2.5%): ₹${Number(invoice.sgstAmount).toFixed(2)}`, alignment: 'right' },
-      { text: `IGST (5.0%): ₹${Number(invoice.igstAmount).toFixed(2)}`, alignment: 'right' },
-      { text: `Grand Total: ₹${Number(invoice.grandTotal).toFixed(2)}`, bold: true, fontSize: 12, alignment: 'right', margin: [0, 4, 0, 0] },
+      // Summary & Tax Box
+      {
+        columns: [
+          {
+            width: '*',
+            stack: [
+              { text: 'Terms & Statutory Declaration', bold: true, fontSize: 9, color: '#101B33', margin: [0, 0, 0, 4] },
+              { text: '1. Goods once sold will not be taken back unless damaged in transit.\n2. Subject to Tiruchirappalli Jurisdiction.\n3. Certified that particulars given above are true and correct under GST Act.', fontSize: 8, color: '#64748B', lineHeight: 1.35 },
+            ],
+          },
+          {
+            width: 220,
+            table: {
+              widths: ['*', 'auto'],
+              body: [
+                [{ text: 'Taxable Value', color: '#475569', margin: [8, 5, 6, 5] }, { text: `₹${Number(invoice.taxableAmount).toFixed(2)}`, alignment: 'right', margin: [6, 5, 8, 5] }],
+                [{ text: 'CGST (2.5%)', color: '#475569', margin: [8, 4, 6, 4] }, { text: `₹${Number(invoice.cgstAmount).toFixed(2)}`, alignment: 'right', margin: [6, 4, 8, 4] }],
+                [{ text: 'SGST (2.5%)', color: '#475569', margin: [8, 4, 6, 4] }, { text: `₹${Number(invoice.sgstAmount).toFixed(2)}`, alignment: 'right', margin: [6, 4, 8, 4] }],
+                [{ text: 'IGST (5.0%)', color: '#475569', margin: [8, 4, 6, 4] }, { text: `₹${Number(invoice.igstAmount).toFixed(2)}`, alignment: 'right', margin: [6, 4, 8, 4] }],
+                [{ text: 'GRAND TOTAL', bold: true, color: '#FFFFFF', fillColor: '#2457D6', margin: [8, 7, 6, 7] }, { text: `₹${Number(invoice.grandTotal).toFixed(2)}`, bold: true, fontSize: 11, color: '#FFFFFF', fillColor: '#2457D6', alignment: 'right', margin: [6, 7, 8, 7] }],
+                [{ text: 'Balance Due', bold: true, color: '#172033', fillColor: '#F4F7FB', margin: [8, 5, 6, 5] }, { text: `₹${Number(invoice.balanceDue ?? invoice.grandTotal).toFixed(2)}`, bold: true, color: Number(invoice.balanceDue) > 0 ? '#DC2626' : '#0D9488', fillColor: '#F4F7FB', alignment: 'right', margin: [6, 5, 8, 5] }],
+              ],
+            },
+            layout: {
+              hLineColor: () => '#E2E8F0',
+              vLineColor: () => '#E2E8F0',
+            },
+          },
+        ],
+        margin: [0, 0, 0, 24],
+      },
+      // Authorized Signatory
+      {
+        columns: [
+          { text: 'TRIMA ERP — Trichy Integrated Manufacturing & Audit', fontSize: 8, color: '#94A3B8', margin: [0, 20, 0, 0] },
+          {
+            stack: [
+              { text: `For ${config.company.name}`, bold: true, fontSize: 9, alignment: 'right' },
+              { text: 'Authorized Signatory', fontSize: 8, color: '#64748B', alignment: 'right', margin: [0, 24, 0, 0] },
+            ],
+          },
+        ],
+      },
     ],
-    styles: {
-      header: { fontSize: 16, bold: true },
-    },
   };
 
   const pdfDoc = printer.createPdfKitDocument(docDefinition);
