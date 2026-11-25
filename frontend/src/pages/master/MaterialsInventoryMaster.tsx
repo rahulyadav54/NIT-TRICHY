@@ -8,9 +8,7 @@ import { apiRequest } from '@/services/api';
 
 export function MaterialsInventoryMaster({ onNavigate }: { onNavigate?: (path: string) => void }) {
   const [materials, setMaterials] = useState<any[]>([]);
-  const [_products, setProducts] = useState<any[]>([]);
   const [costingValuation, setCostingValuation] = useState<any>(null);
-  const [_loading, setLoading] = useState(true);
   const [searchQuery, setSearchQuery] = useState('');
   const [selectedCategory, setSelectedCategory] = useState('ALL');
   const [selectedStatus, setSelectedStatus] = useState('ALL');
@@ -28,21 +26,16 @@ export function MaterialsInventoryMaster({ onNavigate }: { onNavigate?: (path: s
   });
 
   const fetchData = async () => {
-    setLoading(true);
     try {
-      const [matRes, prodRes, costRes] = await Promise.allSettled([
+      const [matRes, costRes] = await Promise.allSettled([
         apiRequest('/master/materials'),
-        apiRequest('/master/products'),
         apiRequest('/costing/dashboard'),
       ]);
 
       if (matRes.status === 'fulfilled') setMaterials(matRes.value.data || []);
-      if (prodRes.status === 'fulfilled') setProducts(prodRes.value.data || []);
       if (costRes.status === 'fulfilled') setCostingValuation(costRes.value.data?.inventoryValuation || null);
     } catch (err) {
       console.error('Error fetching materials:', err);
-    } finally {
-      setLoading(false);
     }
   };
 

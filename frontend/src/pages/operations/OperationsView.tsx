@@ -6,10 +6,10 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
   const [prodRuns, setProdRuns] = useState<any[]>([]);
   const [boms, setBoms] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
-  const [_stockLedger, setStockLedger] = useState<any[]>([]);
+  const [stockLedger, setStockLedger] = useState<any[]>([]);
   const [scalingQty, setScalingQty] = useState<number>(100); // 100 kg batch
   const [scaledBOM, setScaledBOM] = useState<any[]>([]);
-  const [_loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
 
   // New batch form state
   const [showBatchModal, setShowBatchModal] = useState(false);
@@ -158,7 +158,7 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
             onClick={loadData}
             className="flex items-center gap-1.5 h-9 px-3 bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium rounded-lg shadow-sm border border-gray-200"
           >
-            <RefreshCw size={15} className="text-[#64748B]" />
+            <RefreshCw size={15} className={`text-[#64748B] ${loading ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
           </button>
         </div>
@@ -397,54 +397,44 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
                 </tr>
               </thead>
               <tbody className="divide-y divide-surface-container-high font-table-data text-table-data">
-                <tr className="hover:bg-surface-container-low/70 transition-colors">
-                  <td className="py-2.5 px-3 font-mono text-secondary">14 Oct 11:28</td>
-                  <td className="py-2.5 px-3">
-                    <span className="px-2 py-0.5 rounded bg-surface-container text-primary font-label-micro text-label-micro font-semibold">
-                      DISPATCH_OUT
-                    </span>
-                  </td>
-                  <td className="py-2.5 px-3 font-mono font-semibold text-primary">#DISP-2024-001</td>
-                  <td className="py-2.5 px-3 font-medium text-on-surface">Trichy Murukku 200g (Distributor A)</td>
-                  <td className="py-2.5 px-3 text-right font-mono text-secondary">-</td>
-                  <td className="py-2.5 px-3 text-right font-mono font-bold text-error">-570 pkts</td>
-                  <td className="py-2.5 px-3 text-right font-mono font-semibold text-on-surface">370 pkts</td>
-                  <td className="py-2.5 px-3 text-right text-tertiary font-label-micro text-label-micro font-semibold">
-                    ✓ Gate Pass Passed
-                  </td>
-                </tr>
-                <tr className="hover:bg-surface-container-low/70 transition-colors">
-                  <td className="py-2.5 px-3 font-mono text-secondary">14 Oct 10:45</td>
-                  <td className="py-2.5 px-3">
-                    <span className="px-2 py-0.5 rounded bg-tertiary-fixed text-on-tertiary-fixed font-label-micro text-label-micro font-semibold">
-                      PRODUCTION_RECEIPT
-                    </span>
-                  </td>
-                  <td className="py-2.5 px-3 font-mono font-semibold text-tertiary">#PR-BATCH-001</td>
-                  <td className="py-2.5 px-3 font-medium text-on-surface">Trichy Murukku 200g (Good Output)</td>
-                  <td className="py-2.5 px-3 text-right font-mono font-bold text-tertiary">+940 pkts</td>
-                  <td className="py-2.5 px-3 text-right font-mono text-secondary">-</td>
-                  <td className="py-2.5 px-3 text-right font-mono font-semibold text-on-surface">940 pkts</td>
-                  <td className="py-2.5 px-3 text-right text-tertiary font-label-micro text-label-micro font-semibold">
-                    ✓ Yield Reconciled
-                  </td>
-                </tr>
-                <tr className="hover:bg-surface-container-low/70 transition-colors">
-                  <td className="py-2.5 px-3 font-mono text-secondary">14 Oct 08:30</td>
-                  <td className="py-2.5 px-3">
-                    <span className="px-2 py-0.5 rounded bg-secondary-container text-on-secondary-fixed font-label-micro text-label-micro font-semibold">
-                      PURCHASE_GRN
-                    </span>
-                  </td>
-                  <td className="py-2.5 px-3 font-mono font-semibold text-on-surface">#GRN-PO-101</td>
-                  <td className="py-2.5 px-3 font-medium text-on-surface">Raw Rice Flour (1,000 kg @ ₹44/kg)</td>
-                  <td className="py-2.5 px-3 text-right font-mono font-bold text-primary">+1,000 kg</td>
-                  <td className="py-2.5 px-3 text-right font-mono text-secondary">-</td>
-                  <td className="py-2.5 px-3 text-right font-mono font-semibold text-on-surface">2,000 kg</td>
-                  <td className="py-2.5 px-3 text-right text-tertiary font-label-micro text-label-micro font-semibold">
-                    ✓ WAC Rate ₹43.125
-                  </td>
-                </tr>
+                {stockLedger.length > 0 ? (
+                  stockLedger.map((mv) => (
+                    <tr key={mv.id} className="hover:bg-surface-container-low/70 transition-colors">
+                      <td className="py-2.5 px-3 font-mono text-secondary">
+                        {new Date(mv.transactionDate).toLocaleString('en-IN', { dateStyle: 'short', timeStyle: 'short' })}
+                      </td>
+                      <td className="py-2.5 px-3">
+                        <span className="px-2 py-0.5 rounded bg-surface-container text-primary font-label-micro text-label-micro font-semibold">
+                          {mv.transactionType}
+                        </span>
+                      </td>
+                      <td className="py-2.5 px-3 font-mono font-semibold text-primary">
+                        {mv.sourceDocumentType}
+                      </td>
+                      <td className="py-2.5 px-3 font-medium text-on-surface">
+                        {mv.itemName} ({mv.itemCode})
+                      </td>
+                      <td className="py-2.5 px-3 text-right font-mono font-bold text-tertiary">
+                        {Number(mv.qtyIn) > 0 ? `+${Number(mv.qtyIn)} ${mv.unit}` : '-'}
+                      </td>
+                      <td className="py-2.5 px-3 text-right font-mono font-bold text-error">
+                        {Number(mv.qtyOut) > 0 ? `-${Number(mv.qtyOut)} ${mv.unit}` : '-'}
+                      </td>
+                      <td className="py-2.5 px-3 text-right font-mono font-semibold text-on-surface">
+                        {Number(mv.balanceAfter)} {mv.unit}
+                      </td>
+                      <td className="py-2.5 px-3 text-right text-tertiary font-label-micro text-label-micro font-semibold">
+                        ✓ {mv.performedBy || 'System'}
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan={8} className="py-8 text-center text-secondary">
+                      No inventory movements recorded yet.
+                    </td>
+                  </tr>
+                )}
               </tbody>
             </table>
           </div>

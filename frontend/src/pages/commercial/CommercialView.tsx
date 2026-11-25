@@ -8,7 +8,7 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
   const [customers, setCustomers] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
   const [costingDashboard, setCostingDashboard] = useState<any>(null);
-  const [_loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(true);
   const [actionMsg, setActionMsg] = useState<string | null>(null);
 
   // New sales order form state
@@ -182,7 +182,7 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
             onClick={loadData}
             className="flex items-center gap-1.5 h-9 px-3 bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium rounded-lg shadow-sm border border-gray-200"
           >
-            <RefreshCw size={15} className="text-[#64748B]" />
+            <RefreshCw size={15} className={`text-[#64748B] ${loading ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
           </button>
         </div>

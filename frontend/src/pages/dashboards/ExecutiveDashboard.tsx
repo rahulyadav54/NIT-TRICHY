@@ -15,25 +15,22 @@ export function ExecutiveDashboard({ onNavigate }: { onNavigate?: (path: string)
   const [orders, setOrders] = useState<any[]>([]);
   const [invoices, setInvoices] = useState<any[]>([]);
   const [prodRuns, setProdRuns] = useState<any[]>([]);
-  const [_materials, setMaterials] = useState<any[]>([]);
   const [activeTab, setActiveTab] = useState<'revenue' | 'shift'>('revenue');
 
   const fetchTelemetry = async () => {
     setLoading(true);
     try {
-      const [costRes, orderRes, invRes, prodRes, matRes] = await Promise.allSettled([
+      const [costRes, orderRes, invRes, prodRes] = await Promise.allSettled([
         apiRequest('/costing/dashboard'),
         apiRequest('/sales'),
         apiRequest('/invoice'),
         apiRequest('/production'),
-        apiRequest('/master/materials'),
       ]);
 
       if (costRes.status === 'fulfilled') setCostingData(costRes.value.data);
       if (orderRes.status === 'fulfilled') setOrders(orderRes.value.data || []);
       if (invRes.status === 'fulfilled') setInvoices(invRes.value.data || []);
       if (prodRes.status === 'fulfilled') setProdRuns(prodRes.value.data || []);
-      if (matRes.status === 'fulfilled') setMaterials(matRes.value.data || []);
     } catch (err) {
       console.error('Failed to fetch telemetry:', err);
     } finally {

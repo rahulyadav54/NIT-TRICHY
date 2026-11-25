@@ -391,3 +391,4 @@ export function SupplyChainView({ subView = 'purchases-grn' }: { subView: string
 }
 
 export default SupplyChainView;
+
