@@ -86,6 +86,25 @@ Every stock balance is **derived from an immutable movement ledger** (`Opening +
   </tr>
 </table>
 
+### 📱 Mobile Responsive Experience (`390×844`)
+
+<table>
+  <tr>
+    <td width="33%" align="center">
+      <strong>Mobile Enterprise Login</strong><br/>
+      <img src="./docs/screenshots/08-mobile-login.png" alt="Mobile Login Page" width="260" />
+    </td>
+    <td width="33%" align="center">
+      <strong>Mobile Executive Dashboard</strong><br/>
+      <img src="./docs/screenshots/09-mobile-dashboard.png" alt="Mobile Owner Dashboard" width="260" />
+    </td>
+    <td width="33%" align="center">
+      <strong>Mobile Field Sales & Orders</strong><br/>
+      <img src="./docs/screenshots/10-mobile-salesman-orders.png" alt="Mobile Salesman Orders" width="260" />
+    </td>
+  </tr>
+</table>
+
 ---
 
 ## 👥 Five User Roles & Demo Credentials
