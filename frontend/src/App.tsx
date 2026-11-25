@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Factory } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
 import { AppShell } from '@/layouts/AppShell';
@@ -11,8 +11,12 @@ import { CommercialView } from '@/pages/commercial/CommercialView';
 import { ReportsView } from '@/pages/reports/ReportsView';
 
 export function App() {
-  const { isAuthenticated, loading } = useAuth();
+  const { isAuthenticated, loading, user } = useAuth();
   const [currentPath, setCurrentPath] = useState('overview');
+
+  useEffect(() => {
+    setCurrentPath('overview');
+  }, [isAuthenticated, user?.id]);
 
   if (loading) {
     return (
