@@ -1,130 +1,158 @@
-# UdyamFlow ERP — From Order to Audit. Everything Connected.
+<div align="center">
 
-**TRIMA — Trichy Integrated Manufacturing & Audit**  
-*National Institute of Technology, Tiruchirappalli — Winter Internship Evaluation*
+# 🏭 TRIMA ERP — Trichy Integrated Manufacturing & Audit
+### *From Order to Audit. Everything Connected.*
+
+**National Institute of Technology, Tiruchirappalli — Winter Internship Evaluation**
+
+[![Benchmark](https://img.shields.io/badge/NIT%20Benchmark-26%2F26%20Passed-0D9488?style=for-the-badge)](./backend/test/benchmark.test.ts)
+[![Frontend](https://img.shields.io/badge/Frontend-React%2018%20%2B%20Vite%206-2457D6?style=for-the-badge)](./frontend)
+[![Backend](https://img.shields.io/badge/Backend-Express%20%2B%20TypeScript-101B33?style=for-the-badge)](./backend)
+[![Database](https://img.shields.io/badge/Database-PostgreSQL%20%2F%20Supabase-336791?style=for-the-badge)](./backend/prisma/schema.prisma)
+[![Audit](https://img.shields.io/badge/Audit%20Report-89%2F100%20Ready-success?style=for-the-badge)](./PROJECT_AUDIT_REPORT.md)
+
+</div>
 
 ---
 
 ## 🌟 Project Overview
-**UdyamFlow ERP** is an enterprise-grade ERP system engineered specifically for small South Indian packaged food manufacturers, using a standardized **Murukku 200g** production and distribution workflow as reference.
 
-The system connects field sales, procurement, batch manufacturing, automated variance calculation, statutory GST invoicing, dispatch inventory deduction, accounts receivable, weighted-average costing, and compliance auditing.
+**TRIMA ERP (UdyamFlow)** is a full-stack, commercial-grade **Order-to-Audit Manufacturing ERP** engineered for South Indian packaged food manufacturers, benchmarked on a complete **Murukku 200g** production, inventory, GST billing, and audit lifecycle.
 
----
-
-## 🛠️ Technology Stack
-- **Frontend:** React 18, TypeScript, Vite 6, Tailwind CSS, shadcn/ui components, Lucide icons, TanStack Query v5.
-- **Backend:** Node.js, Express.js, TypeScript, RESTful API architecture.
-- **Database & Persistence:** PostgreSQL via Prisma ORM and zero-config in-process PostgreSQL (`@electric-sql/pglite`).
-- **Financial Precision:** `Decimal.js` and Prisma `Decimal` (zero floating-point math for money or stock).
-- **Security & RBAC:** JWT authentication, bcrypt password hashing, and role authorization middleware.
-- **Export Engines:** ExcelJS (multi-tab workbooks), CSV Stringify, and PDF generation.
+Every stock balance is **derived from an immutable movement ledger** (`Opening + Receipts − Issues + Adjustments = Closing`), every financial calculation uses **`Decimal.js`** (zero floating-point drift), and every action is **role-gated and audit-logged**.
 
 ---
 
-## 👥 Five User Roles & Test Credentials
+## 🔄 End-to-End Working Flow
 
-All accounts are pre-seeded with the password: `password123`
-
-| Role | Email | Password | Primary Permissions |
-|---|---|---|---|
-| **SALESMAN** | `salesman@trima.com` | `password123` | Mobile order entry (< 1 min), assigned customer portfolio, price list, order history. |
-| **ADMIN** | `admin@trima.com` | `password123` | Master data CRUD, order verification & approval, GST tax invoices, dispatches, payment collection. |
-| **PRODUCTION SUPERVISOR** | `production@trima.com` | `password123` | BOM recipes, material issues, production runs, scrap/damaged packaging logging, variance alerts. |
-| **ACCOUNTANT / AUDITOR** | `auditor@trima.com` | `password123` | Read-only compliance mode, 16 date-filtered registers, financial summaries, CSV/Excel exports. |
-| **OWNER** | `owner@trima.com` | `password123` | Executive dashboard, live stock valuation, batch profitability, cost per good packet, gross margins. |
-
----
-
-## 🚀 Quick Start & Local Execution
-
-### 1. Prerequisites
-- Node.js `v20+` or `v24+`
-- npm `10+` or `11+`
-
-### 2. Installation
-```powershell
-# In project root:
-cd backend
-npm install
-npm run build
-
-cd ../frontend
-npm install
-npm run build
+```mermaid
+flowchart LR
+    A["1. Purchase & GRN<br/>(Raw & Packaging)"] --> B["2. Immutable Stock Ledger<br/>(WAC Valuation)"]
+    B --> C["3. BOM & Production Run<br/>(±3% Variance Guard)"]
+    C --> B
+    C --> D["4. Finished Goods Stock"]
+    E["5. Salesman Order<br/>(Price Snapshot)"] --> F["6. Admin Approval<br/>(Shortage Block)"]
+    D --> F
+    F --> G["7. GST Tax Invoice<br/>(CGST+SGST / IGST + PDF)"]
+    G --> H["8. Dispatch & Gate Pass<br/>(Atomic Stock Deduction)"]
+    G --> I["9. Payment Collection<br/>(Overpayment Guard)"]
+    B --> J["10. 16 Statutory Reports<br/>& Owner Dashboard"]
+    H --> J
+    I --> J
 ```
 
-### 3. Database Initialization & Seeding
-```powershell
-cd backend
-# Seeds the 5 core roles, Murukku 200g BOM, and master entities:
-npm run db:seed
-```
-
-### 4. Running Development Servers
-```powershell
-# Terminal 1 - Backend API (Port 5000):
-cd backend
-npm run dev
-
-# Terminal 2 - Frontend UI (Port 5173):
-cd frontend
-npm run dev
-```
-Open browser at: `http://localhost:5173`
+### How the Workflow Operates in Practice
+1. **Procurement (`Purchases & GRN`)**: Admin/Supervisor records raw material & packaging purchases; stock and **Weighted-Average Cost (WAC)** update automatically.
+2. **Manufacturing (`BOM & Production Runs`)**: Supervisor scales a Bill of Materials, issues raw materials, and records good output, damaged pouches, cartons, labour, and power/gas costs. Deviations **> ±3%** automatically trigger **Yield** and **Consumption Variance Alerts**.
+3. **Field Sales (`Sales & Orders`)**: Salesman books retail/wholesale orders on mobile or desktop with **historical unit price snapshotting** and portfolio isolation.
+4. **Verification & GST Invoicing (`Admin`)**: Admin approves/rejects orders (with automatic **insufficient-stock blocking**), generates sequential FY GST invoices (**2.5% CGST + 2.5% SGST** for Tamil Nadu `33`, **5.0% IGST** for inter-state), downloads **PDF invoices**, or issues **Credit Notes** on cancellation.
+5. **Dispatch & Collections**: Dispatch atomically deducts finished goods (blocking duplicate dispatches); payments update invoice `balanceDue` (blocking overpayments).
+6. **Audit & Executive Analytics**: Accountant/Auditor exports **16 real-time registers** (CSV/Excel); Owner views live valuation, margins, and operational alerts.
 
 ---
 
-## 🧪 Automated Benchmark Testing
+## 👥 Five User Roles & Demo Credentials
 
-Run the end-to-end internship benchmark suite asserting all 26 metrics:
-```powershell
-cd backend
-npx tsx test/benchmark.test.ts
+> **Password for all 5 evaluation accounts:** `password123`
+
+| Role | Email | Capabilities & Access Control |
+|---|---|---|
+| **OWNER** | `owner@trima.com` | Full Executive Dashboard, live WAC stock valuation, batch costing, gross margins, all modules |
+| **ADMIN** | `admin@trima.com` | Master data, order approval/rejection, GST invoicing, PDF/Credit Note, dispatch, payments |
+| **PRODUCTION_SUPERVISOR** | `production@trima.com` | BOM scaling, production runs, raw/packaging issues, damaged pouch logging, variance alerts |
+| **SALESMAN** | `salesman@trima.com` | Mobile-ready order booking, assigned customer portfolio, order status tracking (`403` on admin routes) |
+| **ACCOUNTANT_AUDITOR** | `auditor@trima.com` | Read-only compliance mode across ledgers, GST summaries, costing, and all 16 audit exports |
+
+---
+
+## 🧪 Verified Benchmark Results (26 / 26 Passed)
+
+Run the reproducible NIT Trichy E2E benchmark suite (`backend/test/benchmark.test.ts`):
+
+| Benchmark Check | Expected | Verified Actual | Status |
+|---|---:|---:|---|
+| Flour Closing Balance (`100 + 60 − 40`) | `120 kg` | `120 kg` | ✅ PASS |
+| Oil Closing Balance (`30 − 10.5`) | `19.5 L` | `19.5 L` | ✅ PASS |
+| Pouch Closing Balance (`500 − 188 − 6`) | `306 pcs` | `306 pcs` | ✅ PASS |
+| Finished Goods After Production (`50 + 188`) | `238 pkts` | `238 pkts` | ✅ PASS |
+| Finished Goods After Dispatch (`238 − 150`) | `88 pkts` | `88 pkts` | ✅ PASS |
+| Yield Variance (`188 vs 200`) | `-6%` (Flagged) | `-6.00%` (Flagged) | ✅ PASS |
+| Oil Consumption Variance (`10.5 L vs 10.0 L`) | `+5%` (Flagged) | `+5.00%` (Flagged) | ✅ PASS |
+| Batch Cost / Good Packet (`₹5,810 / 188`) | `₹30.90` | `₹30.90` (`38.19%` GM) | ✅ PASS |
+| Retailer A GST Invoice (TN Intra-state) | `₹7,500 + ₹187.50 + ₹187.50` | `₹7,875.00` | ✅ PASS |
+| Retailer A Balance After `₹4,000` Payment | `₹3,875.00` | `₹3,875.00` | ✅ PASS |
+| Distributor B Order (`120 pkts` vs `88 avail`) | Blocked (`32` shortage) | Blocked (`32` shortage) | ✅ PASS |
+
+---
+
+## 🛠️ Technology Stack & Architecture
+
+| Layer | Technologies |
+|---|---|
+| **Frontend** | React 18, TypeScript, Vite 6, Tailwind CSS, Lucide Icons (`frontend/`) |
+| **Backend** | Node.js, Express, TypeScript, Zod Validation, `Decimal.js` (`backend/`) |
+| **Database** | PostgreSQL (`pg.Pool` for Supabase/Neon on Vercel; `@electric-sql/pglite` for zero-config local dev) |
+| **Auth & Security** | JWT (`jsonwebtoken`), `bcryptjs`, parameterized SQL, immutable `AuditLog` |
+| **Exports** | `pdfmake` (GST Tax Invoice PDF), `exceljs` (`.xlsx`), `csv-stringify` (`.csv`) |
+| **Deployment** | Vercel Services (`vercel.json`) + Supabase PostgreSQL |
+
+### Repository Structure
+```text
+├── vercel.json                  # Vercel Services config (frontend SPA + backend serverless API)
+├── PROJECT_AUDIT_REPORT.md      # Full 10-section engineering & QA audit report (89/100)
+├── backend/
+│   ├── prisma/                  # Schema, UTF-8 DDL, benchmark reset & seed scripts
+│   ├── src/
+│   │   ├── config/db.ts         # Dual-mode DB (pg.Pool + auto-bootstrap / local PGlite)
+│   │   ├── middleware/          # JWT authGuard, roleGuard, errorHandler
+│   │   └── modules/             # auth, master, bom, purchase, inventory, production,
+│   │                            # sales, invoice, dispatch, payment, costing, reports
+│   └── test/                    # phase2–phase8 tests + benchmark.test.ts (26/26)
+└── frontend/
+    └── src/
+        ├── layouts/AppShell.tsx # Collapsible sidebar (250px/72px), 64px topbar, RBAC nav
+        └── pages/               # LoginPage, ExecutiveDashboard, MaterialsInventoryMaster,
+                                 # SupplyChainView, OperationsView, CommercialView, ReportsView
 ```
 
-### Verified Benchmark Criteria
-- **Opening Stock:** Flour 100 kg, Oil 30 L, Spice 5 kg, 200g Pouches 500 pcs, Cartons 30 pcs, Finished Murukku 50 pkts.
-- **Purchase:** 60 kg Flour @ ₹45/kg $\rightarrow$ Closing Flour: **160 kg**.
-- **Production Run (Murukku 200g):** Actual: Flour 40 kg, Oil 10.5 L, Spice 1.2 kg, Good pkts 188, Damaged pouches 6, Cartons 9.
-  - Yield Variance: **-6.00%** (Alert triggered at $> 3\%$).
-  - Oil Consumption Variance: **+5.00%** (Alert triggered at $> 3\%$).
-  - Closing Flour Stock: **120 kg**
-  - Closing Oil Stock: **19.5 L**
-  - Closing Spice Stock: **3.8 kg**
-  - Closing Pouch Stock: **306 pcs** ($500 - 188 - 6$)
-  - Closing Carton Stock: **21 pcs** ($30 - 9$)
-  - Closing Finished Goods: **238 packets** ($50 + 188$)
-- **Retailer A (Tamil Nadu - Intra-state):** 150 pkts @ ₹50 = Taxable ₹7,500 + CGST (2.5%) ₹187.50 + SGST (2.5%) ₹187.50 = **₹7,875.00**.
-  - Dispatch 150 pkts $\rightarrow$ Remaining Finished Goods: **88 pkts**.
-  - Payment: ₹4,000 $\rightarrow$ Remaining Outstanding: **₹3,875.00**.
-- **Distributor B (Karnataka - Inter-state):** Requested 120 pkts $\rightarrow$ Available 88 pkts $\rightarrow$ **Shortage of 32 packets** accurately alerted; dispatch and invoicing blocked.
-- **Production Costing:** Raw materials + Packaging (including damaged pouches) + Labour (₹1,200) + Power/Gas (₹600) = ₹5,810 / 188 pkts = **₹30.90 per packet** ($38.19\%$ gross profit margin).
+---
+
+## 🚀 Quick Start (Local Development)
+
+```powershell
+# 1. Install dependencies & build
+npm --prefix backend install && npm --prefix backend run build
+npm --prefix frontend install && npm --prefix frontend run build
+
+# 2. Seed local PGlite database (5 roles + Murukku 200g BOM + master data)
+npm --prefix backend run db:seed
+
+# 3. Start Backend (http://localhost:5000) & Frontend (http://localhost:5173)
+npm run dev:backend
+npm run dev:frontend
+```
+
+### Run Automated Tests
+```powershell
+cd backend
+npx tsx test/benchmark.test.ts   # 26/26 Master E2E Benchmark assertions
+```
 
 ---
 
-## 📊 16 Mandatory Reports
-Available under `/api/reports` with date filtering and CSV/Excel exports:
-1. Sales Register
-2. Customer-Wise Sales
-3. Product-Wise Sales
-4. GST Outward Supplies Summary (GSTR-1)
-5. Purchase Register
-6. Raw Material Stock Summary
-7. Packaging Stock Summary
-8. Finished Goods Stock Summary
-9. Stock Ledger (Detailed movements)
-10. Production Report
-11. Planned vs Actual Consumption
-12. Yield & Wastage Report
-13. Product Cost Report
-14. Payments & Collections
-15. Outstanding Receivables
-16. Customer Ageing Report (0-30, 31-60, 61-90, 90+ days)
+## ☁️ Deploying on Vercel + Supabase
+
+1. Create a PostgreSQL database on **Supabase** and copy the **Shared/Session Pooler** URI (`*.pooler.supabase.com:5432`).
+2. Import this repository in **[Vercel](https://vercel.com/new)** (root `vercel.json` configures both `frontend` and `backend` automatically).
+3. Add Environment Variables in Vercel:
+   - `DATABASE_URL` = your Supabase Pooler URI
+   - `JWT_SECRET` = any strong secret string
+4. Deploy — on the first request, `backend/src/config/db.ts` automatically bootstraps the schema and 5 login accounts.
 
 ---
 
-## 📄 License
-NIT Tiruchirappalli Winter Internship Project • Proprietary & Confidential
+## 📚 Documentation
 
-# NIT-TRICHY
+- **[PROJECT_AUDIT_REPORT.md](./PROJECT_AUDIT_REPORT.md)** — Complete implementation audit, bug fixes, benchmark verification, and security review.
+- **[docs/architecture.md](./docs/architecture.md)** — System architecture and data model design.
+- **[docs/demo-script.md](./docs/demo-script.md)** — Step-by-step evaluation walkthrough.
