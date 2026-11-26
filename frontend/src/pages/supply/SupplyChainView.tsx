@@ -140,7 +140,10 @@ export function SupplyChainView({ subView = 'purchases-grn' }: { subView: string
         <div className="flex items-center gap-2 flex-shrink-0">
           {subView === 'purchases-grn' && (
             <button
-              onClick={() => setShowPoModal(true)}
+              onClick={() => {
+                if (suppliers.length === 0 || materials.length === 0) loadData();
+                setShowPoModal(true);
+              }}
               className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm whitespace-nowrap flex-shrink-0"
             >
               <ShoppingCart size={15} className="flex-shrink-0" />
