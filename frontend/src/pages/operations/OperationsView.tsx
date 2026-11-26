@@ -30,9 +30,12 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
     batchDate: new Date().toISOString().split('T')[0],
     targetOutputPkt: 200,
     actualOutputPkt: 188,
-    damagedPouchCount: 5,
-    actualOilKg: 21.0,
-    expectedOilKg: 20.0,
+    damagedPouchCount: 6,
+    cartonsUsed: 9,
+    actualOilKg: 10.5,
+    expectedOilKg: 10.0,
+    labourCost: 1200,
+    powerGasCost: 600,
   });
 
   const loadData = async () => {
@@ -128,9 +131,9 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
           plannedOutput: Number(batchForm.targetOutputPkt),
           goodOutput: Number(batchForm.actualOutputPkt),
           damagedPackagingQty: Number(batchForm.damagedPouchCount),
-          cartonsUsed: Math.max(1, Math.floor(Number(batchForm.actualOutputPkt) / 10)),
-          labourCost: 1200,
-          powerGasCost: 600,
+          cartonsUsed: Number(batchForm.cartonsUsed),
+          labourCost: Number(batchForm.labourCost),
+          powerGasCost: Number(batchForm.powerGasCost),
           otherOverheads: 0,
           actualConsumptions,
         }),
@@ -257,22 +260,25 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
                     <th className="py-2.5 px-3 text-right">Damaged Pouches</th>
                     <th className="py-2.5 px-3 text-right">Yield Variance</th>
                     <th className="py-2.5 px-3 text-right">Oil Variance</th>
+                    <th className="py-2.5 px-3 text-right">Cost / Pkt</th>
                     <th className="py-2.5 px-3 text-right">Status</th>
                   </tr>
                 </thead>
                 <tbody className="divide-y divide-surface-container-high font-table-data text-table-data">
                   {prodRuns.length > 0 ? (
                     prodRuns.map((r) => {
-                      const yieldVar = Number(r.yieldVariancePct || -6.0);
-                      const oilVar = Number(r.oilVariancePct || 5.0);
+                      const yieldVar = Number(r.yieldVariancePct ?? -6.0);
+                      const oilVar = Number(
+                        (r.consumptions || []).find((c: any) => String(c.materialCode || '').includes('OIL'))?.variancePct ?? r.oilVariancePct ?? 0
+                      );
                       return (
-                        <tr key={r.id || r.batchNumber} className="hover:bg-surface-container-low/70 transition-colors">
-                          <td className="py-2.5 px-3 font-mono font-semibold text-primary">{r.batchNumber}</td>
-                          <td className="py-2.5 px-3 text-secondary">{new Date(r.batchDate || Date.now()).toLocaleDateString('en-IN')}</td>
-                          <td className="py-2.5 px-3 font-medium text-on-surface">Murukku 200g (Batch Run)</td>
-                          <td className="py-2.5 px-3 text-right font-mono">{r.targetOutputPkt || 1000} pkts</td>
-                          <td className="py-2.5 px-3 text-right font-mono font-semibold text-on-surface">{r.actualOutputPkt || 940} pkts</td>
-                          <td className="py-2.5 px-3 text-right font-mono text-error">{r.damagedPouchCount || 15} pkts</td>
+                        <tr key={r.id || r.runNumber || r.batchNumber} className="hover:bg-surface-container-low/70 transition-colors">
+                          <td className="py-2.5 px-3 font-mono font-semibold text-primary">{r.runNumber || r.batchNumber}</td>
+                          <td className="py-2.5 px-3 text-secondary">{new Date(r.productionDate || r.batchDate || Date.now()).toLocaleDateString('en-IN')}</td>
+                          <td className="py-2.5 px-3 font-medium text-on-surface">{r.productName || 'Murukku 200g (Batch Run)'}</td>
+                          <td className="py-2.5 px-3 text-right font-mono">{Number(r.plannedOutput ?? r.targetOutputPkt ?? 200)} pkts</td>
+                          <td className="py-2.5 px-3 text-right font-mono font-semibold text-on-surface">{Number(r.goodOutput ?? r.actualOutputPkt ?? 188)} pkts</td>
+                          <td className="py-2.5 px-3 text-right font-mono text-error">{Number(r.damagedPackagingQty ?? r.damagedPouchCount ?? 0)} pkts</td>
                           <td className="py-2.5 px-3 text-right">
                             <span className={`px-2 py-0.5 rounded font-mono font-semibold text-[11px] ${
                               Math.abs(yieldVar) > 3.0 ? 'bg-error-container text-on-error-container' : 'bg-tertiary-fixed text-on-tertiary-fixed'
@@ -287,10 +293,13 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
                               {oilVar > 0 ? `+${oilVar.toFixed(2)}%` : `${oilVar.toFixed(2)}%`}
                             </span>
                           </td>
+                          <td className="py-2.5 px-3 text-right font-semibold text-primary tabular-nums">
+                            ₹{Number(r.costPerPacket || 0).toFixed(2)}
+                          </td>
                           <td className="py-2.5 px-3 text-right">
                             <span className="inline-flex items-center gap-1 text-tertiary font-label-micro text-label-micro font-semibold">
                               <span className="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
-                              QC Verified
+                              {r.status || 'COMPLETED'}
                             </span>
                           </td>
                         </tr>
@@ -545,9 +554,9 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
                 </div>
               </div>
 
-              <div className="grid grid-cols-2 gap-3">
+              <div className="grid grid-cols-3 gap-3">
                 <div>
-                  <label className="font-label-default text-label-default text-secondary block mb-1">Damaged Pouches (pkts)</label>
+                  <label className="font-label-default text-label-default text-secondary block mb-1">Damaged Pouches</label>
                   <input
                     type="number"
                     required
@@ -557,13 +566,48 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
                   />
                 </div>
                 <div>
-                  <label className="font-label-default text-label-default text-secondary block mb-1">Actual Oil Used (kg)</label>
+                  <label className="font-label-default text-label-default text-secondary block mb-1">Cartons Used</label>
+                  <input
+                    type="number"
+                    required
+                    value={batchForm.cartonsUsed}
+                    onChange={(e) => setBatchForm({ ...batchForm, cartonsUsed: Number(e.target.value) })}
+                    className="w-full h-8 px-2.5 text-body-default bg-surface border border-outline-variant/60 rounded"
+                  />
+                </div>
+                <div>
+                  <label className="font-label-default text-label-default text-secondary block mb-1">Actual Oil (L)</label>
                   <input
                     type="number"
                     step="0.1"
                     required
                     value={batchForm.actualOilKg}
                     onChange={(e) => setBatchForm({ ...batchForm, actualOilKg: Number(e.target.value) })}
+                    className="w-full h-8 px-2.5 text-body-default bg-surface border border-outline-variant/60 rounded"
+                  />
+                </div>
+              </div>
+
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="font-label-default text-label-default text-secondary block mb-1">Labour Cost (₹)</label>
+                  <input
+                    type="number"
+                    step="1"
+                    required
+                    value={batchForm.labourCost}
+                    onChange={(e) => setBatchForm({ ...batchForm, labourCost: Number(e.target.value) })}
+                    className="w-full h-8 px-2.5 text-body-default bg-surface border border-outline-variant/60 rounded"
+                  />
+                </div>
+                <div>
+                  <label className="font-label-default text-label-default text-secondary block mb-1">Gas / Power Cost (₹)</label>
+                  <input
+                    type="number"
+                    step="1"
+                    required
+                    value={batchForm.powerGasCost}
+                    onChange={(e) => setBatchForm({ ...batchForm, powerGasCost: Number(e.target.value) })}
                     className="w-full h-8 px-2.5 text-body-default bg-surface border border-outline-variant/60 rounded"
                   />
                 </div>
