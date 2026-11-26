@@ -145,7 +145,7 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
     <div className="flex flex-col h-full">
       {/* Brand Header */}
       <div
-        className="flex items-center gap-3 px-4 border-b border-white/10"
+        className="flex items-center gap-3 px-4 border-b border-gray-200 dark:border-white/10"
         style={{ height: 64, minHeight: 64 }}
       >
         <div className="flex-shrink-0 w-9 h-9 rounded-lg bg-[#2457D6] flex items-center justify-center shadow">
@@ -153,8 +153,8 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
         </div>
         {!collapsed && (
           <div className="flex flex-col min-w-0">
-            <span className="text-white font-bold text-sm leading-tight tracking-tight truncate">TRIMA ERP</span>
-            <span className="text-[#64748B] text-[10px] font-medium uppercase tracking-wider truncate">
+            <span className="text-[#172033] dark:text-white font-bold text-sm leading-tight tracking-tight truncate">TRIMA ERP</span>
+            <span className="text-[#64748B] dark:text-slate-400 text-[10px] font-medium uppercase tracking-wider truncate">
               Manufacturing & Audit
             </span>
           </div>
@@ -162,7 +162,7 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
       </div>
 
       {/* Nav */}
-      <nav className="flex-1 overflow-y-auto py-3 space-y-4" style={{ scrollbarWidth: 'thin', scrollbarColor: '#1E293B transparent' }}>
+      <nav className="flex-1 overflow-y-auto py-3 space-y-4" style={{ scrollbarWidth: 'thin' }}>
         {NAV_ITEMS.map((group) => {
           const visibleItems = group.items.filter(
             (item) => !user?.role || item.roles.includes(user.role)
@@ -171,7 +171,7 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
           return (
           <div key={group.section}>
             {!collapsed && (
-              <p className="px-4 mb-1 text-[10px] font-semibold uppercase tracking-widest text-[#475569]">
+              <p className="px-4 mb-1 text-[10px] font-semibold uppercase tracking-widest text-[#64748B] dark:text-slate-500">
                 {group.section}
               </p>
             )}
@@ -188,12 +188,12 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
                     } ${
                       isActive
                         ? 'bg-[#2457D6] text-white shadow-sm'
-                        : 'text-[#94A3B8] hover:bg-[#1E293B] hover:text-white'
+                        : 'text-[#475569] hover:bg-gray-100 hover:text-[#172033] dark:text-[#94A3B8] dark:hover:bg-[#1E293B] dark:hover:text-white'
                     }`}
                   >
                     <Icon
                       size={18}
-                      className={`flex-shrink-0 ${isActive ? 'text-white' : 'text-[#94A3B8] group-hover:text-white'}`}
+                      className={`flex-shrink-0 ${isActive ? 'text-white' : 'text-[#64748B] group-hover:text-[#172033] dark:text-[#94A3B8] dark:group-hover:text-white'}`}
                     />
                     {!collapsed && (
                       <span className="text-[13px] font-medium truncate flex-1">{label}</span>
@@ -216,17 +216,17 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
       </nav>
 
       {/* Bottom Status + User */}
-      <div className="border-t border-white/10 p-3 space-y-2">
-        <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg bg-[#1E293B] ${collapsed ? 'justify-center' : ''}`}>
+      <div className="border-t border-gray-200 dark:border-white/10 p-3 space-y-2">
+        <div className={`flex items-center gap-2 px-2 py-1.5 rounded-lg bg-gray-100 dark:bg-[#1E293B] ${collapsed ? 'justify-center' : ''}`}>
           <span className="w-2 h-2 rounded-full bg-[#0D9488] flex-shrink-0 animate-pulse" />
           {!collapsed && (
-            <span className="text-[11px] text-[#64748B] font-medium truncate">MES & Audit: ONLINE</span>
+            <span className="text-[11px] text-[#64748B] dark:text-slate-400 font-medium truncate">MES & Audit: ONLINE</span>
           )}
         </div>
         {!collapsed && (
           <div className="flex items-center justify-between px-2 text-[11px]">
-            <span className="text-[#475569]">Role: {user?.role || 'Guest'}</span>
-            <span className="text-white font-semibold truncate max-w-[100px]">{user?.name || 'User'}</span>
+            <span className="text-[#64748B] dark:text-slate-400">Role: {user?.role || 'Guest'}</span>
+            <span className="text-[#172033] dark:text-white font-semibold truncate max-w-[100px]">{user?.name || 'User'}</span>
           </div>
         )}
       </div>
@@ -237,15 +237,15 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
     <div className="min-h-screen bg-[#F4F7FB] dark:bg-[#0B1220] transition-colors duration-200">
       {/* ─── DESKTOP SIDEBAR ─── */}
       <aside
-        className="hidden lg:flex flex-col fixed left-0 top-0 h-full z-50 transition-[width] duration-300 ease-in-out"
-        style={{ width: sidebarW, background: '#101B33' }}
+        className="hidden lg:flex flex-col fixed left-0 top-0 h-full z-50 transition-[width,background-color] duration-300 ease-in-out bg-white dark:bg-[#0D1729] border-r border-gray-200 dark:border-[#24324B]"
+        style={{ width: sidebarW }}
       >
         <SidebarContent />
 
         {/* Collapse Toggle */}
         <button
           onClick={() => setCollapsed(!collapsed)}
-          className="absolute -right-3 top-[72px] w-6 h-6 rounded-full bg-[#2457D6] border-2 border-[#101B33] flex items-center justify-center shadow-md hover:bg-[#1a3fa8] transition-colors z-10"
+          className="absolute -right-3 top-[72px] w-6 h-6 rounded-full bg-[#2457D6] border-2 border-white dark:border-[#0D1729] flex items-center justify-center shadow-md hover:bg-[#1a3fa8] transition-colors z-10"
         >
           {collapsed
             ? <ChevronRight size={12} className="text-white" />
@@ -261,10 +261,10 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
             className="fixed inset-0 bg-black/50 backdrop-blur-sm"
             onClick={() => setMobileOpen(false)}
           />
-          <aside className="relative flex flex-col h-full z-10 shadow-2xl" style={{ width: 250, background: '#101B33' }}>
+          <aside className="relative flex flex-col h-full z-10 shadow-2xl bg-white dark:bg-[#0D1729] border-r border-gray-200 dark:border-[#24324B]" style={{ width: 250 }}>
             <button
               onClick={() => setMobileOpen(false)}
-              className="absolute top-4 right-4 p-1 rounded-lg hover:bg-white/10 text-white z-10"
+              className="absolute top-4 right-4 p-1 rounded-lg hover:bg-gray-100 dark:hover:bg-white/10 text-[#172033] dark:text-white z-10"
             >
               <X size={18} />
             </button>
