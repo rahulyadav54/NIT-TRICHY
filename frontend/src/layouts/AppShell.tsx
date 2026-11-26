@@ -234,7 +234,7 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
   );
 
   return (
-    <div className="min-h-screen" style={{ background: '#F4F7FB' }}>
+    <div className="min-h-screen bg-[#F4F7FB] dark:bg-[#0B1220] transition-colors duration-200">
       {/* ─── DESKTOP SIDEBAR ─── */}
       <aside
         className="hidden lg:flex flex-col fixed left-0 top-0 h-full z-50 transition-[width] duration-300 ease-in-out"
