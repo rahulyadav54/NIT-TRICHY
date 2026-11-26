@@ -92,18 +92,18 @@ export function ReportsView({ onNavigate: _onNavigate }: { onNavigate?: (path: s
           <button
             onClick={() => handleExport('csv')}
             disabled={exporting}
-            className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium shadow-sm transition-colors border border-gray-200"
+            className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium shadow-sm transition-colors border border-gray-200 whitespace-nowrap"
           >
-            <FileSpreadsheet size={15} className="text-[#0D9488]" />
+            <FileSpreadsheet size={15} className="text-[#0D9488] flex-shrink-0" />
             <span>Export CSV</span>
           </button>
 
           <button
             onClick={() => handleExport('excel')}
             disabled={exporting}
-            className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm transition-colors"
+            className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm transition-colors whitespace-nowrap"
           >
-            <FileDown size={15} />
+            <FileDown size={15} className="flex-shrink-0" />
             <span>Export Excel (.xlsx)</span>
           </button>
         </div>

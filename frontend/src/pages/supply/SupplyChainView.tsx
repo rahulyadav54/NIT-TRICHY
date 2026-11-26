@@ -137,13 +137,13 @@ export function SupplyChainView({ subView = 'purchases-grn' }: { subView: string
           </p>
         </div>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center gap-2 flex-shrink-0">
           {subView === 'purchases-grn' && (
             <button
               onClick={() => setShowPoModal(true)}
-              className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm"
+              className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm whitespace-nowrap flex-shrink-0"
             >
-              <ShoppingCart size={15} />
+              <ShoppingCart size={15} className="flex-shrink-0" />
               <span>Record Purchase / GRN</span>
             </button>
           )}
@@ -153,17 +153,17 @@ export function SupplyChainView({ subView = 'purchases-grn' }: { subView: string
                 setSupForm(createInitialSupForm());
                 setShowSupModal(true);
               }}
-              className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm"
+              className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm whitespace-nowrap flex-shrink-0"
             >
-              <PlusCircle size={15} />
+              <PlusCircle size={15} className="flex-shrink-0" />
               <span>Add Supplier</span>
             </button>
           )}
           <button
             onClick={loadData}
-            className="flex items-center gap-1.5 h-9 px-3 bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium rounded-lg shadow-sm border border-gray-200"
+            className="flex items-center gap-1.5 h-9 px-3 bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium rounded-lg shadow-sm border border-gray-200 whitespace-nowrap flex-shrink-0"
           >
-            <RefreshCw size={15} className={`text-[#64748B] ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw size={15} className={`text-[#64748B] flex-shrink-0 ${loading ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
           </button>
         </div>

@@ -255,26 +255,26 @@ export function MaterialsInventoryMaster({ onNavigate }: { onNavigate?: (path: s
         </div>
 
         {/* Quick Actions Group */}
-        <div className="flex flex-wrap items-center gap-2">
+        <div className="flex flex-wrap items-center gap-2 flex-shrink-0">
           <button
             onClick={() => onNavigate?.('reports-analytics')}
-            className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium shadow-sm transition-colors border border-gray-200"
+            className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium shadow-sm transition-colors border border-gray-200 whitespace-nowrap"
           >
-            <FileDown size={15} className="text-[#64748B]" />
+            <FileDown size={15} className="text-[#64748B] flex-shrink-0" />
             <span>Export Valuation</span>
           </button>
           <button
             onClick={() => onNavigate?.('stock-movement')}
-            className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium shadow-sm transition-colors border border-gray-200"
+            className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium shadow-sm transition-colors border border-gray-200 whitespace-nowrap"
           >
-            <ClipboardCheck size={15} className="text-[#2457D6]" />
+            <ClipboardCheck size={15} className="text-[#2457D6] flex-shrink-0" />
             <span>Stock Audit Sheet</span>
           </button>
           <button
             onClick={() => setShowAddModal(true)}
-            className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm transition-colors"
+            className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm transition-colors whitespace-nowrap"
           >
-            <PlusCircle size={15} />
+            <PlusCircle size={15} className="flex-shrink-0" />
             <span>Add Material</span>
           </button>
         </div>

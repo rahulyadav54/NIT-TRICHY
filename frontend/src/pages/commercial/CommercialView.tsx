@@ -286,21 +286,21 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
           </p>
         </div>
 
-        <div className="flex items-center gap-space-xs">
+        <div className="flex items-center gap-2 flex-shrink-0">
           {subView === 'sales-orders' && (
             <button
               onClick={() => setShowOrderModal(true)}
-              className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm transition-colors"
+              className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm transition-colors whitespace-nowrap flex-shrink-0"
             >
-              <ShoppingCart size={15} />
+              <ShoppingCart size={15} className="flex-shrink-0" />
               <span>New Sales Order</span>
             </button>
           )}
           <button
             onClick={loadData}
-            className="flex items-center gap-1.5 h-9 px-3 bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium rounded-lg shadow-sm border border-gray-200"
+            className="flex items-center gap-1.5 h-9 px-3 bg-white hover:bg-gray-50 text-[#172033] text-sm font-medium rounded-lg shadow-sm border border-gray-200 whitespace-nowrap flex-shrink-0"
           >
-            <RefreshCw size={15} className={`text-[#64748B] ${loading ? 'animate-spin' : ''}`} />
+            <RefreshCw size={15} className={`text-[#64748B] flex-shrink-0 ${loading ? 'animate-spin' : ''}`} />
             <span>Refresh</span>
           </button>
         </div>
@@ -417,11 +417,11 @@ export function CommercialView({ subView = 'sales-orders', onNavigate: _onNaviga
                             {o.customerType || 'WHOLESALE'}
                           </span>
                         </td>
-                        <td className="py-2.5 px-3 text-right font-mono font-bold text-on-surface">{totalPkts} pkts</td>
-                        <td className="py-2.5 px-3 text-right font-mono text-secondary">
+                        <td className="py-2.5 px-3 text-right font-semibold text-on-surface tabular-nums whitespace-nowrap">{totalPkts} pkts</td>
+                        <td className="py-2.5 px-3 text-right text-secondary tabular-nums whitespace-nowrap">
                           ₹{Number(o.subtotal || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                         </td>
-                        <td className="py-2.5 px-3 text-right font-mono font-bold text-primary">
+                        <td className="py-2.5 px-3 text-right font-semibold text-primary tabular-nums whitespace-nowrap">
                           ₹{Number(o.grandTotal || 0).toLocaleString('en-IN', { minimumFractionDigits: 2 })}
                         </td>
                         <td className="py-2.5 px-3 text-right">
