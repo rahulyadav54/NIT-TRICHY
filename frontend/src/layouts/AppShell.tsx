@@ -1,11 +1,12 @@
 import React, { useState, useEffect, useRef } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { useTheme } from '@/contexts/ThemeContext';
 import {
   LayoutDashboard, AlertTriangle, Factory, ClipboardList, Package,
   ArrowLeftRight, CheckCircle, ShoppingCart, Users, Truck, ShoppingBag,
   Store, FileText, Wallet, TrendingUp, BarChart2, Users2, Settings,
   Bell, Search, ChevronDown, LogOut, ChevronLeft, ChevronRight, Menu, X,
-  Plus, Building2,
+  Plus, Building2, Sun, Moon,
 } from 'lucide-react';
 
 export interface AppShellProps {
@@ -83,6 +84,7 @@ const BREADCRUMB_MAP: Record<string, string> = {
 
 export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
   const { user, logout } = useAuth();
+  const { theme, toggleTheme } = useTheme();
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [currentTime, setCurrentTime] = useState('');
@@ -380,6 +382,20 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
                   ? 'Audit Exports'
                   : 'Quick Action'}
               </span>
+            </button>
+
+            {/* Theme Toggle (Light / Dark Mode) */}
+            <button
+              onClick={toggleTheme}
+              title={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              aria-label={theme === 'dark' ? 'Switch to Light Mode' : 'Switch to Dark Mode'}
+              className="p-2 rounded-lg hover:bg-gray-100 text-gray-500 hover:text-[#172033] transition-colors flex items-center justify-center"
+            >
+              {theme === 'dark' ? (
+                <Sun size={18} className="text-amber-400" />
+              ) : (
+                <Moon size={18} />
+              )}
             </button>
 
             {/* Notifications */}
