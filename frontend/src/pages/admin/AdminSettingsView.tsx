@@ -1,5 +1,7 @@
-import { Users2, Settings, ShieldCheck, Building2 } from 'lucide-react';
+import { useState } from 'react';
+import { Users2, Settings, ShieldCheck, Building2, RotateCcw } from 'lucide-react';
 import { useAuth } from '@/contexts/AuthContext';
+import { apiRequest } from '@/services/api';
 
 const SYSTEM_USERS = [
   { name: 'Sundaram Owner', email: 'owner@trima.com', role: 'OWNER', scope: 'Full Executive Access, Valuation & Approvals' },
@@ -11,6 +13,24 @@ const SYSTEM_USERS = [
 
 export function AdminSettingsView({ subView = 'user-management' }: { subView: string }) {
   const { user } = useAuth();
+  const [resetting, setResetting] = useState(false);
+  const [resetMsg, setResetMsg] = useState('');
+
+  const handleResetTransactions = async () => {
+    if (!window.confirm('Clear all Purchases, Production Runs, Sales Orders, Invoices, Dispatches, and Payments and restore clean opening stock?')) {
+      return;
+    }
+    setResetting(true);
+    setResetMsg('');
+    try {
+      const res = await apiRequest('/master/reset-transactions', { method: 'POST', body: JSON.stringify({}) });
+      setResetMsg(res.message || 'All transactions cleared. Ready for fresh manual demo.');
+    } catch (err: any) {
+      setResetMsg(err.message || 'Failed to reset transactions');
+    } finally {
+      setResetting(false);
+    }
+  };
 
   return (
     <div className="flex flex-col w-full pb-8 space-y-6">
@@ -114,6 +134,19 @@ export function AdminSettingsView({ subView = 'user-management' }: { subView: st
                 <span className="text-[#64748B]">Negative Stock Policy</span>
                 <span className="font-semibold text-red-600">Strictly Blocked (Atomic Ledger)</span>
               </div>
+            </div>
+            <div className="pt-3 border-t border-gray-100">
+              <button
+                onClick={handleResetTransactions}
+                disabled={resetting}
+                className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-red-50 hover:bg-red-100 text-red-700 text-xs font-semibold border border-red-200 transition-colors disabled:opacity-60"
+              >
+                <RotateCcw size={14} className={resetting ? 'animate-spin' : ''} />
+                <span>{resetting ? 'Clearing Transactions...' : 'Reset All Transactions (Start Fresh)'}</span>
+              </button>
+              {resetMsg && (
+                <p className="mt-2 text-xs font-medium text-[#0D9488]">{resetMsg}</p>
+              )}
             </div>
           </div>
         </div>

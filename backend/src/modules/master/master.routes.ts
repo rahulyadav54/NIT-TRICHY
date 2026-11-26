@@ -270,3 +270,47 @@ masterRouter.get('/users', roleGuard([Role.ADMIN, Role.OWNER]), async (req: Auth
   const users = await query('SELECT id, email, name, role, phone, active, "createdAt" FROM "User" ORDER BY role ASC');
   res.json({ success: true, data: users });
 });
+
+// ==========================================
+// 6. RESET TRANSACTIONS (START FRESH)
+// ==========================================
+masterRouter.post('/reset-transactions', roleGuard([Role.ADMIN, Role.OWNER]), async (req: AuthenticatedRequest, res: Response) => {
+  const txTables = [
+    'AuditLog',
+    'Payment',
+    'CreditNote',
+    'DispatchItem',
+    'Dispatch',
+    'InvoiceItem',
+    'Invoice',
+    'SalesOrderItem',
+    'SalesOrder',
+    'ProductionConsumption',
+    'ProductionRun',
+    'PurchaseItem',
+    'Purchase',
+    'InventoryMovement',
+  ];
+
+  for (const t of txTables) {
+    await execute(`DELETE FROM "${t}"`);
+  }
+
+  // Restore clean OPENING_STOCK ledger entries for all active Materials & PRD-001
+  const mats = await query('SELECT id, category, "openingStock", unit FROM "Material" WHERE "openingStock" > 0');
+  for (const m of mats) {
+    await execute(
+      'INSERT INTO "InventoryMovement" (id, "materialId", category, "transactionType", "qtyIn", "qtyOut", "balanceAfter", unit, "sourceDocumentType", "sourceDocumentId", "performedByUserId", notes, "transactionDate", "createdAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW(), NOW())',
+      [randomUUID(), m.id, m.category, 'OPENING_STOCK', m.openingStock, '0.0000', m.openingStock, m.unit, 'OPENING', 'INIT-RESET', req.user?.userId || null, 'Opening Stock Balance']
+    );
+  }
+  const prod = await queryOne('SELECT id FROM "Product" WHERE code = $1', ['PRD-001']);
+  if (prod) {
+    await execute(
+      'INSERT INTO "InventoryMovement" (id, "productId", category, "transactionType", "qtyIn", "qtyOut", "balanceAfter", unit, "sourceDocumentType", "sourceDocumentId", "performedByUserId", notes, "transactionDate", "createdAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW(), NOW())',
+      [randomUUID(), prod.id, 'FINISHED_GOODS', 'OPENING_STOCK', '50.0000', '0.0000', '50.0000', 'PACKETS', 'OPENING', 'INIT-RESET', req.user?.userId || null, 'Opening Finished Goods Balance']
+    );
+  }
+
+  res.json({ success: true, message: 'All transactional records cleared. Master data & opening stock restored.' });
+});
