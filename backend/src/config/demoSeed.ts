@@ -7,6 +7,27 @@ import { randomUUID } from 'crypto';
  * whenever the transactional tables ("Purchase") are empty.
  */
 export async function ensureDemoDataBootstrapped(pool: pg.Pool): Promise<void> {
+  // Always ensure any Material with openingStock > 0 and zero InventoryMovement rows gets its OPENING_STOCK entry
+  const adminRow = await pool.query<{ id: string }>('SELECT id FROM "User" WHERE role = \'ADMIN\' LIMIT 1');
+  const adminId = adminRow.rows[0]?.id || null;
+  const missingOpeningMats = await pool.query<{
+    id: string;
+    category: string;
+    openingStock: string;
+    unit: string;
+  }>(
+    `SELECT m.id, m.category, m."openingStock", m.unit
+     FROM "Material" m
+     WHERE m."openingStock" > 0
+       AND NOT EXISTS (SELECT 1 FROM "InventoryMovement" im WHERE im."materialId" = m.id)`
+  );
+  for (const m of missingOpeningMats.rows) {
+    await pool.query(
+      'INSERT INTO "InventoryMovement" (id, "materialId", category, "transactionType", "qtyIn", "qtyOut", "balanceAfter", unit, "sourceDocumentType", "sourceDocumentId", "performedByUserId", notes, "transactionDate", "createdAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW() - INTERVAL \'5 days\', NOW())',
+      [randomUUID(), m.id, m.category, 'OPENING_STOCK', m.openingStock, '0.0000', m.openingStock, m.unit, 'OPENING_SEED', 'INIT-SEED', adminId, 'Reconciled Opening Stock']
+    );
+  }
+
   const poCount = await pool.query<{ cnt: number }>('SELECT COUNT(*)::int AS cnt FROM "Purchase"');
   if ((poCount.rows[0]?.cnt ?? 0) > 0) {
     return;
