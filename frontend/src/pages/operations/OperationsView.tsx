@@ -101,8 +101,20 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
   const handleRecordBatch = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      const activeBom = boms[0];
-      const activeProduct = products[0];
+      let activeBom = boms[0];
+      let activeProduct = products[0];
+      if (!activeBom || !activeProduct) {
+        const [bomRes, prodRes] = await Promise.all([
+          apiRequest('/bom'),
+          apiRequest('/master/products'),
+        ]);
+        const bomList = bomRes.data || [];
+        const prodList = prodRes.data || [];
+        setBoms(bomList);
+        setProducts(prodList);
+        activeBom = bomList[0];
+        activeProduct = prodList[0];
+      }
       if (!activeBom || !activeProduct) {
         alert('No active BOM or Product found in database.');
         return;
