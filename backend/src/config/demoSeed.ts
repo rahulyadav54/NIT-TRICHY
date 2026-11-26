@@ -113,12 +113,12 @@ export async function ensureDemoDataBootstrapped(pool: pg.Pool): Promise<void> {
     for (const m of materials) {
       await pool.query(
         'INSERT INTO "InventoryMovement" (id, "materialId", category, "transactionType", "qtyIn", "qtyOut", "balanceAfter", unit, "sourceDocumentType", "sourceDocumentId", "performedByUserId", notes, "transactionDate", "createdAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW() - INTERVAL \'5 days\', NOW())',
-        [randomUUID(), matIds[m.code], m.cat, 'OPENING', m.opening, '0.0000', m.opening, m.unit, 'OPENING_SEED', 'INIT-SEED', userIds['ADMIN'], 'Initial Opening Stock']
+        [randomUUID(), matIds[m.code], m.cat, 'OPENING_STOCK', m.opening, '0.0000', m.opening, m.unit, 'OPENING_SEED', 'INIT-SEED', userIds['ADMIN'], 'Initial Opening Stock']
       );
     }
     await pool.query(
       'INSERT INTO "InventoryMovement" (id, "productId", category, "transactionType", "qtyIn", "qtyOut", "balanceAfter", unit, "sourceDocumentType", "sourceDocumentId", "performedByUserId", notes, "transactionDate", "createdAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW() - INTERVAL \'5 days\', NOW())',
-      [randomUUID(), productIds['PRD-001'], 'FINISHED_GOODS', 'OPENING', '50.0000', '0.0000', '50.0000', 'PACKETS', 'OPENING_SEED', 'INIT-SEED', userIds['ADMIN'], 'Opening Finished Goods']
+      [randomUUID(), productIds['PRD-001'], 'FINISHED_GOODS', 'OPENING_STOCK', '50.0000', '0.0000', '50.0000', 'PACKETS', 'OPENING_SEED', 'INIT-SEED', userIds['ADMIN'], 'Opening Finished Goods']
     );
   }
 
@@ -212,7 +212,7 @@ export async function ensureDemoDataBootstrapped(pool: pg.Pool): Promise<void> {
   );
   await pool.query(
     'INSERT INTO "InventoryMovement" (id, "productId", category, "transactionType", "qtyIn", "qtyOut", "balanceAfter", unit, "sourceDocumentType", "sourceDocumentId", "performedByUserId", notes, "transactionDate", "createdAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW() - INTERVAL \'1 day\', NOW())',
-    [randomUUID(), productIds['PRD-001'], 'FINISHED_GOODS', 'PRODUCTION_OUTPUT', '188.0000', '0.0000', '238.0000', 'PACKETS', 'PRODUCTION_RUN', run1Id, userIds['PRODUCTION_SUPERVISOR'], 'Output from BATCH-MRK-001']
+    [randomUUID(), productIds['PRD-001'], 'FINISHED_GOODS', 'PRODUCTION_RECEIPT', '188.0000', '0.0000', '238.0000', 'PACKETS', 'PRODUCTION_RUN', run1Id, userIds['PRODUCTION_SUPERVISOR'], 'Output from BATCH-MRK-001']
   );
 
   // 9. Sales Orders, GST Invoices, Dispatch, Payment
@@ -248,7 +248,7 @@ export async function ensureDemoDataBootstrapped(pool: pg.Pool): Promise<void> {
   );
   await pool.query(
     'INSERT INTO "InventoryMovement" (id, "productId", category, "transactionType", "qtyIn", "qtyOut", "balanceAfter", unit, "sourceDocumentType", "sourceDocumentId", "performedByUserId", notes, "transactionDate", "createdAt") VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10, $11, $12, NOW() - INTERVAL \'1 day\', NOW())',
-    [randomUUID(), productIds['PRD-001'], 'FINISHED_GOODS', 'DISPATCH', '0.0000', '150.0000', '88.0000', 'PACKETS', 'DISPATCH', dsp1Id, userIds['ADMIN'], 'Dispatched against UF/2026-27/0001']
+    [randomUUID(), productIds['PRD-001'], 'FINISHED_GOODS', 'SALES_DISPATCH', '0.0000', '150.0000', '88.0000', 'PACKETS', 'DISPATCH', dsp1Id, userIds['ADMIN'], 'Dispatched against UF/2026-27/0001']
   );
 
   await pool.query(
@@ -270,7 +270,7 @@ export async function ensureDemoDataBootstrapped(pool: pg.Pool): Promise<void> {
   const inv2Id = randomUUID();
   await pool.query(
     'INSERT INTO "Invoice" (id, "invoiceNumber", "salesOrderId", "customerId", "invoiceDate", "placeOfSupply", "taxableAmount", "gstRate", "cgstAmount", "sgstAmount", "igstAmount", "grandTotal", "balanceDue", status, "createdAt", "updatedAt") VALUES ($1, $2, $3, $4, NOW() - INTERVAL \'5 hours\', $5, $6, 5.00, $7, $8, 0.00, $9, $10, $11, NOW(), NOW())',
-    [inv2Id, 'UF/2026-27/0002', so2Id, customerIds['CUST-003'], 'Tamil Nadu (33)', '2000.00', '50.00', '50.00', '2100.00', '2100.00', 'UNPAID']
+    [inv2Id, 'UF/2026-27/0002', so2Id, customerIds['CUST-003'], 'Tamil Nadu (33)', '2000.00', '50.00', '50.00', '2100.00', '2100.00', 'ISSUED']
   );
   await pool.query(
     'INSERT INTO "InvoiceItem" (id, "invoiceId", "productId", "hsnCode", quantity, "unitPrice", "taxableAmount", "gstRate", cgst, sgst, igst, "totalAmount", "createdAt") VALUES ($1, $2, $3, $4, $5, $6, $7, 5.00, $8, $9, 0.00, $10, NOW())',
@@ -290,3 +290,4 @@ export async function ensureDemoDataBootstrapped(pool: pg.Pool): Promise<void> {
 
   console.log('✅ Auto-seeded TRIMA ERP demo operations (GRNs, Production, Sales, GST Invoices, Dispatch, Payments).');
 }
+
