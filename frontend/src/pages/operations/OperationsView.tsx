@@ -25,6 +25,8 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
 
   // New batch form state
   const [showBatchModal, setShowBatchModal] = useState(false);
+  const [submittingBatch, setSubmittingBatch] = useState(false);
+  const [batchError, setBatchError] = useState('');
   const [batchForm, setBatchForm] = useState({
     batchNumber: `BATCH-MRK-${Date.now().toString().slice(-4)}`,
     batchDate: new Date().toISOString().split('T')[0],
@@ -100,6 +102,8 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
 
   const handleRecordBatch = async (e: React.FormEvent) => {
     e.preventDefault();
+    setBatchError('');
+    setSubmittingBatch(true);
     try {
       let activeBom = boms[0];
       let activeProduct = products[0];
@@ -116,7 +120,7 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
         activeProduct = prodList[0];
       }
       if (!activeBom || !activeProduct) {
-        alert('No active BOM or Product found in database.');
+        setBatchError('No active BOM or Product found in database.');
         return;
       }
 
@@ -154,7 +158,9 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
       setBatchForm((prev) => ({ ...prev, batchNumber: `BATCH-MRK-${Date.now().toString().slice(-4)}` }));
       loadData();
     } catch (err: any) {
-      alert(err.message || 'Failed to record batch');
+      setBatchError(err.message || 'Failed to record batch');
+    } finally {
+      setSubmittingBatch(false);
     }
   };
 
@@ -234,7 +240,7 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
           <div className="grid grid-cols-1 md:grid-cols-4 gap-gutter">
             <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container">
               <span className="font-label-micro text-label-micro uppercase text-secondary font-semibold">Total Batches Run</span>
-              <div className="font-metric-display text-metric-display text-on-surface mt-1">{prodRuns.length || 3}</div>
+              <div className="font-metric-display text-metric-display text-on-surface mt-1">{prodRuns.length}</div>
               <span className="font-label-micro text-label-micro text-tertiary">All Line Shifts Synced</span>
             </div>
             <div className="bg-surface-container-lowest p-space-md rounded-xl shadow-sm border border-surface-container">
@@ -521,6 +527,11 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
               </button>
             </div>
             <form onSubmit={handleRecordBatch} className="space-y-4 mt-4">
+              {batchError && (
+                <div className="px-3 py-2 rounded-lg bg-red-50 border border-red-200 text-xs text-red-700 font-medium">
+                  {batchError}
+                </div>
+              )}
               <div className="grid grid-cols-2 gap-3">
                 <div>
                   <label className="font-label-default text-label-default text-secondary block mb-1">Batch Run Code</label>
@@ -635,9 +646,10 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
                 </button>
                 <button
                   type="submit"
-                  className="h-8 px-4 rounded bg-primary-container hover:bg-primary text-on-primary font-body-strong"
+                  disabled={submittingBatch}
+                  className="h-8 px-4 rounded bg-primary-container hover:bg-primary text-on-primary font-body-strong disabled:opacity-60"
                 >
-                  Commit Run to Ledger
+                  {submittingBatch ? 'Saving Run...' : 'Commit Run to Ledger'}
                 </button>
               </div>
             </form>
