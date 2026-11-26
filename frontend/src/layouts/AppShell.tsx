@@ -323,6 +323,18 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
               onKeyDown={(e) => {
                 if (e.key !== 'Enter' || !searchTerm.trim()) return;
                 const q = searchTerm.trim().toLowerCase();
+                if (user?.role === 'SALESMAN') {
+                  if (q.includes('cust') || q.includes('retail') || q.includes('dist')) handleNav('customers');
+                  else handleNav('sales-orders');
+                  return;
+                }
+                if (user?.role === 'PRODUCTION_SUPERVISOR') {
+                  if (q.includes('bom') || q.includes('recipe')) handleNav('bom-recipes');
+                  else if (q.includes('po') || q.includes('grn')) handleNav('purchases-grn');
+                  else if (q.includes('mat') || q.includes('stock')) handleNav('materials-inventory');
+                  else handleNav('production-runs');
+                  return;
+                }
                 if (q.includes('so') || q.includes('order')) handleNav('sales-orders');
                 else if (q.includes('inv') || q.includes('uf/') || q.includes('gst')) handleNav('gst-invoices-eway');
                 else if (q.includes('po') || q.includes('grn')) handleNav('purchases-grn');
@@ -353,11 +365,21 @@ export function AppShell({ currentPath, onNavigate, children }: AppShellProps) {
 
             {/* Quick Action */}
             <button
-              onClick={() => handleNav('sales-orders')}
+              onClick={() => {
+                if (user?.role === 'PRODUCTION_SUPERVISOR') handleNav('production-runs');
+                else if (user?.role === 'ACCOUNTANT_AUDITOR') handleNav('reports-analytics');
+                else handleNav('sales-orders');
+              }}
               className="hidden sm:flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold transition-colors whitespace-nowrap shadow-sm"
             >
               <Plus size={15} />
-              <span className="hidden lg:inline">Quick Action</span>
+              <span className="hidden lg:inline">
+                {user?.role === 'PRODUCTION_SUPERVISOR'
+                  ? 'Log Batch'
+                  : user?.role === 'ACCOUNTANT_AUDITOR'
+                  ? 'Audit Exports'
+                  : 'Quick Action'}
+              </span>
             </button>
 
             {/* Notifications */}
