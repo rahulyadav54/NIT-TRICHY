@@ -5,6 +5,7 @@ import { AppShell } from '@/layouts/AppShell';
 import { LoginPage } from '@/pages/auth/LoginPage';
 import { ExecutiveDashboard } from '@/pages/dashboards/ExecutiveDashboard';
 import { RolePortalDashboard } from '@/pages/dashboards/RolePortalDashboard';
+import { AlertsActionCenter } from '@/pages/alerts/AlertsActionCenter';
 import { MaterialsInventoryMaster } from '@/pages/master/MaterialsInventoryMaster';
 import { SupplyChainView } from '@/pages/supply/SupplyChainView';
 import { OperationsView } from '@/pages/operations/OperationsView';
@@ -84,9 +85,7 @@ export function App() {
       case 'overview':
         return renderOverview();
       case 'alerts-action-center':
-        return user?.role === 'OWNER'
-          ? <ExecutiveDashboard onNavigate={navigateSafe} />
-          : <RolePortalDashboard onNavigate={navigateSafe} />;
+        return <AlertsActionCenter onNavigate={navigateSafe} />;
 
       case 'materials-inventory':
         return <MaterialsInventoryMaster onNavigate={navigateSafe} />;
