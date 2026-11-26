@@ -74,10 +74,12 @@ export function RolePortalDashboard({ onNavigate }: { onNavigate: (path: string)
       } else if (role === 'PRODUCTION_SUPERVISOR') {
         const [prRes, stRes] = await Promise.allSettled([
           apiRequest('/production'),
-          apiRequest('/inventory/stock'),
+          apiRequest('/master/materials'),
         ]);
         if (prRes.status === 'fulfilled') setProdRuns(prRes.value.data || []);
-        if (stRes.status === 'fulfilled') setStockItems(stRes.value.data || []);
+        if (stRes.status === 'fulfilled') {
+          setStockItems((stRes.value.data || []).map((m: any) => ({ ...m, closingQty: m.currentStock ?? m.closingQty ?? 0 })));
+        }
       } else if (role === 'SALESMAN') {
         const [oRes, cRes] = await Promise.allSettled([
           apiRequest('/sales'),
@@ -89,7 +91,7 @@ export function RolePortalDashboard({ onNavigate }: { onNavigate: (path: string)
         const [iRes, cRes, mRes] = await Promise.allSettled([
           apiRequest('/invoice'),
           apiRequest('/costing/dashboard'),
-          apiRequest('/inventory/movements'),
+          apiRequest('/inventory/ledger'),
         ]);
         if (iRes.status === 'fulfilled') setInvoices(iRes.value.data || []);
         if (cRes.status === 'fulfilled') setCosting(cRes.value.data || null);
@@ -550,3 +552,4 @@ export function RolePortalDashboard({ onNavigate }: { onNavigate: (path: string)
 }
 
 export default RolePortalDashboard;
+

@@ -1,15 +1,27 @@
 import { useState, useEffect } from 'react';
 import { PlusCircle, RefreshCw, X } from 'lucide-react';
 import { apiRequest } from '@/services/api';
+import { useAuth } from '@/contexts/AuthContext';
 
 export function OperationsView({ subView = 'production-runs', onNavigate: _onNavigate }: { subView: string; onNavigate?: (path: string) => void }) {
+  const { user } = useAuth();
+  const canMutate = user?.role !== 'ACCOUNTANT_AUDITOR';
   const [prodRuns, setProdRuns] = useState<any[]>([]);
   const [boms, setBoms] = useState<any[]>([]);
   const [products, setProducts] = useState<any[]>([]);
+  const [materials, setMaterials] = useState<any[]>([]);
   const [stockLedger, setStockLedger] = useState<any[]>([]);
   const [scalingQty, setScalingQty] = useState<number>(100); // 100 kg batch
   const [scaledBOM, setScaledBOM] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
+
+  const [showIssueModal, setShowIssueModal] = useState(false);
+  const [issueForm, setIssueForm] = useState({
+    materialId: '',
+    quantity: 5,
+    transactionType: 'PRODUCTION_ISSUE' as 'PRODUCTION_ISSUE' | 'ADJUSTMENT',
+    notes: 'Floor issue for Shift A batch preparation',
+  });
 
   // New batch form state
   const [showBatchModal, setShowBatchModal] = useState(false);
@@ -26,10 +38,11 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
   const loadData = async () => {
     setLoading(true);
     try {
-      const [prRes, bomRes, prodRes, ledgerRes] = await Promise.allSettled([
+      const [prRes, bomRes, prodRes, matRes, ledgerRes] = await Promise.allSettled([
         apiRequest('/production'),
         apiRequest('/bom'),
         apiRequest('/master/products'),
+        apiRequest('/master/materials'),
         apiRequest('/reports/stock-ledger'),
       ]);
 
@@ -40,6 +53,13 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
         calculateScaledBOM(scalingQty, bomList);
       }
       if (prodRes.status === 'fulfilled') setProducts(prodRes.value.data || []);
+      if (matRes.status === 'fulfilled') {
+        const matList = matRes.value.data || [];
+        setMaterials(matList);
+        if (matList.length > 0) {
+          setIssueForm((prev) => (prev.materialId ? prev : { ...prev, materialId: matList[0].id }));
+        }
+      }
       if (ledgerRes.status === 'fulfilled') setStockLedger(ledgerRes.value.data || []);
     } catch (err) {
       console.error(err);
@@ -123,6 +143,25 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
     }
   };
 
+  const handleRecordIssue = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await apiRequest('/inventory/issue', {
+        method: 'POST',
+        body: JSON.stringify({
+          materialId: issueForm.materialId,
+          quantity: Number(issueForm.quantity),
+          transactionType: issueForm.transactionType,
+          notes: issueForm.notes,
+        }),
+      });
+      setShowIssueModal(false);
+      loadData();
+    } catch (err: any) {
+      alert(err.message || 'Failed to record material issue');
+    }
+  };
+
   return (
     <div className="flex flex-col w-full pb-space-xl">
       {/* Top Header Strip */}
@@ -145,13 +184,22 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
         </div>
 
         <div className="flex items-center gap-2 flex-shrink-0">
-          {subView === 'production-runs' && (
+          {subView === 'production-runs' && canMutate && (
             <button
               onClick={() => setShowBatchModal(true)}
               className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm transition-colors whitespace-nowrap flex-shrink-0"
             >
               <PlusCircle size={15} className="flex-shrink-0" />
               <span>Record Production Batch</span>
+            </button>
+          )}
+          {subView === 'stock-movement' && canMutate && (
+            <button
+              onClick={() => setShowIssueModal(true)}
+              className="flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[#2457D6] hover:bg-[#1a3fa8] text-white text-sm font-semibold shadow-sm transition-colors whitespace-nowrap flex-shrink-0"
+            >
+              <PlusCircle size={15} className="flex-shrink-0" />
+              <span>Record Material Issue / Wastage</span>
             </button>
           )}
           <button
@@ -535,6 +583,76 @@ export function OperationsView({ subView = 'production-runs', onNavigate: _onNav
                 >
                   Commit Run to Ledger
                 </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Record Material Issue / Wastage Modal */}
+      {showIssueModal && (
+        <div className="fixed inset-0 bg-slate-900/50 backdrop-blur-xs flex items-center justify-center z-50 p-4">
+          <div className="bg-surface-container-lowest rounded-xl shadow-xl border border-surface-container max-w-md w-full p-6">
+            <div className="flex items-center justify-between pb-3 border-b border-surface-container">
+              <h3 className="font-headline-sm text-headline-sm text-on-surface">Record Material Issue / Wastage</h3>
+              <button onClick={() => setShowIssueModal(false)} className="text-[#64748B] hover:text-[#172033]">
+                <X size={18} />
+              </button>
+            </div>
+            <form onSubmit={handleRecordIssue} className="space-y-4 mt-4 text-sm">
+              <div>
+                <label className="block text-xs font-medium text-[#64748B] mb-1">Material</label>
+                <select
+                  required
+                  value={issueForm.materialId}
+                  onChange={(e) => setIssueForm({ ...issueForm, materialId: e.target.value })}
+                  className="w-full h-9 px-3 border border-gray-200 rounded-lg"
+                >
+                  {materials.map((m) => (
+                    <option key={m.id} value={m.id}>
+                      {m.name} ({m.code}) — Avail: {Number(m.currentStock || 0)} {m.unit}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="grid grid-cols-2 gap-3">
+                <div>
+                  <label className="block text-xs font-medium text-[#64748B] mb-1">Entry Type</label>
+                  <select
+                    value={issueForm.transactionType}
+                    onChange={(e) => setIssueForm({ ...issueForm, transactionType: e.target.value as any })}
+                    className="w-full h-9 px-3 border border-gray-200 rounded-lg"
+                  >
+                    <option value="PRODUCTION_ISSUE">Floor Material Issue</option>
+                    <option value="ADJUSTMENT">Wastage / Scrap Adjustment</option>
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-xs font-medium text-[#64748B] mb-1">Quantity Out</label>
+                  <input
+                    type="number"
+                    step="0.01"
+                    min="0.01"
+                    required
+                    value={issueForm.quantity}
+                    onChange={(e) => setIssueForm({ ...issueForm, quantity: Number(e.target.value) })}
+                    className="w-full h-9 px-3 border border-gray-200 rounded-lg"
+                  />
+                </div>
+              </div>
+              <div>
+                <label className="block text-xs font-medium text-[#64748B] mb-1">Reason / Floor Notes</label>
+                <input
+                  required
+                  minLength={2}
+                  value={issueForm.notes}
+                  onChange={(e) => setIssueForm({ ...issueForm, notes: e.target.value })}
+                  className="w-full h-9 px-3 border border-gray-200 rounded-lg"
+                />
+              </div>
+              <div className="flex justify-end gap-2 pt-3 border-t border-surface-container">
+                <button type="button" onClick={() => setShowIssueModal(false)} className="h-9 px-4 rounded-lg bg-gray-100 text-[#172033] font-medium">Cancel</button>
+                <button type="submit" className="h-9 px-4 rounded-lg bg-[#2457D6] text-white font-semibold">Post to Ledger</button>
               </div>
             </form>
           </div>

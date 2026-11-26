@@ -28,7 +28,7 @@ export function AlertsActionCenter({ onNavigate }: { onNavigate: (path: string) 
     setLoading(true);
     try {
       const [stockRes, prodRes, salesRes, dispRes, invRes] = await Promise.allSettled([
-        apiRequest('/inventory/stock'),
+        apiRequest('/master/materials'),
         apiRequest('/production'),
         apiRequest('/sales'),
         apiRequest('/dispatch/pending'),
@@ -37,7 +37,11 @@ export function AlertsActionCenter({ onNavigate }: { onNavigate: (path: string) 
 
       if (stockRes.status === 'fulfilled') {
         const items = stockRes.value.data || [];
-        setLowStock(items.filter((i: any) => Number(i.closingQty || 0) <= Number(i.reorderLevel || 0)));
+        setLowStock(
+          items
+            .map((i: any) => ({ ...i, closingQty: i.currentStock ?? i.closingQty ?? 0 }))
+            .filter((i: any) => Number(i.closingQty) <= Number(i.reorderLevel || 0))
+        );
       }
       if (prodRes.status === 'fulfilled') {
         const runs = prodRes.value.data || [];
@@ -315,3 +319,4 @@ export function AlertsActionCenter({ onNavigate }: { onNavigate: (path: string) 
 }
 
 export default AlertsActionCenter;
+
